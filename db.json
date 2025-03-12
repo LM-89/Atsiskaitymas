@@ -176,6 +176,17 @@
       "role": "user",
       "bio": "",
       "avatar": ""
+    },
+    {
+      "email": "laimonas@example.com",
+      "password": "laimonas",
+      "name": "Laimonas",
+      "surname": "Matelis",
+      "role": "admin",
+      "nickname": "Bon Pari",
+      "id": 6,
+      "avatar": "",
+      "bio": ""
     }
   ],
   "categories": [
