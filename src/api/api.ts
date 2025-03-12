@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Category, Game, NewReview, Review, User } from "../types";
 
-export const API_URL = process.env.REACT_APP_API_URL || "http://localhost:3000";
+export const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000"
 
 export const api = axios.create({
   baseURL: API_URL,
