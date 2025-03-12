@@ -109,6 +109,16 @@
       "cover": "https://i.imgur.com/g3MxdhJ.jpg",
       "release": 2025,
       "id": 11
+    },
+    {
+      "title": "RUST",
+      "categoryId": 10,
+      "description": "The only aim in Rust is to survive. Everything wants you to die - the island’s wildlife, other inhabitants, the environment, and other survivors. Do whatever it takes to last another night.",
+      "developer": "Facepunch Studios",
+      "price": 42.96,
+      "cover": "https://i.imgur.com/59S7LGb.png",
+      "release": 2018,
+      "id": 12
     }
   ],
   "users": [
@@ -208,6 +218,16 @@
       "title": "FPS",
       "description": "FPS (First-Person Shooter) games are a sub-genre of Shooting games that became immensely popular. They are basically Shooting games played from the protagonist's perspective, allowing for a higher degree of immersion and realism.",
       "id": 8
+    },
+    {
+      "title": "Stealth Games",
+      "description": "These games tend to emphasize sneaking around and avoiding enemy notice over direct conflict, for example, the Metal Gear series, and the Sly Cooper series. In a Stealth game, players are usually still able to engage in loud, conspicuous combat, but are often punished for it.",
+      "id": 9
+    },
+    {
+      "title": "Survival",
+      "description": "Survival games are a subgenre of action games which are often set in hostile, intense, open-world environments. Players generally start with minimal equipment and are required to survive as long as possible by finding the resources necessary to manage hunger, thirst, disease and/or mental state.",
+      "id": 10
     }
   ],
   "reviews": [
@@ -254,13 +274,6 @@
       "id": 7
     },
     {
-      "gameId": 6,
-      "userId": 1,
-      "rating": 5,
-      "comment": "2k hours on the first POE, many more to go on this! Recc!!!",
-      "id": 8
-    },
-    {
       "gameId": 2,
       "userId": 1,
       "rating": 5,
@@ -275,20 +288,32 @@
       "id": 12
     },
     {
-      "rating": 2.6,
+      "gameId": 6,
+      "userId": 2,
+      "rating": 5,
+      "comment": "2k hours on the first POE, many more to go on this! Recc!!!",
+      "id": 16
+    },
+    {
+      "gameId": 7,
+      "userId": 2,
+      "rating": 4.7,
+      "comment": "MMM....RT..Much play!",
+      "id": 17
+    },
+    {
+      "gameId": 9,
+      "userId": 2,
+      "rating": 5,
+      "comment": "Perfect game to relax at the evening.",
+      "id": 18
+    },
+    {
+      "gameId": 1,
+      "userId": 2,
+      "rating": 3.8,
       "comment": "Great concept but some levels feel a bit repetitive.",
-      "user": {
-        "id": 1,
-        "name": "John",
-        "surname": "Doe",
-        "nickname": "ShadowKnight",
-        "email": "john.doe@example.com",
-        "password": "Admin123",
-        "role": "admin",
-        "bio": "Site's admin. Feel free to reach out.",
-        "avatar": "https://robohash.org/3a80f34cc109bde4662ea8bf3921e007?set=set1&bgset=&size=400x400"
-      },
-      "id": 13
+      "id": 19
     }
   ]
 }

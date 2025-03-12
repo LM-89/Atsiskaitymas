@@ -1,11 +1,11 @@
+import React from "react";
 import { Link } from "react-router-dom";
-import { User } from "../types";
+import { useData } from "../context/DataContext";
 
-interface UserListProps {
-  users: User[];
-}
+const UserList: React.FC = () => {
+  const { state } = useData();
+  const { users } = state;
 
-const UserList: React.FC<UserListProps> = ({ users }) => {
   return (
     <div>
       <h2>User List</h2>

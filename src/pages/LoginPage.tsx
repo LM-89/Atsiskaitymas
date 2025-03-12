@@ -1,18 +1,22 @@
-import { useState } from "react";
-import { useAuth } from "../context/AuthContext";
+import React, { useState } from "react";
+import { loginUser, registerUser } from "../api/api";
+import { useData } from "../context/DataContext";
 import { Navigate } from "react-router-dom";
+import AuthForm from "../components/AuthForm";
 
 const LoginPage = () => {
-  const { login, register, user } = useAuth();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const { state, dispatch } = useData();
+  const { auth } = state;
+  const { user } = auth;
+
   const [isLogin, setIsLogin] = useState(true);
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    name: "",
+    surname: "",
+  });
   const [error, setError] = useState("");
-  const [name, setName] = useState("");
-  const [surname, setSurname] = useState("");
-
-  // console.log("LoginPage User:", user);
-
 
   if (user) {
     return <Navigate to="/games" />;
@@ -22,84 +26,50 @@ const LoginPage = () => {
     e.preventDefault();
     try {
       if (isLogin) {
-        await login(email, password);
+        const data = await loginUser(formData.email, formData.password);
+        dispatch({ type: "SET_AUTH", payload: { user: data.user, token: data.token } });
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
       } else {
-        await register({
-          email, password, name, surname, role: "user", nickname: ""
+        const data = await registerUser({
+          email: formData.email,
+          password: formData.password,
+          name: formData.name,
+          surname: formData.surname,
+          role: "user",
+          nickname: "",
         });
+        dispatch({ type: "SET_AUTH", payload: { user: data.user, token: data.token } });
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
       }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    } catch (error) {
+    } catch (err) {
       setError("Authentication failed. Please check your credentials.");
-      setTimeout(() => {
-        setError("");
-      }, 3000);
+      setTimeout(() => setError(""), 3000);
     }
   };
 
   const handleToggleForm = () => {
     setIsLogin(!isLogin);
-    setEmail(""); 
-    setPassword(""); 
-    setName(""); 
-    setSurname(""); 
+    setFormData({ email: "", password: "", name: "", surname: "" });
+  };
+
+  const handleChange = (field: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   return (
     <div className="login-modal">
       <div className="login-content">
-        <h2>{isLogin ? "Login" : "Register"}</h2>
-        <form onSubmit={handleSubmit}>
-          {!isLogin && (
-            <>
-              <div>
-                <label htmlFor="name">Name</label>
-                <input
-                  id="name"
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="surname">Surname</label>
-                <input
-                  id="surname"
-                  type="text"
-                  value={surname}
-                  onChange={(e) => setSurname(e.target.value)}
-                  required
-                />
-              </div>
-            </>
-          )}
-          <div>
-            <label htmlFor="email">Email</label>
-            <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="password">Password</label>
-            <input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-          <button type="submit">{isLogin ? "Login" : "Register"}</button>
-        </form>
-        <button onClick={handleToggleForm}>
-          {isLogin ? "Create new account" : "Already have an account? Login"}
-        </button>
-        {error && <p className="error">{error}</p>}
+        <AuthForm
+          isLogin={isLogin}
+          formData={formData}
+          error={error}
+          onChange={handleChange}
+          onSubmit={handleSubmit}
+          onToggleForm={handleToggleForm}
+        />
       </div>
     </div>
   );

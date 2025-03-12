@@ -1,16 +1,26 @@
 import { HashRouter as Router, Route, Routes, Navigate, Link } from "react-router-dom";
-import { AuthProvider, useAuth } from "./context/AuthContext";
+import { DataProvider, useData } from "./context/DataContext";
 import LoginPage from "./pages/LoginPage";
 import GamesList from "./pages/GamesList";
 import AdminPanel from "./pages/AdminPanel";
 import UserProfile from "./pages/UserProfile";
 import OtherUserProfile from "./pages/OtherUserProfile";
-import "./App.css";
 import GameDetails from "./pages/GameDetails";
+import "./App.css";
 import { JSX } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
-  const { user, logout } = useAuth();
+  const { state, dispatch } = useData();
+  const { user } = state.auth;
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    dispatch({ type: "LOGOUT" });
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    navigate("/");
+  };
 
   return (
     <nav>
@@ -21,7 +31,7 @@ const Navbar = () => {
         {user ? (
           <>
             <span>Welcome, {user.nickname || user.email}</span>
-            <button onClick={logout}>Logout</button>
+            <button onClick={handleLogout}>Logout</button>
           </>
         ) : (
           <Link to="/login">Login</Link>
@@ -32,17 +42,16 @@ const Navbar = () => {
 };
 
 const ProtectedRoute = ({ children, role }: { children: JSX.Element; role?: "admin" | "user" }) => {
-  const { user } = useAuth();
-
+  const { state } = useData();
+  const { user } = state.auth;
   if (!user) return <Navigate to="/login" />;
   if (role && user.role !== role) return <Navigate to="/" />;
-
   return children;
 };
 
 const App = () => {
   return (
-    <AuthProvider>
+    <DataProvider>
       <Router>
         <Navbar />
         <Routes>
@@ -76,7 +85,7 @@ const App = () => {
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Router>
-    </AuthProvider>
+    </DataProvider>
   );
 };
 

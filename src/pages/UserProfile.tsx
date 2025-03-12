@@ -1,42 +1,24 @@
 import { useState, useEffect } from "react";
-import { useAuth } from "../context/AuthContext";
+import { useData } from "../context/DataContext";
 import axios from "axios";
 import { API_URL, updateReview, deleteReview } from "../api/api";
 import { Link } from "react-router-dom";
-import { Review } from "../types";
-import { Game } from "../types";
+import { Review, Game } from "../types";
+import ProfileForm from "../components/ProfileForm";
 
 const UserProfile = () => {
-  const { user, token } = useAuth();
-  const [profile, setProfile] = useState({
-    name: "",
-    surname: "",
-    nickname: "",
-    avatar: "",
-    bio: ""
-  });
+  const { state } = useData();
+  const { auth, games } = state;
+  const { user, token } = auth;
+
   const [reviews, setReviews] = useState<Review[]>([]);
-  const [games, setGames] = useState<Game[]>([]);
   const [editingReviewId, setEditingReviewId] = useState<number | null>(null);
   const [editReviewData, setEditReviewData] = useState<{ rating: number; comment: string }>({
     rating: 0,
-    comment: ""
+    comment: "",
   });
 
-  // Update profile when the user object changes
-  useEffect(() => {
-    if (user) {
-      setProfile({
-        name: user.name || "",
-        surname: user.surname || "",
-        nickname: user.nickname || "",
-        avatar: user.avatar || "",
-        bio: user.bio || ""
-      });
-    }
-  }, [user]);
 
-  // Fetch user's reviews
   useEffect(() => {
     const fetchReviews = async () => {
       if (user) {
@@ -51,203 +33,170 @@ const UserProfile = () => {
     fetchReviews();
   }, [user]);
 
-  // Fetch all games to map game titles in reviews
-  useEffect(() => {
-    const fetchGames = async () => {
-      try {
-        const response = await axios.get(`${API_URL}/games`);
-        setGames(response.data);
-      } catch (error) {
-        console.error("Error fetching games:", error);
-      }
-    };
-    fetchGames();
-  }, []);
-
-  const handleUpdate = async () => {
-    try {
-      await axios.patch(`${API_URL}/users/${user?.id}`, profile, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      const updatedUser = { ...user, ...profile };
-      localStorage.setItem("user", JSON.stringify(updatedUser));
-    } catch (error) {
-      console.error("Update failed", error);
-    }
-  };
-
 
   const getGameTitle = (gameId: number) => {
-    const game = games.find((game) => game.id === gameId);
+    const game: Game | undefined = games.find((g) => g.id === gameId);
     return game ? game.title : `Game ${gameId}`;
   };
 
-  
-  const handleEditClick = (review: Review) => {
-    setEditingReviewId(review.id);
-    setEditReviewData({ rating: review.rating, comment: review.comment });
-  };
-
-  const handleCancelEdit = () => {
-    setEditingReviewId(null);
-  };
-
-  const handleSaveEdit = async (reviewId: number) => {
+  const handleUpdateReview = async (reviewId: number) => {
     try {
       if (!token) return;
       await updateReview(reviewId, editReviewData, token);
-    
-      setReviews(reviews.map(review => review.id === reviewId ? { ...review, rating: editReviewData.rating, comment: editReviewData.comment } : review));
+      setReviews(
+        reviews.map((review) =>
+          review.id === reviewId
+            ? { ...review, rating: editReviewData.rating, comment: editReviewData.comment }
+            : review
+        )
+      );
       setEditingReviewId(null);
-
     } catch (error) {
       console.error("Error updating review:", error);
     }
   };
 
-  const handleDelete = async (reviewId: number) => {
+  const handleDeleteReview = async (reviewId: number) => {
     try {
       if (!token) return;
       await deleteReview(reviewId, token);
-      
-      setReviews(reviews.filter(review => review.id !== reviewId));
-
+      setReviews(reviews.filter((review) => review.id !== reviewId));
     } catch (error) {
       console.error("Error deleting review:", error);
     }
   };
 
+  const handleDeleteAccount = async () => {
+    if (!user || !token) return;
+  
+    const firstConfirm = window.confirm("Are you sure you want to delete your account? This action cannot be undone.");
+    if (!firstConfirm) return;
+  
+    const secondConfirm = window.confirm("This is your last chance! Are you absolutely sure you want to delete your account?");
+    if (!secondConfirm) return;
+  
+    try {
+      await axios.delete(`${API_URL}/users/${user.id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+  
+      alert("Your account has been deleted.");
+
+      dispatch({ type: "LOGOUT" });
+  
+      window.location.href = "/";
+    } catch (error) {
+      console.error("Error deleting account:", error);
+    }
+  };
+
   return (
     <div className="profile">
-      <h2>Profile Settings</h2>
-      <div className="avatar-section">
-        {profile.avatar ? (
-          <img
-            src={profile.avatar}
-            alt="Avatar"
-            width={100}
-            height={100}
-            style={{ borderRadius: "50%" }}
-          />
-        ) : (
-          <div>No avatar available</div>
-        )}
-        <div>
-          <strong>Nickname:</strong> {profile.nickname || "No nickname available"}
-        </div>
-        <div>
-          <strong>Email:</strong> {user?.email || "No email available"}
-        </div>
-        <div>
-          <strong>Role:</strong> {user?.role || "No role available"}
-        </div>
-      </div>
+      {user && (
+        <>
+          <ProfileForm user={user} />
+          <div className="avatar-section">
+            {user.avatar ? (
+              <img
+                src={user.avatar}
+                alt="Avatar"
+                width={100}
+                height={100}
+                style={{ borderRadius: "50%" }}
+              />
+            ) : (
+              <div>No avatar available</div>
+            )}
+            <div>
+              <strong>Nickname:</strong> {user.nickname || "No nickname available"}
+            </div>
+            <div>
+              <strong>Email:</strong> {user.email || "No email available"}
+            </div>
+            <div>
+              <strong>Role:</strong> {user.role || "No role available"}
+            </div>
+            <button style={{ background: "red", color: "white", marginTop: "1rem" }} onClick={handleDeleteAccount}>
+              Delete My Account
+            </button>
+          </div>
 
-
-
-
-      <h3>Edit Profile</h3>
-      <div>
-        <label>Name:</label>
-        <input
-          value={profile.name}
-          onChange={(e) => setProfile({ ...profile, name: e.target.value })}
-        />
-      </div>
-      <div>
-        <label>Surname:</label>
-        <input
-          value={profile.surname}
-          onChange={(e) => setProfile({ ...profile, surname: e.target.value })}
-        />
-      </div>
-      <div>
-        <label>Nickname:</label>
-        <input
-          value={profile.nickname}
-          onChange={(e) => setProfile({ ...profile, nickname: e.target.value })}
-        />
-      </div>
-      <div>
-        <label>Avatar URL:</label>
-        <input
-          value={profile.avatar}
-          onChange={(e) => setProfile({ ...profile, avatar: e.target.value })}
-        />
-      </div>
-      <div>
-        <label>Bio:</label>
-        <textarea
-          value={profile.bio}
-          onChange={(e) => setProfile({ ...profile, bio: e.target.value })}
-        />
-      </div>
-      <button onClick={handleUpdate}>Save Changes</button>
-
-
-
-      <h3>My Reviews</h3>
-      {reviews.length === 0 ? (
-        <p>No reviews added yet</p>
-      ) : (
-        <ul>
-          {reviews.map((review) => (
-            <li key={review.id} style={{ marginBottom: "1rem" }}>
-              <div>
-                <strong>Game:</strong>{" "}
-                <Link to={`/game/${review.gameId}`}>{getGameTitle(review.gameId)}</Link>
-              </div>
-              {editingReviewId === review.id ? (
-                <>
+          <h3>My Reviews</h3>
+          {reviews.length === 0 ? (
+            <p>No reviews added yet</p>
+          ) : (
+            <ul>
+              {reviews.map((review) => (
+                <li key={review.id} style={{ marginBottom: "1rem" }}>
                   <div>
-                    <label>Rating: </label>
-                    <input
-                      type="number"
-                      value={editReviewData.rating}
-                      onChange={(e) =>
-                        setEditReviewData({
-                          ...editReviewData,
-                          rating: Number(e.target.value)
-                        })
-                      }
-                      min={0}
-                      max={5}
-                      step={0.1}
-                    />
+                    <strong>Game:</strong>{" "}
+                    <Link to={`/game/${review.gameId}`}>{getGameTitle(review.gameId)}</Link>
                   </div>
-                  <div>
-                    <label>Comment: </label>
-                    <textarea
-                      value={editReviewData.comment}
-                      onChange={(e) =>
-                        setEditReviewData({
-                          ...editReviewData,
-                          comment: e.target.value
-                        })
-                      }
-                    />
-                  </div>
-                  <button onClick={() => handleSaveEdit(review.id)}>Save</button>
-                  <button onClick={handleCancelEdit}>Cancel</button>
-                </>
-              ) : (
-                <>
-                  <div>
-                    <strong>Rating:</strong> {review.rating}
-                  </div>
-                  <div>
-                    <strong>Comment:</strong> {review.comment}
-                  </div>
-                  <button onClick={() => handleEditClick(review)}>Edit</button>
-                  <button onClick={() => handleDelete(review.id)}>Delete</button>
-                </>
-              )}
-            </li>
-          ))}
-        </ul>
+                  {editingReviewId === review.id ? (
+                    <>
+                      <div>
+                        <label>Rating: </label>
+                        <input
+                          type="number"
+                          value={editReviewData.rating}
+                          onChange={(e) =>
+                            setEditReviewData({
+                              ...editReviewData,
+                              rating: Number(e.target.value),
+                            })
+                          }
+                          min={0}
+                          max={5}
+                          step={0.1}
+                        />
+                      </div>
+                      <div>
+                        <label>Comment: </label>
+                        <textarea
+                          value={editReviewData.comment}
+                          onChange={(e) =>
+                            setEditReviewData({
+                              ...editReviewData,
+                              comment: e.target.value,
+                            })
+                          }
+                        />
+                      </div>
+                      <button onClick={() => handleUpdateReview(review.id)}>Save</button>
+                      <button onClick={() => setEditingReviewId(null)}>Cancel</button>
+                    </>
+                  ) : (
+                    <>
+                      <div>
+                        <strong>Rating:</strong> {review.rating}
+                      </div>
+                      <div>
+                        <strong>Comment:</strong> {review.comment}
+                      </div>
+                      <button
+                        onClick={() => {
+                          setEditingReviewId(review.id);
+                          setEditReviewData({ rating: review.rating, comment: review.comment });
+                        }}
+                      >
+                        Edit
+                      </button>
+                      <button onClick={() => handleDeleteReview(review.id)}>Delete</button>
+                    </>
+                  )}
+                </li>
+              ))}
+            </ul>
+          )}
+        </>
       )}
     </div>
   );
 };
 
 export default UserProfile;
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function dispatch(_arg0: { type: string; }) {
+  throw new Error("Function not implemented.");
+}
+

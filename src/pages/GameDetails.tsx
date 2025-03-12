@@ -1,86 +1,105 @@
 import { useParams } from "react-router-dom";
 import { getGameReviews, addReview, deleteReview, updateReview, getGames } from "../api/api";
-import { useAuth } from "../context/AuthContext";
-import { useState, useEffect } from "react";
-import { Review, Game } from "../types";
+import { useData } from "../context/DataContext";
+import { useEffect, useState } from "react";
 import axios from "axios";
-
-interface Category {
-  id: number;
-  title: string;
-}
+import { Game, Review, Category, NewReview } from "../types";
+import { API_URL } from "../api/api";
 
 const GameDetails = () => {
   const { gameId } = useParams<{ gameId: string }>();
-  const { user, token } = useAuth();
-  const [game, setGame] = useState<Game | null>(null);
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [reviews, setReviews] = useState<Review[]>([]);
-  const [newReview, setNewReview] = useState({ rating: 3.0, comment: "" });
-  const [averageRating, setAverageRating] = useState<string>("Not Rated Yet");
+  const { state, dispatch } = useData();
+  const { games, categories, auth, reviews } = state;
+  const { user, token } = auth;
+
+  const [localGame, setLocalGame] = useState<Game | null>(null);
+  const [newReviewData, setNewReviewData] = useState({ rating: 3.0, comment: "" });
   const [editingReviewId, setEditingReviewId] = useState<number | null>(null);
-  const [editReviewData, setEditReviewData] = useState<{ rating: number; comment: string }>({
-    rating: 3.0,
-    comment: ""
-  });
+  const [editReviewData, setEditReviewData] = useState({ rating: 3.0, comment: "" });
+  const [averageRating, setAverageRating] = useState("Not Rated Yet");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const loadGameAndReviews = async () => {    
-      const gamesData = await getGames();
-      const selectedGame = gamesData.find((g) => g.id === Number(gameId));
-      setGame(selectedGame || null);
+    const loadGameAndReviews = async () => {
+      try {
+        let gameItem: Game | null = games.find((g) => g.id === Number(gameId)) ?? null;
+        if (!gameItem) {
+          const gamesData = await getGames();
+          dispatch({ type: "SET_GAMES", payload: gamesData });
+          gameItem = gamesData.find((g) => g.id === Number(gameId)) ?? null;
+        }
+        setLocalGame(gameItem);
 
-      
-      const categoriesResponse = await axios.get("http://localhost:3000/categories");
-      setCategories(categoriesResponse.data);
+        if (categories.length === 0) {
+          const categoriesResponse = await axios.get(`${API_URL}/categories`);
+          dispatch({ type: "SET_CATEGORIES", payload: categoriesResponse.data });
+        }
 
-      
-      const reviewData = await getGameReviews(Number(gameId));
-      const reviewsWithUserInfo = await Promise.all(
-        reviewData.map(async (review) => {
-          const userResponse = await axios.get(`http://localhost:3000/users/${review.userId}`);
-          return { ...review, user: userResponse.data };
-        })
-      );
-      setReviews(reviewsWithUserInfo);
-
-     
-      if (reviewData.length > 0) {
-        const totalRating = reviewData.reduce((sum, review) => sum + review.rating, 0);
-        const average = (totalRating / reviewData.length).toFixed(1);
-        setAverageRating(average);
-      } else {
-        setAverageRating("Not Rated Yet");
+        const reviewsData = await getGameReviews(Number(gameId));
+        const reviewsWithUserInfo = await Promise.all(
+          reviewsData.map(async (review: Review) => {
+            const userResponse = await axios.get(`${API_URL}/users/${review.userId}`);
+            return { ...review, user: userResponse.data };
+          })
+        );
+        dispatch({
+          type: "SET_REVIEWS",
+          payload: { gameId: Number(gameId), reviews: reviewsWithUserInfo },
+        });
+        if (reviewsWithUserInfo.length > 0) {
+          const total = reviewsWithUserInfo.reduce((sum, review) => sum + review.rating, 0);
+          setAverageRating((total / reviewsWithUserInfo.length).toFixed(1));
+        } else {
+          setAverageRating("Not Rated Yet");
+        }
+      } catch (error) {
+        console.error("Error loading game and reviews:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
     loadGameAndReviews();
-  }, [gameId]);
+  }, [gameId, dispatch, games, categories]);
 
   const handleAddReview = async () => {
     if (user && token) {
-      const reviewData = {
+      const reviewPayload: NewReview = {
         gameId: Number(gameId),
         userId: user.id,
-        rating: newReview.rating,
-        comment: newReview.comment,
-        user: user, 
+        rating: newReviewData.rating,
+        comment: newReviewData.comment,
       };
-
-    
-      const addedReview = await addReview(reviewData, token);
-      setReviews([...reviews, addedReview]);
-      setNewReview({ rating: 3.0, comment: "" });
+      const addedReview = await addReview(reviewPayload, token);
+      dispatch({
+        type: "ADD_REVIEW",
+        payload: { gameId: Number(gameId), review: addedReview },
+      });
+      const currentReviews: Review[] = reviews[Number(gameId)] || [];
+      const updatedReviews = [...currentReviews, addedReview];
+      const total = updatedReviews.reduce((sum, review) => sum + review.rating, 0);
+      setAverageRating((total / updatedReviews.length).toFixed(1));
+      setNewReviewData({ rating: 3.0, comment: "" });
     }
   };
 
   const handleDeleteReview = async (reviewId: number) => {
     if (user && token) {
       await deleteReview(reviewId, token);
-      setReviews(reviews.filter((review) => review.id !== reviewId));
+      dispatch({
+        type: "DELETE_REVIEW",
+        payload: { gameId: Number(gameId), reviewId },
+      });
+      const currentReviews: Review[] = reviews[Number(gameId)] || [];
+      const updatedReviews = currentReviews.filter((r) => r.id !== reviewId);
+      if (updatedReviews.length > 0) {
+        const total = updatedReviews.reduce((sum, review) => sum + review.rating, 0);
+        setAverageRating((total / updatedReviews.length).toFixed(1));
+      } else {
+        setAverageRating("Not Rated Yet");
+      }
     }
   };
-
 
   const handleEditClick = (review: Review) => {
     setEditingReviewId(review.id);
@@ -96,11 +115,26 @@ const GameDetails = () => {
       try {
         const updatedReviewData = { ...editReviewData, user };
         await updateReview(reviewId, updatedReviewData, token);
-        setReviews(
-          reviews.map((r) =>
-            r.id === reviewId ? { ...r, ...updatedReviewData } : r
-          )
+        dispatch({
+          type: "UPDATE_REVIEW",
+          payload: {
+            gameId: Number(gameId),
+            review: {
+              id: reviewId,
+              ...updatedReviewData,
+              gameId: Number(gameId),
+              userId: user.id,
+            },
+          },
+        });
+        const currentReviews: Review[] = reviews[Number(gameId)] || [];
+        const updatedReviews = currentReviews.map((r) =>
+          r.id === reviewId
+            ? { id: reviewId, ...updatedReviewData, gameId: Number(gameId), userId: user.id }
+            : r
         );
+        const total = updatedReviews.reduce((sum, review) => sum + review.rating, 0);
+        setAverageRating((total / updatedReviews.length).toFixed(1));
         setEditingReviewId(null);
       } catch (error) {
         console.error("Error updating review:", error);
@@ -108,43 +142,46 @@ const GameDetails = () => {
     }
   };
 
-  
   const getCategoryName = (categoryId?: number) => {
-    return categories.find((category) => category.id === categoryId)?.title || "Unknown";
+    return categories.find((cat: Category) => cat.id === categoryId)?.title || "Unknown";
   };
+
+  const gameReviews: Review[] = reviews[Number(gameId)] || [];
+
+  if (loading) {
+    return <p>Loading game details...</p>;
+  }
 
   return (
     <div>
-      {game ? (
+      {localGame ? (
         <>
           <div className="game-details">
-            <h2>{game.title}</h2>
+            <h2>{localGame.title}</h2>
             <p>
-              <strong>Category:</strong> {getCategoryName(game.categoryId)}
+              <strong>Category:</strong> {getCategoryName(localGame.categoryId)}
             </p>
             <p>
-              <strong>Description:</strong> {game.description}
+              <strong>Description:</strong> {localGame.description}
             </p>
             <p>
-              <strong>Developer:</strong> {game.developer}
+              <strong>Developer:</strong> {localGame.developer}
             </p>
             <p>
-              <strong>Release Date:</strong> {game.release}
+              <strong>Release Date:</strong> {localGame.release}
             </p>
-            <img src={game.cover} alt={game.title} width={300} />
+            <img src={localGame.cover} alt={localGame.title} width={300} />
             <p>
               <strong>Average Rating:</strong> {averageRating} ⭐
             </p>
           </div>
-
-         
           <div className="reviews-section">
             <h2>Reviews:</h2>
-            {reviews.length > 0 ? (
-              reviews.map((review) => (
+            {gameReviews.length > 0 ? (
+              gameReviews.map((review) => (
                 <div key={review.id} className="review">
                   <div className="review-user-info">
-                    {review.user.avatar && (
+                    {review.user && review.user.avatar && (
                       <img
                         src={review.user.avatar}
                         alt={review.user.nickname}
@@ -153,7 +190,7 @@ const GameDetails = () => {
                         style={{ borderRadius: "50%" }}
                       />
                     )}
-                    <strong>{review.user.nickname}</strong>
+                    <strong>{review.user?.nickname}</strong>
                   </div>
                   {editingReviewId === review.id ? (
                     <>
@@ -168,7 +205,7 @@ const GameDetails = () => {
                           onChange={(e) =>
                             setEditReviewData({
                               ...editReviewData,
-                              rating: parseFloat(e.target.value)
+                              rating: parseFloat(e.target.value),
                             })
                           }
                         />
@@ -181,7 +218,7 @@ const GameDetails = () => {
                           onChange={(e) =>
                             setEditReviewData({
                               ...editReviewData,
-                              comment: e.target.value
+                              comment: e.target.value,
                             })
                           }
                         />
@@ -211,8 +248,6 @@ const GameDetails = () => {
               <p>No reviews yet. Be the first to add one!</p>
             )}
           </div>
-
-
           {user && (
             <div className="add-review">
               <h3>Add a Review</h3>
@@ -226,17 +261,17 @@ const GameDetails = () => {
                   min="1"
                   max="5"
                   step="0.1"
-                  value={newReview.rating}
+                  value={newReviewData.rating}
                   onChange={(e) =>
-                    setNewReview({ ...newReview, rating: parseFloat(e.target.value) })
+                    setNewReviewData({ ...newReviewData, rating: parseFloat(e.target.value) })
                   }
                   style={{ width: "300px" }}
                 />
-                <span>{newReview.rating.toFixed(1)}</span>
+                <span>{newReviewData.rating.toFixed(1)}</span>
               </div>
               <textarea
-                value={newReview.comment}
-                onChange={(e) => setNewReview({ ...newReview, comment: e.target.value })}
+                value={newReviewData.comment}
+                onChange={(e) => setNewReviewData({ ...newReviewData, comment: e.target.value })}
                 placeholder="Write your review..."
                 style={{ width: "100%", height: "80px", marginTop: "10px" }}
               />
@@ -247,7 +282,7 @@ const GameDetails = () => {
           )}
         </>
       ) : (
-        <p>Loading game details...</p>
+        <p>Game not found.</p>
       )}
     </div>
   );
