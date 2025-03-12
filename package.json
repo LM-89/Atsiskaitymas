@@ -1,9 +1,12 @@
 {
+  "homepage": "http://LM-89.github.io/Atsiskaitymas",
   "name": "npx",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist",
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
