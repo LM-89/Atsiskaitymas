@@ -43,7 +43,7 @@ const ProtectedRoute = ({ children, role }: { children: JSX.Element; role?: "adm
 const App = () => {
   return (
     <AuthProvider>
-      <Router basename="/Atsiskaitymas">
+      <Router basename="/">
         <Navbar />
         <Routes>
           <Route path="/" element={<LoginPage />} />
