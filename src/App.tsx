@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes, Navigate, Link } from "react-router-dom";
+import { HashRouter as Router, Route, Routes, Navigate, Link } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import LoginPage from "./pages/LoginPage";
 import GamesList from "./pages/GamesList";
@@ -43,7 +43,7 @@ const ProtectedRoute = ({ children, role }: { children: JSX.Element; role?: "adm
 const App = () => {
   return (
     <AuthProvider>
-      <Router basename="/">
+      <Router>
         <Navbar />
         <Routes>
           <Route path="/" element={<LoginPage />} />
