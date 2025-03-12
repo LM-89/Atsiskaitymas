@@ -1,7 +1,7 @@
 {
-  "homepage": "https://lm-89.github.io/Atsiskaitymas/",
   "name": "npx",
   "private": false,
+  "homepage": "https://lm-89.github.io/Atsiskaitymas/",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
