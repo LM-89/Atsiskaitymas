@@ -1,0 +1,294 @@
+{
+  "games": [
+    {
+      "title": "Split Fiction",
+      "categoryId": 1,
+      "description": "Embrace mind-blowing moments as you’re pulled deep into the many worlds of Split Fiction, a boundary-pushing co-op adventure.",
+      "developer": "Hazelight studios",
+      "price": 49.99,
+      "cover": "https://i.imgur.com/XE1B3MQ.jpg",
+      "release": 2025,
+      "id": 1
+    },
+    {
+      "id": 2,
+      "title": "Monster Hunter Wilds",
+      "categoryId": 2,
+      "description": "The unbridled force of nature runs wild and relentless, with environments transforming drastically from one moment to the next. This is a story of monsters and humans and their struggles to live in harmony in a world of duality.",
+      "developer": "CAPCOM Co., Ltd.",
+      "price": 69.99,
+      "cover": "https://i.imgur.com/eT36Jbn.png",
+      "release": 2025
+    },
+    {
+      "id": 3,
+      "title": "Kingdom Come: Deliverance II",
+      "categoryId": 3,
+      "description": "A thrilling story-driven action RPG, with a rich open world, set in 15th century Medieval Europe. Experience the ultimate medieval adventure - through the eyes of young Henry - as you embark on a journey of epic proportions.",
+      "developer": "Warhorse Studios",
+      "price": 59.99,
+      "cover": "https://i.imgur.com/DLukvrG.jpg",
+      "release": 2025
+    },
+    {
+      "id": 4,
+      "title": "Detroit: Become Human",
+      "categoryId": 2,
+      "description": "Detroit: Become Human puts the destiny of both mankind and androids in your hands, taking you to a near future where machines have become more intelligent than humans. Every choice you make affects the outcome of the game, with one of the most intricately branching narratives ever created.",
+      "developer": "Quantic Dream",
+      "price": 11.99,
+      "cover": "https://i.imgur.com/ZdFxeMf.jpg",
+      "release": 2018
+    },
+    {
+      "id": 5,
+      "title": "Anno 1800",
+      "categoryId": 4,
+      "description": "Anno 1800™ – Lead the Industrial Revolution! Welcome to the dawn of the Industrial Age. The path you choose will define your world. Are you an innovator or an exploiter? A conqueror or a liberator? How the world remembers your name is up to you.",
+      "developer": "Ubisoft Mainz",
+      "price": 5.99,
+      "cover": "https://i.imgur.com/hbMBtYy.png",
+      "release": 2019
+    },
+    {
+      "id": 6,
+      "title": "Path of Exile 2",
+      "categoryId": 2,
+      "description": "Path of Exile 2 is a next generation Action RPG from Grinding Gear Games, featuring co-op for up to six players. Set years after the original Path of Exile, you will return to the dark world of Wraeclast and seek to end the corruption that is spreading.",
+      "developer": "Grinding Gear Games",
+      "price": 27.75,
+      "cover": "https://i.imgur.com/8tCcE4s.jpg",
+      "release": 2024
+    },
+    {
+      "title": "Cyberpunk 2077",
+      "categoryId": 3,
+      "description": "Cyberpunk 2077 is an open-world, action-adventure RPG set in the dark future of Night City — a dangerous megalopolis obsessed with power, glamor, and ceaseless body modification.",
+      "developer": "CD PROJEKT RED",
+      "price": 59.99,
+      "cover": "https://i.imgur.com/0DzDvwl.jpg",
+      "release": 2020,
+      "id": 7
+    },
+    {
+      "title": "Red Dead Redemption 2",
+      "categoryId": 1,
+      "description": "Winner of over 175 Game of the Year Awards and recipient of over 250 perfect scores, RDR2 is the epic tale of outlaw Arthur Morgan and the infamous Van der Linde gang, on the run across America at the dawn of the modern age. Also includes access to the shared living world of Red Dead Online.",
+      "developer": "Rockstar Games",
+      "price": 59.99,
+      "cover": "https://i.imgur.com/GCoSGhu.jpg",
+      "release": 2018,
+      "id": 8
+    },
+    {
+      "id": 9,
+      "title": "DOOM: The Dark Ages",
+      "categoryId": 2,
+      "description": "DOOM: The Dark Ages is the prequel to the critically acclaimed DOOM (2016) and DOOM Eternal that tells an epic cinematic story of the DOOM Slayer’s rage. Players will step into the blood-stained boots of the DOOM Slayer, in this never-before-seen dark and sinister medieval war against Hell.",
+      "developer": "id Software",
+      "price": 79.99,
+      "cover": "https://i.imgur.com/6jlAIXq.jpg",
+      "release": 2025
+    },
+    {
+      "id": 10,
+      "title": "No Man's Sky",
+      "categoryId": 2,
+      "description": "No Man's Sky is a game about exploration and survival in an infinite procedurally generated universe.",
+      "developer": "Hello Games",
+      "price": 58.99,
+      "cover": "https://i.imgur.com/NSDrvqi.jpg",
+      "release": 2016
+    },
+    {
+      "title": "Sekiro™: Shadows Die Twice - GOTY Edition",
+      "categoryId": 2,
+      "description": "Game of the Year - The Game Awards 2019 Best Action Game of 2019 - IGN Carve your own clever path to vengeance in the award winning adventure from developer FromSoftware, creators of Bloodborne and the Dark Souls series. Take Revenge. Restore Your Honor. Kill Ingeniously.",
+      "developer": " FromSoftware, Inc.",
+      "price": 29.99,
+      "cover": "https://i.imgur.com/g3MxdhJ.jpg",
+      "release": 2025,
+      "id": 11
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "name": "John",
+      "surname": "Doe",
+      "nickname": "ShadowKnight",
+      "email": "john.doe@example.com",
+      "password": "Admin123",
+      "role": "admin",
+      "bio": "Site's admin. Feel free to reach out.",
+      "avatar": "https://robohash.org/3a80f34cc109bde4662ea8bf3921e007?set=set1&bgset=&size=400x400"
+    },
+    {
+      "id": 2,
+      "name": "Emma",
+      "surname": "Smith",
+      "nickname": "PixelQueen",
+      "email": "emma.smith@example.com",
+      "password": "user",
+      "role": "user",
+      "bio": "Gamer girl, FPS and Action packed games maniac.",
+      "avatar": "https://robohash.org/9af0ecefc85361e7cf8251ca65cbc686?set=set3&bgset=&size=400x400"
+    },
+    {
+      "id": 3,
+      "name": "Lucas",
+      "surname": "Brown",
+      "nickname": "GameOver",
+      "email": "lucas.brown@example.com",
+      "password": "user",
+      "role": "user",
+      "bio": "Something",
+      "avatar": "https://robohash.org/17ba8bb04eda646b7278de2ed57649ef?set=set3&bgset=&size=400x400"
+    },
+    {
+      "id": 4,
+      "name": "Olivia",
+      "surname": "Wilson",
+      "nickname": "RPGMaster",
+      "email": "olivia.wilson@example.com",
+      "password": "user",
+      "role": "user",
+      "bio": "",
+      "avatar": ""
+    },
+    {
+      "id": 5,
+      "name": "Ethan",
+      "surname": "Miller",
+      "nickname": "SpeedDemon",
+      "email": "ethan.miller@example.com",
+      "password": "user",
+      "role": "user",
+      "bio": "",
+      "avatar": ""
+    }
+  ],
+  "categories": [
+    {
+      "title": "Adventure",
+      "description": "Games that focus on story-driven exploration and puzzle-solving.",
+      "id": 1
+    },
+    {
+      "id": 2,
+      "title": "Action",
+      "description": "Fast-paced games with real-time combat and dynamic gameplay."
+    },
+    {
+      "id": 3,
+      "title": "RPG",
+      "description": "Role-playing games with character progression and immersive storylines."
+    },
+    {
+      "id": 4,
+      "title": "Simulation",
+      "description": "Games that simulate real-world activities or experiences."
+    },
+    {
+      "title": "Racing",
+      "description": "Racing games involve characters competing in races (typically with vehicles, although games like Sonic R and Mad Dash Racing focus on foot racing). Racing games have multiple subgenres, such as kart racers (which tend to involve go-karts, power-up items and are usually themed around popular media franchises, such as Mario Kart), arcade racers (featuring a fast-paced experience and far more liberal physics, most Need for Speed games serving as an example), and sim racers (which attempt to accurately simulate the operation of real motor vehicles, such as Gran Turismo and Forza Motorsport).",
+      "id": 5
+    },
+    {
+      "title": "Strategy",
+      "description": "Strategy video games focus on gameplay requiring careful and skillful thinking and planning in order to achieve victory and the action scales from world domination to squad-based tactics.",
+      "id": 6
+    },
+    {
+      "title": "Horror",
+      "description": "Horror games are games that incorporate elements of horror fiction into their narrative, generally irrespective of the type of gameplay. It is one of the few major video game categories that are recognized by narrative elements rather than by gameplay, gameplay mode, or platform. Survival horror is a subgenre of horror games focused on action-adventure style of gameplay.",
+      "id": 7
+    },
+    {
+      "title": "FPS",
+      "description": "FPS (First-Person Shooter) games are a sub-genre of Shooting games that became immensely popular. They are basically Shooting games played from the protagonist's perspective, allowing for a higher degree of immersion and realism.",
+      "id": 8
+    }
+  ],
+  "reviews": [
+    {
+      "id": 1,
+      "gameId": 1,
+      "userId": 2,
+      "rating": 4.5,
+      "comment": "An amazing experience with unique co-op mechanics!"
+    },
+    {
+      "id": 2,
+      "gameId": 2,
+      "userId": 4,
+      "rating": 5,
+      "comment": "Monster fights are thrilling, can't wait for the full release!"
+    },
+    {
+      "id": 4,
+      "gameId": 2,
+      "userId": 3,
+      "rating": 4.7,
+      "comment": "Incredible visuals and deep combat mechanics."
+    },
+    {
+      "id": 5,
+      "gameId": 1,
+      "userId": 5,
+      "rating": 4,
+      "comment": "Solid game, would love more content updates!"
+    },
+    {
+      "gameId": 1,
+      "userId": 3,
+      "rating": 4,
+      "comment": "Nothing special, fun in co-op.",
+      "id": 6
+    },
+    {
+      "gameId": 3,
+      "userId": 3,
+      "rating": 5,
+      "comment": "One of the best games I ever played!",
+      "id": 7
+    },
+    {
+      "gameId": 6,
+      "userId": 1,
+      "rating": 5,
+      "comment": "2k hours on the first POE, many more to go on this! Recc!!!",
+      "id": 8
+    },
+    {
+      "gameId": 2,
+      "userId": 1,
+      "rating": 5,
+      "comment": "Wild game, lots of action, good graphics and engaging content will keep you coming back for more! big ups!!",
+      "id": 11
+    },
+    {
+      "gameId": 3,
+      "userId": 1,
+      "rating": 5,
+      "comment": "Masterpiece and a beacon in the dark ages of gaming!!",
+      "id": 12
+    },
+    {
+      "rating": 2.6,
+      "comment": "Great concept but some levels feel a bit repetitive.",
+      "user": {
+        "id": 1,
+        "name": "John",
+        "surname": "Doe",
+        "nickname": "ShadowKnight",
+        "email": "john.doe@example.com",
+        "password": "Admin123",
+        "role": "admin",
+        "bio": "Site's admin. Feel free to reach out.",
+        "avatar": "https://robohash.org/3a80f34cc109bde4662ea8bf3921e007?set=set1&bgset=&size=400x400"
+      },
+      "id": 13
+    }
+  ]
+}
