@@ -24,8 +24,8 @@
 
 .games-ul-container {
     display: grid;
-    grid-template-columns: repeat(5, 1fr); 
-    gap: 200px; 
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 100px; 
     padding: 25px; 
     list-style-type: none;
     overflow-y: scroll;
@@ -46,6 +46,7 @@
     align-items: center;
     text-align: center;
     transition: transform 0.3s;
+    box-shadow: 1px 1px 8px 1px rgb(99, 100, 102);
 }
 
 .games-list-item:hover {
@@ -62,7 +63,8 @@
 .game-cover-container {
     margin-top: 15px;
     border-radius: 15px;
-    width: 45%;
+    min-width: 45%;
+    width: 60%;
     display: flex;
     justify-content: center;
     overflow: hidden;
