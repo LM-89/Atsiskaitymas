@@ -71,12 +71,6 @@ form {
     scale: 1.002;
 }
 
-.category-item button:hover,
-.gameItem button:hover,
-.userItem button:hover {
-    background-color: #357abd;
-}
-
 .users-games {
     display: flex;
     justify-content: center;
