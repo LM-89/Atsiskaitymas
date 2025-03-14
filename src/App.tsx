@@ -12,9 +12,12 @@ import { JSX } from "react";
 
 const ProtectedRoute = ({ children, role }: { children: JSX.Element; role?: "admin" | "user" }) => {
   const { state } = useData();
-  const { user } = state.auth;
+  const { user, token } = state.auth;
+
+  if (token && !user) return <div>Loading...</div>;
+
   if (!user) return <Navigate to="/login" />;
-  if (role && user.role !== role) return <Navigate to="/" />;
+  if (role && user.role !== role) return <Navigate to="/games" />;
   return children;
 };
 
