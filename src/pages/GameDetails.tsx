@@ -120,30 +120,41 @@ const GameDetails = () => {
 
   return (
     <div className={styles["game-details-container"]}>
-      <div className={styles["game-cover-container"]}>
-        <img className={styles["game-cover"]} src={game.cover} alt={game.title} />
-      </div>
-      <div className={styles["game-details"]}>
-        <h2>{game.title}</h2>
-        <p>
-          <strong>Category:</strong>{" "}
-          {categories.find((cat: Category) => cat.id === game.categoryId)?.title || "Unknown"}
-        </p>
-        <p>
-          <strong>Description:</strong> {game.description}
-        </p>
-        <p>
-          <strong>Developer:</strong> {game.developer}
-        </p>
-        <p>
-          <strong>Release Date:</strong> {game.release}
-        </p>
-        <p>
-          <strong>Average Rating:</strong> {averageRating} ⭐
-        </p>
+      <div className={styles["game-details-top"]}>
+        <div className={styles["game-cover-container"]}>
+          <img className={styles["game-cover"]} src={game.cover} alt={game.title} />
+        </div>
+        <div className={styles["game-details"]}>
+          <h2>{game.title}</h2>
+          <p>
+            <strong>Category:</strong>{" "}
+            {categories.find((cat: Category) => cat.id === game.categoryId)?.title || "Unknown"}
+          </p>
+          <p>
+            <strong>Description:</strong> {game.description}
+          </p>
+          <p>
+            <strong>Developer:</strong> {game.developer}
+          </p>
+          <p>
+            <strong>Release Date:</strong> {game.release}
+          </p>
+          <p>
+            <strong>Average Rating:</strong> {averageRating} ⭐
+          </p>
+        </div>
+
+
+        <div className={styles["game-trailer-container"]}>
+          <iframe
+            src={game.iframe}
+            allowFullScreen
+            title={game.title}
+            className={styles["game-iframe"]}
+          ></iframe>
+        </div>
       </div>
 
-      <div className={styles["game-trailer-container"]}></div>
 
       <div className={styles["reviews-section"]}>
         <h2>Reviews:</h2>

@@ -43,7 +43,7 @@
 }
 
 .games-list-item:hover {
-    transform: scale(1.03);
+    scale: 1.01;
     background-color: #525252;
     box-shadow: 1px 1px 8px 1px rgb(121, 194, 253);
     transition: 0.1s;

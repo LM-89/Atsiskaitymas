@@ -8,17 +8,19 @@
       "price": 49.99,
       "cover": "https://i.imgur.com/XE1B3MQ.jpg",
       "release": 2025,
-      "id": 1
+      "id": 1,
+      "iframe": "https://www.youtube.com/embed/fcwngWPXQtg"
     },
     {
-      "id": 2,
       "title": "Monster Hunter Wilds",
       "categoryId": 2,
       "description": "The unbridled force of nature runs wild and relentless, with environments transforming drastically from one moment to the next. This is a story of monsters and humans and their struggles to live in harmony in a world of duality.",
       "developer": "CAPCOM Co., Ltd.",
       "price": 69.99,
       "cover": "https://i.imgur.com/eT36Jbn.png",
-      "release": 2025
+      "release": 2025,
+      "iframe": "https://www.youtube.com/embed/qGdiLc2BJNI",
+      "id": 2
     },
     {
       "title": "Kingdom Come: Deliverance II",
@@ -28,6 +30,7 @@
       "price": 59.99,
       "cover": "https://i.imgur.com/DLukvrG.jpg",
       "release": 2025,
+      "iframe": "https://www.youtube.com/embed/7ynJN-HejlY",
       "id": 3
     },
     {
@@ -38,6 +41,7 @@
       "price": 11.99,
       "cover": "https://i.imgur.com/ZdFxeMf.jpg",
       "release": 2018,
+      "iframe": "https://www.youtube.com/embed/MkmVsCj1xEQ",
       "id": 4
     },
     {
@@ -48,17 +52,19 @@
       "price": 5.99,
       "cover": "https://i.imgur.com/hbMBtYy.png",
       "release": 2019,
+      "iframe": "https://www.youtube.com/embed/UowsqoV0egc",
       "id": 5
     },
     {
-      "id": 6,
       "title": "Path of Exile 2",
       "categoryId": 2,
       "description": "Path of Exile 2 is a next generation Action RPG from Grinding Gear Games, featuring co-op for up to six players. Set years after the original Path of Exile, you will return to the dark world of Wraeclast and seek to end the corruption that is spreading.",
       "developer": "Grinding Gear Games",
       "price": 27.75,
       "cover": "https://i.imgur.com/8tCcE4s.jpg",
-      "release": 2024
+      "release": 2024,
+      "iframe": "https://www.youtube.com/embed/QpbGfihd0_Q",
+      "id": 6
     },
     {
       "title": "Cyberpunk 2077",
@@ -68,6 +74,7 @@
       "price": 59.99,
       "cover": "https://i.imgur.com/0DzDvwl.jpg",
       "release": 2020,
+      "iframe": "https://www.youtube.com/embed/nLhWWoAaZ0Q",
       "id": 7
     },
     {
@@ -78,27 +85,30 @@
       "price": 59.99,
       "cover": "https://i.imgur.com/GCoSGhu.jpg",
       "release": 2018,
+      "iframe": "https://www.youtube.com/embed/gmA6MrX81z4",
       "id": 8
     },
     {
-      "id": 9,
       "title": "DOOM: The Dark Ages",
       "categoryId": 2,
       "description": "DOOM: The Dark Ages is the prequel to the critically acclaimed DOOM (2016) and DOOM Eternal that tells an epic cinematic story of the DOOM Slayer’s rage. Players will step into the blood-stained boots of the DOOM Slayer, in this never-before-seen dark and sinister medieval war against Hell.",
       "developer": "id Software",
       "price": 79.99,
       "cover": "https://i.imgur.com/6jlAIXq.jpg",
-      "release": 2025
+      "release": 2025,
+      "iframe": "https://www.youtube.com/embed/4tk8lkmYGWQ",
+      "id": 9
     },
     {
-      "id": 10,
       "title": "No Man's Sky",
       "categoryId": 2,
       "description": "No Man's Sky is a game about exploration and survival in an infinite procedurally generated universe.",
       "developer": "Hello Games",
       "price": 58.99,
       "cover": "https://i.imgur.com/NSDrvqi.jpg",
-      "release": 2016
+      "release": 2016,
+      "iframe": "https://www.youtube.com/embed/SsX2hK6yBPU",
+      "id": 10
     },
     {
       "title": "Sekiro™: Shadows Die Twice - GOTY Edition",
@@ -108,6 +118,7 @@
       "price": 29.99,
       "cover": "https://i.imgur.com/g3MxdhJ.jpg",
       "release": 2025,
+      "iframe": "https://www.youtube.com/embed/4OgoTZXPACo",
       "id": 11
     },
     {
@@ -118,6 +129,7 @@
       "price": 42.96,
       "cover": "https://i.imgur.com/59S7LGb.png",
       "release": 2018,
+      "iframe": "https://www.youtube.com/embed/LGcECozNXEw",
       "id": 12
     }
   ],

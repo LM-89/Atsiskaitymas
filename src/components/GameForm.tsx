@@ -25,6 +25,7 @@ const GameForm: React.FC<GameFormProps> = ({
     price: undefined,
     cover: "",
     release: undefined,
+    iframe: "",
   });
 
   useEffect(() => {
@@ -37,6 +38,7 @@ const GameForm: React.FC<GameFormProps> = ({
         price: initialData.price,
         cover: initialData.cover || "",
         release: initialData.release,
+        iframe: initialData.iframe || "",
       });
     } else {
       setGameData({
@@ -47,6 +49,7 @@ const GameForm: React.FC<GameFormProps> = ({
         price: undefined,
         cover: "",
         release: undefined,
+        iframe: "",
       });
     }
   }, [editingGameId, initialData]);
@@ -61,8 +64,8 @@ const GameForm: React.FC<GameFormProps> = ({
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
     onSubmit(gameData);
     setGameData({
       title: "",
@@ -72,6 +75,7 @@ const GameForm: React.FC<GameFormProps> = ({
       price: undefined,
       cover: "",
       release: undefined,
+      iframe: "",
     });
   };
 
@@ -141,6 +145,15 @@ const GameForm: React.FC<GameFormProps> = ({
           placeholder="Cover URL"
           value={gameData.cover}
           onChange={(event) => handleChange("cover", event.target.value)}
+          required
+        />
+      </div>
+      <div className={styles["form-control"]}>
+        <input
+          className={styles["game-input"]}
+          placeholder="iFrame URL"
+          value={gameData.iframe}
+          onChange={(event) => handleChange("iframe", event.target.value)}
           required
         />
       </div>

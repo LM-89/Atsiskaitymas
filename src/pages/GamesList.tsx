@@ -61,7 +61,7 @@ const GamesList = () => {
   const sortedCategories = useMemo(() => [...categories].sort((a, b) => a.title.localeCompare(b.title)), [categories]);
   const sortedGames = useMemo(() => [...filteredGames].sort((a, b) => a.title.localeCompare(b.title)), [filteredGames]);
   const sortedUsers = useMemo(() => [...users].sort((a, b) => a.nickname.localeCompare(b.nickname)), [users]);
-  
+
 
   if (localLoading) {
     return (
@@ -99,7 +99,7 @@ const GamesList = () => {
               <li key={game.id} className={styles["games-list-item"]}>
                 <Link to={`/game/${game.id}`} className={styles["game-link"]}>
                   <div className={styles["game-cover-container"]}>
-                    <img src={game.cover} alt={game.title} width={100} className={styles["game-cover-img"]} />
+                    <img src={game.cover} alt={game.title} className={styles["game-cover-img"]} />
                   </div>
                   <h3 className={styles["game-title"]}>{game.title}</h3>
                   <p className={styles["average-rating"]}>Rating: {getAverageRating(game.id)}</p>

@@ -20,6 +20,7 @@ export interface Game {
   developer?: string;
   price?: number;
   release?: number;
+  iframe: string;
 }
 
 export interface Review {
