@@ -19,9 +19,8 @@ const UserProfile = () => {
     comment: "",
   });
   const [userReviews, setUserReviews] = useState<Review[]>([]);
-  
-  const { updateReviewHandler, deleteReviewHandler } = useReviewHandlers();
 
+  const { updateReviewHandler, deleteReviewHandler } = useReviewHandlers();
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -37,15 +36,13 @@ const UserProfile = () => {
     fetchReviews();
   }, [user]);
 
-
   const getGameTitle = (gameId: number) => {
     const game: Game | undefined = games.find((g) => g.id === gameId);
     return game ? game.title : `Game ${gameId}`;
   };
 
-
   const handleUpdateReview = async (reviewId: number) => {
-    const reviewToUpdate = userReviews.find(r => r.id === reviewId);
+    const reviewToUpdate = userReviews.find((r) => r.id === reviewId);
     if (reviewToUpdate) {
       await updateReviewHandler(reviewToUpdate.gameId, reviewId, {
         rating: editReviewData.rating,
@@ -62,21 +59,23 @@ const UserProfile = () => {
     }
   };
 
-
   const handleDeleteReview = async (reviewId: number) => {
-    const reviewToDelete = userReviews.find(r => r.id === reviewId);
+    const reviewToDelete = userReviews.find((r) => r.id === reviewId);
     if (reviewToDelete) {
       await deleteReviewHandler(reviewToDelete.gameId, reviewId);
       setUserReviews(userReviews.filter((review) => review.id !== reviewId));
     }
   };
 
-
   const handleDeleteAccount = async () => {
     if (!user || !token) return;
-    const firstConfirm = window.confirm("Are you sure you want to delete your account? This action cannot be undone.");
+    const firstConfirm = window.confirm(
+      "Are you sure you want to delete your account? This action cannot be undone."
+    );
     if (!firstConfirm) return;
-    const secondConfirm = window.confirm("This is your last chance! Are you absolutely sure you want to delete your account?");
+    const secondConfirm = window.confirm(
+      "This is your last chance! Are you absolutely sure you want to delete your account?"
+    );
     if (!secondConfirm) return;
     try {
       await axios.delete(`${API_URL}/users/${user.id}`, {
@@ -90,7 +89,6 @@ const UserProfile = () => {
     }
   };
 
-
   return (
     <div className={styles["user-profile-container"]}>
       {user && (
@@ -98,11 +96,7 @@ const UserProfile = () => {
           <ProfileForm user={user} />
           <div className={styles["avatar-section"]}>
             {user.avatar ? (
-              <img
-                className={styles["profile-avatar"]}
-                src={user.avatar}
-                alt="Avatar"
-              />
+              <img className={styles["profile-avatar"]} src={user.avatar} alt="Avatar" />
             ) : (
               <div className={styles["avatar-placeholder"]}>No avatar available</div>
             )}
@@ -114,6 +108,9 @@ const UserProfile = () => {
             </div>
             <div>
               <strong>Role:</strong> {user.role || "No role available"}
+            </div>
+            <div>
+              <strong>Bio:</strong> {user.bio || "No bio available"}
             </div>
             <button className={styles["delete-account-btn"]} onClick={handleDeleteAccount}>
               Delete My Account
@@ -165,10 +162,7 @@ const UserProfile = () => {
                           />
                         </div>
                         <div className={styles["review-actions"]}>
-                          <button
-                            className={styles["review-button"]}
-                            onClick={() => handleUpdateReview(review.id)}
-                          >
+                          <button className={styles["review-button"]} onClick={() => handleUpdateReview(review.id)}>
                             Save
                           </button>
                           <button

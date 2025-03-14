@@ -23,6 +23,17 @@ export const getUsers = async (): Promise<User[]> => {
   return response.data;
 };
 
+export const updateUser = async (
+  userId: number,
+  userData: Partial<User>,
+  token: string
+): Promise<User> => {
+  const response = await api.patch(`/users/${userId}`, userData, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data;
+};
+
 export const deleteUser = async (userId: number, token: string) => {
   await api.delete(`/users/${userId}`, {
     headers: { Authorization: `Bearer ${token}` },
@@ -111,8 +122,12 @@ export const addReview = async (review: NewReview, token: string) => {
   return response.data;
 };
 
-export const updateReview = async (reviewId: number, reviewData: Partial<Review>, token: string) => {
-  const response = await api.put(`/reviews/${reviewId}`, reviewData, {
+export const updateReview = async (
+  reviewId: number,
+  reviewData: Partial<Review>,
+  token: string
+) => {
+  const response = await api.patch(`/reviews/${reviewId}`, reviewData, {
     headers: { Authorization: `Bearer ${token}` },
   });
   return response.data;

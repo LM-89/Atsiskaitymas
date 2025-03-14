@@ -7,4 +7,29 @@
     margin: 40px;
     margin-left: auto;
     margin-right: auto;
+    display: grid;
+    grid-template-columns: 1fr 2fr 3fr;
+    grid-template-rows: 1fr 1fr;
 }
+
+.game-cover-container {
+    grid-column: 1/2;
+}
+
+.game-details {
+    grid-column: 2/3;
+}
+
+.game-trailer-container {
+    grid-column: 3/3;
+}
+
+.reviews-section {
+    grid-column: 1/6;
+}
+
+.add-review {
+    grid-column: 1/6;
+}
+
+

@@ -23,11 +23,9 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ user }) => {
   });
   const [message, setMessage] = useState("");
 
-
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passMessage, setPassMessage] = useState("");
-
 
   useEffect(() => {
     setProfile({
@@ -39,7 +37,6 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ user }) => {
       email: user.email || ""
     });
   }, [user]);
-
 
   const handleUpdate = async () => {
     try {
@@ -55,7 +52,6 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ user }) => {
       console.error("Profile update failed:", error);
     }
   };
-
 
   const handlePasswordChange = async () => {
     if (!newPassword || newPassword !== confirmPassword) return;
@@ -73,7 +69,6 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ user }) => {
       console.error("Password update failed:", error);
     }
   };
-
 
   return (
     <div className={styles["profile-form"]}>

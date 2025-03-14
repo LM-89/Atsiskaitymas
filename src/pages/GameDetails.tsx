@@ -1,7 +1,8 @@
+// src/components/GameDetails.tsx
 import { useParams } from "react-router-dom";
 import { useEffect, useState, useMemo } from "react";
 import { useData } from "../context/DataContext";
-import { getGames, getGameReviews } from "../api/api";
+import { getGames, getGameReviews, getUsers } from "../api/api";
 import { useReviewHandlers } from "../context/useReviewHandlers";
 import styles from "./GameDetails.module.css";
 import { Review, Category, NewReview } from "../types";
@@ -9,23 +10,38 @@ import { Review, Category, NewReview } from "../types";
 const GameDetails = () => {
   const { gameId } = useParams<{ gameId: string }>();
   const { state, dispatch } = useData();
-  const { games, categories, reviews } = state;
+  const { games, categories, reviews, users } = state;
   const { addReviewHandler, updateReviewHandler, deleteReviewHandler } = useReviewHandlers();
-
 
   const game = games.find((g) => g.id === Number(gameId)) || null;
 
- 
   const [newReviewData, setNewReviewData] = useState({ rating: 3.0, comment: "" });
   const [editingReviewId, setEditingReviewId] = useState<number | null>(null);
   const [editReviewData, setEditReviewData] = useState({ rating: 3.0, comment: "" });
   const [loading, setLoading] = useState(false);
   const [averageRating, setAverageRating] = useState("Not Rated Yet");
 
-
   const gameReviews = useMemo(() => reviews[Number(gameId)] || [], [reviews, gameId]);
 
+  // Enrich reviews with user data (from state.users) if not present in the review object.
+  const enrichedReviews = useMemo(() => {
+    return gameReviews.map((review) => {
+      const userData = users.find((u) => u.id === review.userId);
+      return { ...review, user: userData || review.user };
+    });
+  }, [gameReviews, users]);
 
+  // Helper to re-fetch reviews from the API.
+  const refreshReviews = async () => {
+    try {
+      const reviewsData = await getGameReviews(Number(gameId));
+      dispatch({ type: "SET_REVIEWS", payload: { gameId: Number(gameId), reviews: reviewsData } });
+    } catch (err) {
+      console.error("Error fetching reviews:", err);
+    }
+  };
+
+  // Load games and reviews on mount if not already loaded.
   useEffect(() => {
     const loadData = async () => {
       if (!game) {
@@ -38,24 +54,28 @@ const GameDetails = () => {
         }
         setLoading(false);
       }
-      if (!reviews[Number(gameId)]) {
-        setLoading(true);
-        try {
-          const reviewsData = await getGameReviews(Number(gameId));
-          dispatch({
-            type: "SET_REVIEWS",
-            payload: { gameId: Number(gameId), reviews: reviewsData },
-          });
-        } catch (err) {
-          console.error("Error fetching reviews", err);
-        }
-        setLoading(false);
+      setLoading(true);
+      try {
+        const reviewsData = await getGameReviews(Number(gameId));
+        dispatch({ type: "SET_REVIEWS", payload: { gameId: Number(gameId), reviews: reviewsData } });
+      } catch (err) {
+        console.error("Error fetching reviews", err);
       }
+      setLoading(false);
     };
     loadData();
-  }, [game, gameId, dispatch, reviews]);
+  }, [game, gameId, dispatch]);
 
+  // Fetch all users (if not yet in state) so that review avatars and nicknames can be displayed.
+  useEffect(() => {
+    if (users.length === 0) {
+      getUsers()
+        .then((usersData) => dispatch({ type: "SET_USERS", payload: usersData }))
+        .catch((err) => console.error("Error fetching users", err));
+    }
+  }, [users, dispatch]);
 
+  // Calculate average rating.
   useEffect(() => {
     if (gameReviews.length > 0) {
       const total = gameReviews.reduce((sum, review) => sum + review.rating, 0);
@@ -65,7 +85,6 @@ const GameDetails = () => {
     }
   }, [gameReviews]);
 
-
   const handleAddReview = async () => {
     const reviewPayload: NewReview = {
       gameId: Number(gameId),
@@ -74,27 +93,27 @@ const GameDetails = () => {
       comment: newReviewData.comment,
     };
     await addReviewHandler(reviewPayload);
+    await refreshReviews();
     setNewReviewData({ rating: 3.0, comment: "" });
   };
-
 
   const handleEditClick = (review: Review) => {
     setEditingReviewId(review.id);
     setEditReviewData({ rating: review.rating, comment: review.comment });
   };
 
-
   const handleSaveEdit = async (reviewId: number) => {
     await updateReviewHandler(Number(gameId), reviewId, {
       rating: editReviewData.rating,
       comment: editReviewData.comment,
     });
+    await refreshReviews();
     setEditingReviewId(null);
   };
 
-
   const handleDeleteReview = async (reviewId: number) => {
     await deleteReviewHandler(Number(gameId), reviewId);
+    await refreshReviews();
   };
 
   if (loading) {
@@ -104,10 +123,12 @@ const GameDetails = () => {
   if (!game) {
     return <p>Game not found</p>;
   }
-  
 
   return (
     <div className={styles["game-details-container"]}>
+      <div className={styles["game-cover-container"]}>
+        <img className={styles["game-cover"]} src={game.cover} alt={game.title} />
+      </div>
       <div className={styles["game-details"]}>
         <h2>{game.title}</h2>
         <p>
@@ -123,15 +144,17 @@ const GameDetails = () => {
         <p>
           <strong>Release Date:</strong> {game.release}
         </p>
-        <img className={styles["game-cover"]} src={game.cover} alt={game.title} />
         <p>
           <strong>Average Rating:</strong> {averageRating} ⭐
         </p>
       </div>
+
+      <div className={styles["game-trailer-container"]}></div>
+
       <div className={styles["reviews-section"]}>
         <h2>Reviews:</h2>
-        {gameReviews.length > 0 ? (
-          gameReviews.map((review) => (
+        {enrichedReviews.length > 0 ? (
+          enrichedReviews.map((review) => (
             <div key={review.id} className={styles["review-item"]}>
               <div className={styles["review-user-info"]}>
                 {review.user?.avatar && (
@@ -141,7 +164,7 @@ const GameDetails = () => {
                     alt={review.user.nickname}
                   />
                 )}
-                <strong>{review.user?.nickname}</strong>
+                <strong>{review.user?.nickname || "Anonymous"}</strong>
               </div>
               {editingReviewId === review.id ? (
                 <>

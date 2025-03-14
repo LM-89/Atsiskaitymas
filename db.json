@@ -130,7 +130,7 @@
       "email": "john.doe@example.com",
       "password": "admin",
       "role": "admin",
-      "bio": "Site's admin. Feel free to reach out.",
+      "bio": "Site's admin. Feel free to reach out!",
       "avatar": "https://robohash.org/5db286086704d6f827eca94510b17d47?set=set3&bgset=&size=400x400"
     },
     {
@@ -274,15 +274,11 @@
       "id": 7
     },
     {
-      "gameId": 2,
-      "userId": 1,
       "rating": 5,
       "comment": "Wild game, lots of action, good graphics and engaging content will keep you coming back for more! big ups!!",
       "id": 11
     },
     {
-      "gameId": 3,
-      "userId": 1,
       "rating": 5,
       "comment": "Masterpiece and a beacon in the dark ages of gaming!!",
       "id": 12
@@ -314,6 +310,18 @@
       "rating": 3.8,
       "comment": "Great concept but some levels feel a bit repetitive.",
       "id": 19
+    },
+    {
+      "rating": 5,
+      "comment": "Nice one",
+      "id": 20
+    },
+    {
+      "gameId": 9,
+      "userId": 1,
+      "rating": 5,
+      "comment": "One of the best.",
+      "id": 21
     }
   ]
 }
