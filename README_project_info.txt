@@ -11,5 +11,3 @@ user
 
 Arba galima susikurti anketą
 
-
-Logiką bandžiau iškelti kuo daugiau kitur, responsive nepradėtas, čia naujas projektas, o ne tęsiamas krepšelio.

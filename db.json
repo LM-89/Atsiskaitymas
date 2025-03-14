@@ -8,8 +8,8 @@
       "price": 49.99,
       "cover": "https://i.imgur.com/XE1B3MQ.jpg",
       "release": 2025,
-      "id": 1,
-      "iframe": "https://www.youtube.com/embed/fcwngWPXQtg"
+      "iframe": "https://www.youtube.com/embed/fcwngWPXQtg",
+      "id": 1
     },
     {
       "title": "Monster Hunter Wilds",
@@ -227,11 +227,6 @@
       "id": 7
     },
     {
-      "title": "FPS",
-      "description": "FPS (First-Person Shooter) games are a sub-genre of Shooting games that became immensely popular. They are basically Shooting games played from the protagonist's perspective, allowing for a higher degree of immersion and realism.",
-      "id": 8
-    },
-    {
       "title": "Stealth Games",
       "description": "These games tend to emphasize sneaking around and avoiding enemy notice over direct conflict, for example, the Metal Gear series, and the Sly Cooper series. In a Stealth game, players are usually still able to engage in loud, conspicuous combat, but are often punished for it.",
       "id": 9
@@ -240,6 +235,11 @@
       "title": "Survival",
       "description": "Survival games are a subgenre of action games which are often set in hostile, intense, open-world environments. Players generally start with minimal equipment and are required to survive as long as possible by finding the resources necessary to manage hunger, thirst, disease and/or mental state.",
       "id": 10
+    },
+    {
+      "title": "FPS",
+      "description": "FPS (First-Person Shooter) games are a sub-genre of Shooting games that became immensely popular. They are basically Shooting games played from the protagonist's perspective, allowing for a higher degree of immersion and realism.",
+      "id": 11
     }
   ],
   "reviews": [

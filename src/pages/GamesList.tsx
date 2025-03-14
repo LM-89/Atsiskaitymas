@@ -96,18 +96,18 @@ const GamesList = () => {
         ) : (
           <ul className={styles["games-ul-container"]}>
             {sortedGames.map((game: Game) => (
-              <li key={game.id} className={styles["games-list-item"]}>
                 <Link to={`/game/${game.id}`} className={styles["game-link"]}>
-                  <div className={styles["game-cover-container"]}>
-                    <img src={game.cover} alt={game.title} className={styles["game-cover-img"]} />
-                  </div>
-                  <h3 className={styles["game-title"]}>{game.title}</h3>
-                  <p className={styles["average-rating"]}>Rating: {getAverageRating(game.id)}</p>
-                  <p>Category: {getCategoryName(game.categoryId)}</p>
-                  {game.release && <p className={styles["release-date"]}>Release Date: {game.release}</p>}
-                  {game.price && <p className={styles["game-price"]}>Price: {game.price} €</p>}
+                  <li key={game.id} className={styles["games-list-item"]}>
+                      <div className={styles["game-cover-container"]}>
+                        <img src={game.cover} alt={game.title} className={styles["game-cover-img"]} />
+                      </div>
+                      <h3 className={styles["game-title"]}>{game.title}</h3>
+                      <p className={styles["average-rating"]}>Rating: {getAverageRating(game.id)}</p>
+                      <p>Category: {getCategoryName(game.categoryId)}</p>
+                      {game.release && <p className={styles["release-date"]}>Release Date: {game.release}</p>}
+                      {game.price && <p className={styles["game-price"]}>Price: {game.price} €</p>}
+                  </li>
                 </Link>
-              </li>
             ))}
           </ul>
         )}
