@@ -158,3 +158,22 @@
     gap: 15px;
 }
 
+.review-textarea:focus {
+    border-color: #888;
+    outline: none;
+}
+
+.review-textarea::placeholder {
+    color: #999999;
+}
+
+
+.review-textarea:hover::placeholder {
+    color: #cecece;
+}
+
+
+.review-textarea:focus::placeholder {
+    color: #ffffff;
+}
+
