@@ -1,11 +1,10 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { API_URL, getGames, getGameReviews } from "../api/api";
 import { useData } from "../context/DataContext";
 import { Game, User, Category, Review } from "../types";
 import styles from "./GamesList.module.css";
-
 
 const GamesList = () => {
   const { state, dispatch } = useData();
@@ -14,7 +13,11 @@ const GamesList = () => {
   const [selectedCategory, setSelectedCategory] = useState<number | "all">("all");
   const [localLoading, setLocalLoading] = useState(true);
 
+  
+  const containerRef = useRef<HTMLDivElement>(null);
+  const trackerRef = useRef<HTMLDivElement>(null);
 
+  
   useEffect(() => {
     const loadData = async () => {
       try {
@@ -41,11 +44,22 @@ const GamesList = () => {
     loadData();
   }, [dispatch]);
 
+  
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const container = containerRef.current;
+    const tracker = trackerRef.current;
+    if (!container || !tracker) return;
+    const rect = container.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    tracker.style.left = `${x}px`;
+    tracker.style.top = `${y}px`;
+  };
+
 
   const getCategoryName = (categoryId?: number) => {
     return categories.find((cat: Category) => cat.id === categoryId)?.title || "Unknown";
   };
-
 
   const getAverageRating = (gameId: number) => {
     const gameReviews: Review[] = reviews[gameId] || [];
@@ -54,14 +68,21 @@ const GamesList = () => {
     return average.toFixed(1);
   };
 
-
   const filteredGames =
     selectedCategory === "all" ? games : games.filter((game: Game) => game.categoryId === selectedCategory);
 
-  const sortedCategories = useMemo(() => [...categories].sort((a, b) => a.title.localeCompare(b.title)), [categories]);
-  const sortedGames = useMemo(() => [...filteredGames].sort((a, b) => a.title.localeCompare(b.title)), [filteredGames]);
-  const sortedUsers = useMemo(() => [...users].sort((a, b) => a.nickname.localeCompare(b.nickname)), [users]);
-
+  const sortedCategories = useMemo(
+    () => [...categories].sort((a, b) => a.title.localeCompare(b.title)),
+    [categories]
+  );
+  const sortedGames = useMemo(
+    () => [...filteredGames].sort((a, b) => a.title.localeCompare(b.title)),
+    [filteredGames]
+  );
+  const sortedUsers = useMemo(
+    () => [...users].sort((a, b) => a.nickname.localeCompare(b.nickname)),
+    [users]
+  );
 
   if (localLoading) {
     return (
@@ -73,7 +94,15 @@ const GamesList = () => {
 
   return (
     <div className={styles["main-content-container"]}>
-      <div className={styles["main-games-container"]}>
+      <div
+        className={styles["main-games-container"]}
+        ref={containerRef}
+        style={{ position: "relative" }}
+        onMouseMove={handleMouseMove}
+      >
+        
+        <div className={styles["mouse-tracker"]} ref={trackerRef}></div>
+
         <h2 className={styles["section-title"]}>Games:</h2>
         <label htmlFor="categoryFilter">Filter by Category: </label>
         <select
@@ -96,18 +125,18 @@ const GamesList = () => {
         ) : (
           <ul className={styles["games-ul-container"]}>
             {sortedGames.map((game: Game) => (
-                <Link to={`/game/${game.id}`} className={styles["game-link"]}>
-                  <li key={game.id} className={styles["games-list-item"]}>
-                      <div className={styles["game-cover-container"]}>
-                        <img src={game.cover} alt={game.title} className={styles["game-cover-img"]} />
-                      </div>
-                      <h3 className={styles["game-title"]}>{game.title}</h3>
-                      <p className={styles["average-rating"]}>Rating: {getAverageRating(game.id)}</p>
-                      <p>Category: {getCategoryName(game.categoryId)}</p>
-                      {game.release && <p className={styles["release-date"]}>Release Date: {game.release}</p>}
-                      {game.price && <p className={styles["game-price"]}>Price: {game.price} €</p>}
-                  </li>
-                </Link>
+              <Link to={`/game/${game.id}`} className={styles["game-link"]} key={game.id}>
+                <li className={styles["games-list-item"]}>
+                  <div className={styles["game-cover-container"]}>
+                    <img src={game.cover} alt={game.title} className={styles["game-cover-img"]} />
+                  </div>
+                  <h3 className={styles["game-title"]}>{game.title}</h3>
+                  <p className={styles["average-rating"]}>Rating: {getAverageRating(game.id)}</p>
+                  <p>Category: {getCategoryName(game.categoryId)}</p>
+                  {game.release && <p className={styles["release-date"]}>Release Date: {game.release}</p>}
+                  {game.price && <p className={styles["game-price"]}>Price: {game.price} €</p>}
+                </li>
+              </Link>
             ))}
           </ul>
         )}

@@ -208,3 +208,58 @@
 }
 
 
+.mouse-tracker {
+position: absolute;
+pointer-events: none; 
+width: 12px;
+height: 12px;
+background-color: rgb(121, 194, 253, 0.7);
+border-radius: 50%;
+animation: pulse 3s infinite;
+top: 0;
+left: 0;
+transform: translate(-50%, -50%);
+opacity: 0;                
+transition: opacity 0.3s ease; 
+}
+
+.main-games-container:hover .mouse-tracker {
+opacity: 1;
+}
+
+.main-games-container {
+cursor: none;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 
+        0 0 5px rgb(121, 194, 253),         
+        -5px 5px 25px 7px rgba(247, 251, 255, 0.075); 
+    }
+    20% {
+        box-shadow: 
+        0 0 10px rgb(121, 194, 253),
+        5px -5px 30px 10px rgba(144, 229, 255, 0.075);
+    }
+    40% {
+        box-shadow: 
+        0 0 15px rgb(121, 194, 253),
+        -3px -3px 28px 12px rgba(150, 152, 255, 0.075);
+    }
+    60% {
+        box-shadow: 
+        0 0 10px rgb(121, 194, 253),
+        4px 4px 32px 17px rgba(216, 193, 255, 0.075);
+    }
+    80% {
+        box-shadow: 
+        0 0 7px rgb(121, 194, 253),
+        -2px 2px 26px 12px rgba(176, 220, 255, 0.075);
+    }
+    100% {
+        box-shadow: 
+        0 0 5px rgb(121, 194, 253),
+        0 0 25px 7px rgba(114, 175, 184, 0.075);
+}
+}
