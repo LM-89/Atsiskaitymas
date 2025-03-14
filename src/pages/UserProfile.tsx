@@ -42,7 +42,7 @@ const UserProfile = () => {
   };
 
   const handleUpdateReview = async (reviewId: number) => {
-    const reviewToUpdate = userReviews.find((r) => r.id === reviewId);
+    const reviewToUpdate = userReviews.find((review) => review.id === reviewId);
     if (reviewToUpdate) {
       await updateReviewHandler(reviewToUpdate.gameId, reviewId, {
         rating: editReviewData.rating,

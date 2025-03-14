@@ -37,7 +37,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
                 id="name"
                 type="text"
                 value={formData.name}
-                onChange={(e) => onChange("name", e.target.value)}
+                onChange={(event) => onChange("name", event.target.value)}
                 required
                 className={styles["input"]}
               />
@@ -50,7 +50,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
                 id="surname"
                 type="text"
                 value={formData.surname}
-                onChange={(e) => onChange("surname", e.target.value)}
+                onChange={(event) => onChange("surname", event.target.value)}
                 required
                 className={styles["input"]}
               />
@@ -65,7 +65,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
             id="email"
             type="email"
             value={formData.email}
-            onChange={(e) => onChange("email", e.target.value)}
+            onChange={(event) => onChange("email", event.target.value)}
             required
             className={styles["input"]}
           />
@@ -78,7 +78,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
             id="password"
             type="password"
             value={formData.password}
-            onChange={(e) => onChange("password", e.target.value)}
+            onChange={(event) => onChange("password", event.target.value)}
             required
             className={styles["input"]}
           />

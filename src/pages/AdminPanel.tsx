@@ -145,7 +145,7 @@ const AdminPanel = () => {
     if (!user || !token) return;
     try {
       const updatedUser = await updateUserRole(userId, newRole, token);
-      const updatedUsers = users.map((u) => (u.id === userId ? updatedUser : u));
+      const updatedUsers = users.map((user) => (user.id === userId ? updatedUser : user));
       dispatch({ type: "SET_USERS", payload: updatedUsers });
     } catch (error) {
       console.error("Error updating user role:", error);
@@ -161,7 +161,7 @@ const AdminPanel = () => {
     }
     try {
       await deleteUser(userId, token);
-      dispatch({ type: "SET_USERS", payload: users.filter((u) => u.id !== userId) });
+      dispatch({ type: "SET_USERS", payload: users.filter((user) => user.id !== userId) });
     } catch (error) {
       console.error("Error deleting user:", error);
     }
@@ -251,19 +251,19 @@ const AdminPanel = () => {
 
         <div className={styles["users-section"]}>
           <h3 className={styles["lower-headings"]}>Users</h3>
-          {sortedUsers.map((u) => (
-            <div key={u.id} className={styles["user-item"]}>
+          {sortedUsers.map((user) => (
+            <div key={user.id} className={styles["user-item"]}>
               <span>
-                {u.name} {u.surname} ({u.email} - {u.role})
+                {user.name} {user.surname} ({user.email} - {user.role})
               </span>
               <div className={styles["action-control"]}>
                 <button
                   className={styles["change-role-button"]}
-                  onClick={() => handleChangeUserRole(u.id, u.role === "admin" ? "user" : "admin")}
+                  onClick={() => handleChangeUserRole(user.id, user.role === "admin" ? "user" : "admin")}
                 >
                   Change Role
                 </button>
-                <button className={styles["delete-button"]} onClick={() => handleDeleteUser(u.id)}>
+                <button className={styles["delete-button"]} onClick={() => handleDeleteUser(user.id)}>
                   Delete User
                 </button>
               </div>

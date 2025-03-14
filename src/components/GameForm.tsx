@@ -87,7 +87,7 @@ const GameForm: React.FC<GameFormProps> = ({
           className={styles["game-input"]}
           placeholder="Game Title"
           value={gameData.title}
-          onChange={(e) => handleChange("title", e.target.value)}
+          onChange={(event) => handleChange("title", event.target.value)}
           required
         />
       </div>
@@ -95,13 +95,13 @@ const GameForm: React.FC<GameFormProps> = ({
         <select
           className={styles["game-select"]}
           value={gameData.categoryId !== undefined ? gameData.categoryId : ""}
-          onChange={(e) => handleChange("categoryId", e.target.value)}
+          onChange={(event) => handleChange("categoryId", event.target.value)}
           required
         >
           <option value="">Select Category</option>
-          {sortedCategories.map((cat) => (
-            <option key={cat.id} value={cat.id}>
-              {cat.title}
+          {sortedCategories.map((category) => (
+            <option key={category.id} value={category.id}>
+              {category.title}
             </option>
           ))}
         </select>
@@ -111,7 +111,7 @@ const GameForm: React.FC<GameFormProps> = ({
           className={styles["game-textarea"]}
           placeholder="Description"
           value={gameData.description}
-          onChange={(e) => handleChange("description", e.target.value)}
+          onChange={(event) => handleChange("description", event.target.value)}
           required
           rows={5}
         />
@@ -121,7 +121,7 @@ const GameForm: React.FC<GameFormProps> = ({
           className={styles["game-input"]}
           placeholder="Developer"
           value={gameData.developer}
-          onChange={(e) => handleChange("developer", e.target.value)}
+          onChange={(event) => handleChange("developer", event.target.value)}
           required
         />
       </div>
@@ -131,7 +131,7 @@ const GameForm: React.FC<GameFormProps> = ({
           placeholder="Price"
           type="number"
           value={gameData.price !== undefined ? gameData.price : ""}
-          onChange={(e) => handleChange("price", e.target.value)}
+          onChange={(event) => handleChange("price", event.target.value)}
           required
         />
       </div>
@@ -140,7 +140,7 @@ const GameForm: React.FC<GameFormProps> = ({
           className={styles["game-input"]}
           placeholder="Cover URL"
           value={gameData.cover}
-          onChange={(e) => handleChange("cover", e.target.value)}
+          onChange={(event) => handleChange("cover", event.target.value)}
           required
         />
       </div>
@@ -150,7 +150,7 @@ const GameForm: React.FC<GameFormProps> = ({
           placeholder="Release Year"
           type="number"
           value={gameData.release !== undefined ? gameData.release : ""}
-          onChange={(e) => handleChange("release", e.target.value)}
+          onChange={(event) => handleChange("release", event.target.value)}
           required
         />
       </div>

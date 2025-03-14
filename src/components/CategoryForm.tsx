@@ -52,14 +52,14 @@ const CategoryForm: React.FC<CategoryFormProps> = ({
           className={styles["category-input"]}
           placeholder="Category Title"
           value={categoryData.title}
-          onChange={(e) => handleChange("title", e.target.value)}
+          onChange={(event) => handleChange("title", event.target.value)}
           required
         />
         <textarea
           className={styles["category-textarea"]}
           placeholder="Category Description"
           value={categoryData.description}
-          onChange={(e) => handleChange("description", e.target.value)}
+          onChange={(event) => handleChange("description", event.target.value)}
           required
           rows={5}
         />

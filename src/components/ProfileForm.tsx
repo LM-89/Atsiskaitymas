@@ -78,7 +78,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ user }) => {
         <input
           className={styles["profile-input"]}
           value={profile.name}
-          onChange={(e) => setProfile({ ...profile, name: e.target.value })}
+          onChange={(event) => setProfile({ ...profile, name: event.target.value })}
         />
       </div>
       <div className={styles["form-group"]}>
@@ -86,7 +86,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ user }) => {
         <input
           className={styles["profile-input"]}
           value={profile.surname}
-          onChange={(e) => setProfile({ ...profile, surname: e.target.value })}
+          onChange={(event) => setProfile({ ...profile, surname: event.target.value })}
         />
       </div>
       <div className={styles["form-group"]}>
@@ -94,7 +94,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ user }) => {
         <input
           className={styles["profile-input"]}
           value={profile.nickname}
-          onChange={(e) => setProfile({ ...profile, nickname: e.target.value })}
+          onChange={(event) => setProfile({ ...profile, nickname: event.target.value })}
         />
       </div>
       <div className={styles["form-group"]}>
@@ -102,7 +102,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ user }) => {
         <input
           className={styles["profile-input"]}
           value={profile.avatar}
-          onChange={(e) => setProfile({ ...profile, avatar: e.target.value })}
+          onChange={(event) => setProfile({ ...profile, avatar: event.target.value })}
         />
       </div>
       <div className={styles["form-group"]}>
@@ -110,7 +110,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ user }) => {
         <textarea
           className={styles["profile-textarea"]}
           value={profile.bio}
-          onChange={(e) => setProfile({ ...profile, bio: e.target.value })}
+          onChange={(event) => setProfile({ ...profile, bio: event.target.value })}
           rows={5}
         />
       </div>
@@ -119,7 +119,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ user }) => {
         <input
           className={styles["profile-input"]}
           value={profile.email}
-          onChange={(e) => setProfile({ ...profile, email: e.target.value })}
+          onChange={(event) => setProfile({ ...profile, email: event.target.value })}
         />
       </div>
       <button className={styles["profile-button"]} onClick={handleUpdate}>
@@ -136,7 +136,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ user }) => {
           className={styles["profile-input"]}
           type="password"
           value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
+          onChange={(event) => setNewPassword(event.target.value)}
         />
       </div>
       <div className={styles["form-group"]}>
@@ -145,7 +145,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ user }) => {
           className={styles["profile-input"]}
           type="password"
           value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
+          onChange={(event) => setConfirmPassword(event.target.value)}
         />
       </div>
       <button

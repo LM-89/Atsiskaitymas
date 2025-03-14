@@ -68,14 +68,14 @@ export const appReducer = (state: AppState, action: Action): AppState => {
     case "UPDATE_GAME":
       return {
         ...state,
-        games: state.games.map((g) =>
-          g.id === action.payload.id ? action.payload : g
+        games: state.games.map((game) =>
+          game.id === action.payload.id ? action.payload : game
         ),
       };
     case "DELETE_GAME":
       return {
         ...state,
-        games: state.games.filter((g) => g.id !== action.payload),
+        games: state.games.filter((game) => game.id !== action.payload),
       };
     case "SET_CATEGORIES":
       return {
@@ -90,14 +90,14 @@ export const appReducer = (state: AppState, action: Action): AppState => {
     case "UPDATE_CATEGORY":
       return {
         ...state,
-        categories: state.categories.map((cat) =>
-          cat.id === action.payload.id ? action.payload : cat
+        categories: state.categories.map((category) =>
+          category.id === action.payload.id ? action.payload : category
         ),
       };
     case "DELETE_CATEGORY":
       return {
         ...state,
-        categories: state.categories.filter((cat) => cat.id !== action.payload),
+        categories: state.categories.filter((category) => category.id !== action.payload),
       };
     case "SET_USERS":
       return {
@@ -146,7 +146,7 @@ export const appReducer = (state: AppState, action: Action): AppState => {
         ...state,
         reviews: {
           ...state.reviews,
-          [gameId]: currentReviews.filter((r) => r.id !== reviewId),
+          [gameId]: currentReviews.filter((review) => review.id !== reviewId),
         },
       };
     }

@@ -19,7 +19,7 @@ const OtherUserProfile = () => {
   
   const profileUser = useMemo(() => {
     if (numericUserId === null) return null;
-    return users.find((u) => u.id === numericUserId) || null;
+    return users.find((user) => user.id === numericUserId) || null;
   }, [numericUserId, users]);
 
 
@@ -65,8 +65,8 @@ const OtherUserProfile = () => {
     if (!loggedInUser || !token || !numericUserId) return;
     try {
       await updateUserRole(numericUserId, newRole, token);
-      const updatedUsers = users.map((u) =>
-        u.id === numericUserId ? { ...u, role: newRole } : u
+      const updatedUsers = users.map((user) =>
+        user.id === numericUserId ? { ...user, role: newRole } : user
       );
       dispatch({ type: "SET_USERS", payload: updatedUsers });
     } catch (error) {
