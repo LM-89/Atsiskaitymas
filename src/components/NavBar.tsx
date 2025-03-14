@@ -37,7 +37,7 @@ const Navbar = () => {
       <div className={styles["user-info"]}>
         {user ? (
           <>
-            <span>{`Welcome, ${user.nickname || user.email}`}</span>
+            <span>Welcome, <span className={styles["glowing-user-name"]}>{user.nickname || user.email}</span></span>
             <button className={styles["logout-button"]} onClick={handleLogout}>
               Logout
             </button>

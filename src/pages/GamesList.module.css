@@ -29,7 +29,7 @@
     padding: 25px; 
     list-style-type: none;
     overflow-y: scroll;
-    height: 850px;
+    min-height: 1280px;
     padding-right: 25px; 
     scrollbar-width: thin;
     scrollbar-color: rgb(81, 141, 190) grey;
