@@ -322,6 +322,13 @@
       "rating": 5,
       "comment": "One of the best.",
       "id": 21
+    },
+    {
+      "gameId": 2,
+      "userId": 1,
+      "rating": 5,
+      "comment": "Addictive as hell.",
+      "id": 22
     }
   ]
 }

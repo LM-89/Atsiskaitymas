@@ -148,7 +148,7 @@ const UserProfile = () => {
                             step={0.1}
                           />
                         </div>
-                        <div className={styles["form-control"]}>
+                        <div className={styles["review-form-control"]}>
                           <label>Comment: </label>
                           <textarea
                             className={styles["review-textarea"]}
@@ -161,7 +161,7 @@ const UserProfile = () => {
                             }
                           />
                         </div>
-                        <div className={styles["review-actions"]}>
+                        <div className={styles["actions"]}>
                           <button className={styles["review-button"]} onClick={() => handleUpdateReview(review.id)}>
                             Save
                           </button>

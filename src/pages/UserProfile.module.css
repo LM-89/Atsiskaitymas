@@ -42,6 +42,7 @@
 .delete-account-btn,
 .review-delete-button {
     background-color: #ac5f5f;
+    margin: 0;
 }
 
 .delete-account-btn:hover,
@@ -90,6 +91,24 @@
 .actions {
     display: flex;
     flex-direction: row;
+    gap: 10px;
+}
+
+.review-button {
+    margin: 0;
+}
+
+.review-textarea {
+    width: 90%;
+    margin: 25px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.review-form-control {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
   
