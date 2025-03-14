@@ -26,8 +26,14 @@
     display: grid;
     grid-template-columns: repeat(5, 1fr); 
     gap: 16px; 
-    padding: 0; 
-    list-style-type: none; 
+    padding: 25px; 
+    list-style-type: none;
+    overflow-y: scroll;
+    height: 850px;
+    padding-right: 25px; 
+    scrollbar-width: thin;
+    scrollbar-color: rgb(81, 141, 190) grey;
+    scroll-behavior: smooth;
 }
 
 .games-list-item {
