@@ -1,4 +1,3 @@
-// src/components/GameDetails.tsx
 import { useParams } from "react-router-dom";
 import { useEffect, useState, useMemo } from "react";
 import { useData } from "../context/DataContext";
@@ -23,7 +22,7 @@ const GameDetails = () => {
 
   const gameReviews = useMemo(() => reviews[Number(gameId)] || [], [reviews, gameId]);
 
-  // Enrich reviews with user data (from state.users) if not present in the review object.
+
   const enrichedReviews = useMemo(() => {
     return gameReviews.map((review) => {
       const userData = users.find((u) => u.id === review.userId);
@@ -31,7 +30,7 @@ const GameDetails = () => {
     });
   }, [gameReviews, users]);
 
-  // Helper to re-fetch reviews from the API.
+
   const refreshReviews = async () => {
     try {
       const reviewsData = await getGameReviews(Number(gameId));
@@ -41,7 +40,7 @@ const GameDetails = () => {
     }
   };
 
-  // Load games and reviews on mount if not already loaded.
+
   useEffect(() => {
     const loadData = async () => {
       if (!game) {
@@ -66,7 +65,7 @@ const GameDetails = () => {
     loadData();
   }, [game, gameId, dispatch]);
 
-  // Fetch all users (if not yet in state) so that review avatars and nicknames can be displayed.
+ 
   useEffect(() => {
     if (users.length === 0) {
       getUsers()
@@ -75,7 +74,7 @@ const GameDetails = () => {
     }
   }, [users, dispatch]);
 
-  // Calculate average rating.
+ 
   useEffect(() => {
     if (gameReviews.length > 0) {
       const total = gameReviews.reduce((sum, review) => sum + review.rating, 0);
