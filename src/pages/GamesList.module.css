@@ -171,35 +171,35 @@
 
 
 @keyframes online-glow {
-    0% {
-      box-shadow: 0 0 5px rgba(121, 194, 253, 0.5);
-    }
-    20% {
-      box-shadow: 0 0 10px rgba(121, 194, 253, 0.7), 0 0 20px rgba(121, 194, 253, 0.5);
-    }
-    40% {
-      box-shadow: 0 0 15px rgba(121, 194, 253, 0.9), 0 0 25px rgba(121, 194, 253, 0.6);
-    }
-    48%, 52% {
-      box-shadow: none;
-    }
-    60% {
-      box-shadow: 0 0 18px rgba(121, 194, 253, 0.9), 0 0 25px rgba(121, 194, 253, 0.6);
-    }
-    80% {
-      box-shadow: 0 0 13px rgba(121, 194, 253, 0.7), 0 0 20px rgba(121, 194, 253, 0.5);
-    }
-    100% {
-      box-shadow: 0 0 5px rgba(121, 194, 253, 0.5);
-    }
-  }
-  
-  .online {
+0% {
+    box-shadow: 0 0 5px rgba(121, 194, 253, 0.5);
+}
+20% {
+    box-shadow: 0 0 10px rgba(121, 194, 253, 0.7), 0 0 20px rgba(121, 194, 253, 0.5);
+}
+40% {
+    box-shadow: 0 0 15px rgba(121, 194, 253, 0.9), 0 0 25px rgba(121, 194, 253, 0.6);
+}
+48%, 52% {
+    box-shadow: none;
+}
+60% {
+    box-shadow: 0 0 18px rgba(121, 194, 253, 0.9), 0 0 25px rgba(121, 194, 253, 0.6);
+}
+80% {
+    box-shadow: 0 0 13px rgba(121, 194, 253, 0.7), 0 0 20px rgba(121, 194, 253, 0.5);
+}
+100% {
+    box-shadow: 0 0 5px rgba(121, 194, 253, 0.5);
+}
+}
+
+.online {
     width: 12px;
     height: 12px;
     border-radius: 50%;
     background-color: rgb(121, 194, 253);
     animation: online-glow 5s infinite ease-in-out;
-  }
+}
 
 
