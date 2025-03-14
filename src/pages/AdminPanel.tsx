@@ -178,53 +178,70 @@ const AdminPanel = () => {
   }
 
   return (
-    <div className={styles["admin-panel"]}>
-      <div className={styles["admin-panel-inner-part"]}>
-        <h2 className={styles["heading"]}>Admin Panel</h2>
+    <div className={styles["admin-panel"]}>      
+      <h2 className={styles["heading"]}>Admin Panel</h2>
 
-        <div className={styles["forms-container"]}>
-          <div ref={gameFormRef} className={styles["game-form-container"]}>
-            <GameForm
-              key={editingGameId ?? "new"}
-              editingGameId={editingGameId}
-              initialData={
-                editingGameId
-                  ? games.find((game) => game.id === editingGameId) || {}
-                  : {}
-              }
-              onSubmit={handleAddOrUpdateGame}
-              onCancel={cancelGameEdit}
-              categories={categories}
-            />
-          </div>
-
-          <div ref={categoryFormRef} className={styles["category-form-container"]}>
-            <CategoryForm
-              key={editingCategoryId ?? "new"}
-              editingCategoryId={editingCategoryId}
-              initialData={
-                editingCategoryId
-                  ? categories.find((category) => category.id === editingCategoryId) || {}
-                  : {}
-              }
-              onSubmit={handleAddOrUpdateCategory}
-              onCancel={cancelCategoryEdit}
-            />
-          </div>
+      <div className={styles["forms-container"]}>
+        <div ref={gameFormRef} className={styles["game-form-container"]}>
+          <GameForm
+            key={editingGameId ?? "new"}
+            editingGameId={editingGameId}
+            initialData={
+              editingGameId
+                ? games.find((game) => game.id === editingGameId) || {}
+                : {}
+            }
+            onSubmit={handleAddOrUpdateGame}
+            onCancel={cancelGameEdit}
+            categories={categories}
+          />
         </div>
 
-        <div className={styles["categories-section"]}>
-          <h3 className={styles["lower-headings"]}>Categories</h3>
-          {sortedCategories.map((category) => (
-            <div key={category.id} className={styles["category-item"]}>
-              <span>
-                {category.title}. {category.description}
-              </span>
+        <div ref={categoryFormRef} className={styles["category-form-container"]}>
+          <CategoryForm
+            key={editingCategoryId ?? "new"}
+            editingCategoryId={editingCategoryId}
+            initialData={
+              editingCategoryId
+                ? categories.find((category) => category.id === editingCategoryId) || {}
+                : {}
+            }
+            onSubmit={handleAddOrUpdateCategory}
+            onCancel={cancelCategoryEdit}
+          />
+        </div>
+      </div>
+
+      <div className={styles["categories-section"]}>
+        <h3 className={styles["lower-headings"]}>Categories</h3>
+        {sortedCategories.map((category) => (
+          <div key={category.id} className={styles["category-item"]}>
+            <span>
+              {category.title}. {category.description}
+            </span>
+            <div className={styles["action-control"]}>
+              <button className={styles["edit-button"]} onClick={() => handleEditCategory(category)}>
+                Edit
+              </button>
+              <button className={styles["delete-button"]} onClick={() => handleDeleteCategory(category.id)}>
+                Delete
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className={styles["users-games"]}>
+        <div className={styles["games-section"]}>
+          <h3 className={styles["lower-headings"]}>Games</h3>
+          {sortedGames.map((game) => (
+            <div key={game.id} className={styles["game-item"]}>
+              <span>{game.title}</span>
               <div className={styles["action-control"]}>
-                <button className={styles["edit-button"]} onClick={() => handleEditCategory(category)}>
+                <button className={styles["edit-button"]} onClick={() => handleEditGame(game)}>
                   Edit
                 </button>
-                <button className={styles["delete-button"]} onClick={() => handleDeleteCategory(category.id)}>
+                <button className={styles["delete-button"]} onClick={() => handleDeleteGame(game.id)}>
                   Delete
                 </button>
               </div>
@@ -232,47 +249,28 @@ const AdminPanel = () => {
           ))}
         </div>
 
-        <div className={styles["users-games"]}>
-          <div className={styles["games-section"]}>
-            <h3 className={styles["lower-headings"]}>Games</h3>
-            {sortedGames.map((game) => (
-              <div key={game.id} className={styles["game-item"]}>
-                <span>{game.title}</span>
-                <div className={styles["action-control"]}>
-                  <button className={styles["edit-button"]} onClick={() => handleEditGame(game)}>
-                    Edit
-                  </button>
-                  <button className={styles["delete-button"]} onClick={() => handleDeleteGame(game.id)}>
-                    Delete
-                  </button>
-                </div>
+        <div className={styles["users-section"]}>
+          <h3 className={styles["lower-headings"]}>Users</h3>
+          {sortedUsers.map((u) => (
+            <div key={u.id} className={styles["user-item"]}>
+              <span>
+                {u.name} {u.surname} ({u.email} - {u.role})
+              </span>
+              <div className={styles["action-control"]}>
+                <button
+                  className={styles["change-role-button"]}
+                  onClick={() => handleChangeUserRole(u.id, u.role === "admin" ? "user" : "admin")}
+                >
+                  Change Role
+                </button>
+                <button className={styles["delete-button"]} onClick={() => handleDeleteUser(u.id)}>
+                  Delete User
+                </button>
               </div>
-            ))}
-          </div>
-
-          <div className={styles["users-section"]}>
-            <h3 className={styles["lower-headings"]}>Users</h3>
-            {sortedUsers.map((u) => (
-              <div key={u.id} className={styles["user-item"]}>
-                <span>
-                  {u.name} {u.surname} ({u.email} - {u.role})
-                </span>
-                <div className={styles["action-control"]}>
-                  <button
-                    className={styles["change-role-button"]}
-                    onClick={() => handleChangeUserRole(u.id, u.role === "admin" ? "user" : "admin")}
-                  >
-                    Change Role
-                  </button>
-                  <button className={styles["delete-button"]} onClick={() => handleDeleteUser(u.id)}>
-                    Delete User
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
-      </div>
+      </div>      
     </div>
   );
 };
