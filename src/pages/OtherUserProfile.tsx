@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
-import { API_URL, deleteReview, updateUserRole } from "../api/api";
-import { User, Review, Game } from "../types";
+import { API_URL, updateUserRole, deleteReview } from "../api/api";
+import { Review, Game } from "../types";
 import { useData } from "../context/DataContext";
+import styles from "./OtherUserProfile.module.css";
 
 type ReviewWithGameTitle = Review & { gameTitle: string };
 
@@ -14,25 +15,19 @@ const OtherUserProfile = () => {
   const { auth, users, games } = state;
   const loggedInUser = auth.user;
   const token = auth.token;
-  const navigate = useNavigate();
 
-  const [profileUser, setProfileUser] = useState<User | null>(null);
-  const [role, setRole] = useState<"user" | "admin">("user");
-  const [reviews, setReviews] = useState<ReviewWithGameTitle[]>([]);
+  
+  const profileUser = useMemo(() => {
+    if (numericUserId === null) return null;
+    return users.find((u) => u.id === numericUserId) || null;
+  }, [numericUserId, users]);
+
 
   useEffect(() => {
-    if (!numericUserId) return;
-
-    const foundUser = users.find((u) => u.id === numericUserId);
-    if (foundUser) {
-      setProfileUser(foundUser);
-      setRole(foundUser.role);
-    } else {
+    if (numericUserId && !profileUser) {
       const fetchUser = async () => {
         try {
           const response = await axios.get(`${API_URL}/users/${numericUserId}`);
-          setProfileUser(response.data);
-          setRole(response.data.role);
           dispatch({ type: "SET_USERS", payload: [...users, response.data] });
         } catch (error) {
           console.error("Error fetching user:", error);
@@ -40,27 +35,23 @@ const OtherUserProfile = () => {
       };
       fetchUser();
     }
-  }, [numericUserId, users, dispatch]);
+  }, [numericUserId, profileUser, dispatch, users]);
 
-
+  
+  const [reviewsForUser, setReviewsForUser] = useState<ReviewWithGameTitle[]>([]);
   useEffect(() => {
     if (!numericUserId) return;
-
     const fetchReviews = async () => {
       try {
         const reviewsResponse = await axios.get(`${API_URL}/reviews`);
         const userReviews: Review[] = reviewsResponse.data.filter(
           (review: Review) => review.userId === numericUserId
         );
-        const reviewsWithGames: ReviewWithGameTitle[] = userReviews.map(
-          (review: Review) => ({
-            ...review,
-            gameTitle:
-              games.find((game: Game) => game.id === review.gameId)?.title ||
-              "Unknown Game",
-          })
-        );
-        setReviews(reviewsWithGames);
+        const reviewsWithGames: ReviewWithGameTitle[] = userReviews.map((review: Review) => ({
+          ...review,
+          gameTitle: games.find((game: Game) => game.id === review.gameId)?.title || "Unknown Game",
+        }));
+        setReviewsForUser(reviewsWithGames);
       } catch (error) {
         console.error("Error fetching reviews:", error);
       }
@@ -69,30 +60,28 @@ const OtherUserProfile = () => {
     fetchReviews();
   }, [numericUserId, games]);
 
+
   const handleRoleChange = async (newRole: "user" | "admin") => {
     if (!loggedInUser || !token || !numericUserId) return;
     try {
       await updateUserRole(numericUserId, newRole, token);
-      setRole(newRole);
-
       const updatedUsers = users.map((u) =>
         u.id === numericUserId ? { ...u, role: newRole } : u
       );
       dispatch({ type: "SET_USERS", payload: updatedUsers });
-
     } catch (error) {
       console.error("Error updating role:", error);
     }
   };
 
+
   const handleDeleteReview = async (reviewId: number) => {
     if (loggedInUser && token) {
       try {
         await deleteReview(reviewId, token);
-        setReviews((prevReviews) =>
+        setReviewsForUser((prevReviews) =>
           prevReviews.filter((review) => review.id !== reviewId)
         );
-        
       } catch (error) {
         console.error("Error deleting review:", error);
       }
@@ -100,53 +89,54 @@ const OtherUserProfile = () => {
   };
 
   if (!profileUser) {
-    return <div>Loading...</div>;
+    return <div className={styles["loading"]}>Loading...</div>;
   }
 
   return (
-    <div className="user-profile">
-      <h2>User Profile</h2>
-      <div className="avatar-section">
-        {profileUser.avatar ? (
-          <img
-            src={profileUser.avatar}
-            alt="Avatar"
-            width={100}
-            height={100}
-            style={{ borderRadius: "50%" }}
-          />
-        ) : (
-          <div>No avatar available</div>
-        )}
-        <div>
-          <strong>Nickname:</strong> {profileUser.nickname}
-        </div>
-        <div>
-          <strong>Bio:</strong> {profileUser.bio || "No bio available"}
-        </div>
-        <div>
-          <strong>Role:</strong> {role}
-        </div>
-      </div>
+    <div className={styles["other-user-profile"]}>
+      <h2>User Profile:</h2>
+        <div className={styles["avatar-section"]}>
+          {profileUser.avatar ? (
+            <img
+              className={styles["profile-avatar"]}
+              src={profileUser.avatar}
+              alt="Avatar"
+              width={100}
+              height={100}
+            />
+          ) : (
+            <div className={styles["avatar-placeholder"]}>No avatar available</div>
+          )}
+          <div>
+            <strong>Nickname:</strong> {profileUser.nickname}
+          </div>
+          <div>
+            <strong>Bio:</strong> {profileUser.bio || "No bio available"}
+          </div>
+          <div>
+            <strong>Role:</strong> {profileUser.role}
+          </div>
 
-      {loggedInUser?.role === "admin" && loggedInUser.id !== profileUser.id && (
-        <div>
-          <label>Change Role:</label>
-          <select
-            value={role}
-            onChange={(e) => handleRoleChange(e.target.value as "user" | "admin")}
-          >
-            <option value="user">User</option>
-            <option value="admin">Admin</option>
-          </select>
+          {loggedInUser?.role === "admin" && loggedInUser.id !== profileUser.id && (
+            <div className={styles["role-change"]}>
+              <label>Change Role: </label>
+              <select
+                value={profileUser.role}
+                onChange={(e) => handleRoleChange(e.target.value as "user" | "admin")}
+                className={styles["role-select"]}
+                >
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+              </select>
+            </div>
+          )}
         </div>
-      )}
 
-      <div className="reviews-section">
-        <h3>{profileUser.nickname}'s Reviews</h3>
-        {reviews.length > 0 ? (
-          reviews.map((review) => (
-            <div key={review.id} className="review">
+      <div className={styles["reviews-section"]}>
+        <h3>{profileUser.nickname}'s Reviews: </h3>
+        {reviewsForUser.length > 0 ? (
+          reviewsForUser.map((review) => (
+            <div key={review.id} className={styles["review-item"]}>
               <p>
                 <strong>Game:</strong> {review.gameTitle}
               </p>
@@ -156,19 +146,19 @@ const OtherUserProfile = () => {
               <p>
                 <strong>Comment:</strong> {review.comment}
               </p>
-              {loggedInUser?.role === "admin" && (
-                <button onClick={() => handleDeleteReview(review.id)}>
-                  Delete
-                </button>
-              )}
+              <div className={styles["actions"]}>
+                {loggedInUser?.role === "admin" && (
+                  <button className={styles["delete-button"]} onClick={() => handleDeleteReview(review.id)}>
+                    Delete
+                  </button>
+                )}
+              </div>
             </div>
           ))
         ) : (
           <p>No reviews yet.</p>
         )}
       </div>
-
-      <button onClick={() => navigate(-1)}>Back</button>
     </div>
   );
 };

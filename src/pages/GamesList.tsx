@@ -1,15 +1,19 @@
-import { useEffect, useState } from "react";
-import { API_URL, getGames, getGameReviews } from "../api/api";
+import { useEffect, useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { API_URL, getGames, getGameReviews } from "../api/api";
 import { useData } from "../context/DataContext";
 import { Game, User, Category, Review } from "../types";
+import styles from "./GamesList.module.css";
+
 
 const GamesList = () => {
   const { state, dispatch } = useData();
   const { games, categories, users, reviews } = state;
+
   const [selectedCategory, setSelectedCategory] = useState<number | "all">("all");
   const [localLoading, setLocalLoading] = useState(true);
+
 
   useEffect(() => {
     const loadData = async () => {
@@ -37,9 +41,11 @@ const GamesList = () => {
     loadData();
   }, [dispatch]);
 
+
   const getCategoryName = (categoryId?: number) => {
     return categories.find((cat: Category) => cat.id === categoryId)?.title || "Unknown";
   };
+
 
   const getAverageRating = (gameId: number) => {
     const gameReviews: Review[] = reviews[gameId] || [];
@@ -48,87 +54,82 @@ const GamesList = () => {
     return average.toFixed(1);
   };
 
+
   const filteredGames =
     selectedCategory === "all" ? games : games.filter((game: Game) => game.categoryId === selectedCategory);
 
+  const sortedCategories = useMemo(() => [...categories].sort((a, b) => a.title.localeCompare(b.title)), [categories]);
+  const sortedGames = useMemo(() => [...filteredGames].sort((a, b) => a.title.localeCompare(b.title)), [filteredGames]);
+  const sortedUsers = useMemo(() => [...users].sort((a, b) => a.nickname.localeCompare(b.nickname)), [users]);
+  
+
   if (localLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className={styles["loading"]}>
+        <div className={styles["spinner"]}></div>
+      </div>
+    );
   }
 
   return (
-    <div className="games-list-container" style={{ display: "flex", gap: "2rem" }}>
-      <div style={{ flex: 1 }}>
-        <h2>Games:</h2>
+    <div className={styles["main-content-container"]}>
+      <div className={styles["main-games-container"]}>
+        <h2 className={styles["section-title"]}>Games:</h2>
         <label htmlFor="categoryFilter">Filter by Category: </label>
         <select
-          id="categoryFilter"
+          id="category-filter"
           value={selectedCategory}
-          onChange={(e) =>
-            setSelectedCategory(e.target.value === "all" ? "all" : parseInt(e.target.value))
+          onChange={(event) =>
+            setSelectedCategory(event.target.value === "all" ? "all" : parseInt(event.target.value))
           }
+          className={styles["category-filter"]}
         >
           <option value="all">All Categories</option>
-          {categories.map((category: Category) => (
-            <option key={category.id} value={category.id}>
+          {sortedCategories.map((category: Category) => (
+            <option key={category.id} value={category.id} className={styles["option"]}>
               {category.title}
             </option>
           ))}
         </select>
-        {filteredGames.length === 0 ? (
+        {sortedGames.length === 0 ? (
           <p>No games added to this category yet...</p>
         ) : (
-          <ul>
-            {filteredGames.map((game: Game) => (
-              <li key={game.id}>
-                <Link to={`/game/${game.id}`}>
-                  <img src={game.cover} alt={game.title} width={100} />
-                  <h3>{game.title}</h3>
-                  {game.developer && <p>Developer: {game.developer}</p>}
-                  <p>{game.description}</p>
+          <ul className={styles["games-ul-container"]}>
+            {sortedGames.map((game: Game) => (
+              <li key={game.id} className={styles["games-list-item"]}>
+                <Link to={`/game/${game.id}`} className={styles["game-link"]}>
+                  <div className={styles["game-cover-container"]}>
+                    <img src={game.cover} alt={game.title} width={100} className={styles["game-cover-img"]} />
+                  </div>
+                  <h3 className={styles["game-title"]}>{game.title}</h3>
+                  <p className={styles["average-rating"]}>Rating: {getAverageRating(game.id)}</p>
                   <p>Category: {getCategoryName(game.categoryId)}</p>
-                  {game.release && <p>Release Date: {game.release}</p>}
-                  {game.price && <p>Price: {game.price} €</p>}
-                  <p>Rating: {getAverageRating(game.id)}</p>
+                  {game.release && <p className={styles["release-date"]}>Release Date: {game.release}</p>}
+                  {game.price && <p className={styles["game-price"]}>Price: {game.price} €</p>}
                 </Link>
               </li>
             ))}
           </ul>
         )}
       </div>
-      <div style={{ flex: 0.3 }}>
-        <h2>Users:</h2>
-        <ul>
-          {users.map((usr: User) => (
-            <li key={usr.id} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              {usr.avatar ? (
-                <img
-                  src={usr.avatar}
-                  alt={usr.nickname}
-                  width={40}
-                  height={40}
-                  style={{ borderRadius: "50%" }}
-                />
-              ) : (
-                <div
-                  style={{
-                    width: "40px",
-                    height: "40px",
-                    backgroundColor: "#ccc",
-                    borderRadius: "50%",
-                  }}
-                ></div>
-              )}
-              <Link to={`/user/${usr.id}`} style={{ textDecoration: "none", color: "inherit" }}>
-                <span>{usr.nickname}</span>
-              </Link>
+      <div className={styles["main-users-container"]}>
+        <h2 className={styles["section-title"]}>Users:</h2>
+        <ul className={styles["users-list"]}>
+          {sortedUsers.map((user: User) => (
+            <li key={user.id} className={styles["users-list-item"]}>
               <div
-                style={{
-                  width: "10px",
-                  height: "10px",
-                  borderRadius: "50%",
-                  backgroundColor: state.auth.user?.id === usr.id ? "green" : "gray",
-                }}
-              ></div>
+                className={`${styles["user-status-indicator"]} ${
+                  state.auth.user?.id === user.id ? styles["online"] : styles["offline"]
+                }`}
+              />
+              {user.avatar ? (
+                <img src={user.avatar} alt={user.nickname} className={styles["user-avatar"]} />
+              ) : (
+                <div className={styles["user-avatar-placeholder"]}></div>
+              )}
+              <Link to={`/user/${user.id}`} className={styles["user-link"]}>
+                <span>{user.nickname}</span>
+              </Link>
             </li>
           ))}
         </ul>

@@ -1,0 +1,75 @@
+.game-form {
+    background-color: #222222;
+    color: #e0e0e0;
+    padding: 32px; 
+    border-radius: 8px;
+    width: 80%;
+    margin: 32px auto;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    font-family: Arial, sans-serif;
+}
+
+.game-form h3 {
+    text-align: left;
+    margin-bottom: 24px;
+}
+
+.form-control {
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+.game-input,
+.game-textarea,
+.game-select {
+    padding: 8px;
+    border: 1px solid #555;
+    border-radius: 4px;
+    background-color: #3a3a3a;
+    color: #e0e0e0;
+    transition: border-color 0.3s;
+    margin-bottom: 16px;
+}
+
+.game-input:focus,
+.game-textarea:focus,
+.game-select:focus {
+    border-color: #888;
+    outline: none;
+}
+
+.category-input::placeholder,
+.category-textarea::placeholder {
+    color: #999999;
+}
+
+.game-input:hover::placeholder,
+.game-textarea:hover::placeholder,
+.game-select:hover::placeholder {
+    color: #cecece;
+}
+
+.game-input:focus::placeholder,
+.game-textarea:focus::placeholder,
+.game-select:focus::placeholder {
+    color: #ffffff;
+}
+
+.form-actions {
+    gap: 8px;
+    display: flex;
+}
+
+.game-button {
+    flex: 1;
+    margin: 0;
+}
+
+.cancel-button {
+    background-color: #6a6a6a;
+}
+
+.cancel-button:hover {
+    background-color: #555;
+}

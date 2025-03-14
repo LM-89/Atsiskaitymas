@@ -1,14 +1,14 @@
-import { useState, useEffect } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import {
   getGames,
+  getCategories,
+  getUsers,
   addGame,
   updateGame,
   deleteGame,
-  getCategories,
   addCategory,
   updateCategory,
   deleteCategory,
-  getUsers,
   updateUserRole,
   deleteUser,
 } from "../api/api";
@@ -16,6 +16,7 @@ import { useData } from "../context/DataContext";
 import { Game, Category } from "../types";
 import GameForm from "../components/GameForm";
 import CategoryForm from "../components/CategoryForm";
+import styles from "./AdminPanel.module.css";
 
 const AdminPanel = () => {
   const { state, dispatch } = useData();
@@ -25,6 +26,10 @@ const AdminPanel = () => {
   const [editingGameId, setEditingGameId] = useState<number | null>(null);
   const [editingCategoryId, setEditingCategoryId] = useState<number | null>(null);
 
+  const gameFormRef = useRef<HTMLDivElement>(null);
+  const categoryFormRef = useRef<HTMLDivElement>(null);
+
+ 
   useEffect(() => {
     const loadData = async () => {
       try {
@@ -43,12 +48,16 @@ const AdminPanel = () => {
     loadData();
   }, [dispatch]);
 
+ 
   const handleAddOrUpdateGame = async (gameData: Omit<Game, "id">) => {
     if (!user || !token) return;
     if (editingGameId) {
       try {
         await updateGame(editingGameId, gameData, token);
-        dispatch({ type: "UPDATE_GAME", payload: { id: editingGameId, ...gameData } as Game });
+        dispatch({
+          type: "UPDATE_GAME",
+          payload: { id: editingGameId, ...gameData } as Game,
+        });
         setEditingGameId(null);
       } catch (error) {
         console.error("Error updating game:", error);
@@ -63,6 +72,7 @@ const AdminPanel = () => {
     }
   };
 
+
   const handleDeleteGame = async (gameId: number) => {
     if (!user || !token) return;
     try {
@@ -73,14 +83,18 @@ const AdminPanel = () => {
     }
   };
 
+
   const handleEditGame = (game: Game) => {
     setEditingGameId(game.id);
+    gameFormRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+
 
   const cancelGameEdit = () => {
     setEditingGameId(null);
   };
 
+ 
   const handleAddOrUpdateCategory = async (categoryData: Omit<Category, "id">) => {
     if (!user || !token) return;
     if (editingCategoryId) {
@@ -104,6 +118,7 @@ const AdminPanel = () => {
     }
   };
 
+
   const handleDeleteCategory = async (categoryId: number) => {
     if (!user || !token) return;
     try {
@@ -114,112 +129,149 @@ const AdminPanel = () => {
     }
   };
 
+
   const handleEditCategory = (category: Category) => {
     setEditingCategoryId(category.id);
+    categoryFormRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+
 
   const cancelCategoryEdit = () => {
     setEditingCategoryId(null);
   };
 
+
   const handleChangeUserRole = async (userId: number, newRole: "admin" | "user") => {
     if (!user || !token) return;
     try {
       const updatedUser = await updateUserRole(userId, newRole, token);
-      dispatch({
-        type: "SET_USERS",
-        payload: users.map((u) => (u.id === userId ? updatedUser : u)),
-      });
+      const updatedUsers = users.map((u) => (u.id === userId ? updatedUser : u));
+      dispatch({ type: "SET_USERS", payload: updatedUsers });
     } catch (error) {
       console.error("Error updating user role:", error);
     }
   };
 
+
   const handleDeleteUser = async (userId: number) => {
     if (!user || !token) return;
+    if (user.id === userId) {
+      alert("You cannot delete your own account.");
+      return;
+    }
     try {
-      if (user.id === userId) {
-        alert("You cannot delete your own account.");
-        return;
-      }
       await deleteUser(userId, token);
-      dispatch({
-        type: "SET_USERS",
-        payload: users.filter((u) => u.id !== userId),
-      });
+      dispatch({ type: "SET_USERS", payload: users.filter((u) => u.id !== userId) });
     } catch (error) {
       console.error("Error deleting user:", error);
     }
   };
+
+  
+  const sortedCategories = useMemo(() => [...categories].sort((a, b) => a.title.localeCompare(b.title)), [categories]);
+  const sortedGames = useMemo(() => [...games].sort((a, b) => a.title.localeCompare(b.title)), [games]);
+  const sortedUsers = useMemo(() => [...users].sort((a, b) => (a.name || "").localeCompare(b.name || "")), [users]);
+
 
   if (!user || user.role !== "admin") {
     return <p>Access denied.</p>;
   }
 
   return (
-    <div>
-      <h2>Admin Panel</h2>
+    <div className={styles["admin-panel"]}>
+      <div className={styles["admin-panel-inner-part"]}>
+        <h2 className={styles["heading"]}>Admin Panel</h2>
 
-      <GameForm
-        key={editingGameId ?? "new"}
-        editingGameId={editingGameId}
-        initialData={editingGameId ? games.find((g) => g.id === editingGameId) || {} : {}}
-        onSubmit={handleAddOrUpdateGame}
-        onCancel={cancelGameEdit}
-        categories={categories}
-      />
-
-      <CategoryForm
-        key={editingCategoryId ?? "new"}
-        editingCategoryId={editingCategoryId}
-        initialData={
-          editingCategoryId ? categories.find((cat) => cat.id === editingCategoryId) || {} : {}
-        }
-        onSubmit={handleAddOrUpdateCategory}
-        onCancel={cancelCategoryEdit}
-      />
-
-      <div>
-        <h3>Categories</h3>
-        {categories.map((category) => (
-          <div key={category.id}>
-            <span>
-              {category.title}. {category.description}
-            </span>
-            <button onClick={() => handleEditCategory(category)}>Edit</button>
-            <button onClick={() => handleDeleteCategory(category.id)}>Delete</button>
-          </div>
-        ))}
-      </div>
-
-      <div>
-        <h3>Games</h3>
-        {games.map((game) => (
-          <div key={game.id}>
-            <span>{game.title}</span>
-            <button onClick={() => handleEditGame(game)}>Edit</button>
-            <button onClick={() => handleDeleteGame(game.id)}>Delete</button>
-          </div>
-        ))}
-      </div>
-
-      <div>
-        <h3>Users</h3>
-        {users.map((usr) => (
-          <div key={usr.id}>
-            <span>
-              {usr.name} {usr.surname} ({usr.email} - {usr.role})
-            </span>
-            <button
-              onClick={() =>
-                handleChangeUserRole(usr.id, usr.role === "admin" ? "user" : "admin")
+        <div className={styles["forms-container"]}>
+          <div ref={gameFormRef} className={styles["game-form-container"]}>
+            <GameForm
+              key={editingGameId ?? "new"}
+              editingGameId={editingGameId}
+              initialData={
+                editingGameId
+                  ? games.find((game) => game.id === editingGameId) || {}
+                  : {}
               }
-            >
-              Change Role
-            </button>
-            <button onClick={() => handleDeleteUser(usr.id)}>Delete User</button>
+              onSubmit={handleAddOrUpdateGame}
+              onCancel={cancelGameEdit}
+              categories={categories}
+            />
           </div>
-        ))}
+
+          <div ref={categoryFormRef} className={styles["category-form-container"]}>
+            <CategoryForm
+              key={editingCategoryId ?? "new"}
+              editingCategoryId={editingCategoryId}
+              initialData={
+                editingCategoryId
+                  ? categories.find((category) => category.id === editingCategoryId) || {}
+                  : {}
+              }
+              onSubmit={handleAddOrUpdateCategory}
+              onCancel={cancelCategoryEdit}
+            />
+          </div>
+        </div>
+
+        <div className={styles["categories-section"]}>
+          <h3 className={styles["lower-headings"]}>Categories</h3>
+          {sortedCategories.map((category) => (
+            <div key={category.id} className={styles["category-item"]}>
+              <span>
+                {category.title}. {category.description}
+              </span>
+              <div className={styles["action-control"]}>
+                <button className={styles["edit-button"]} onClick={() => handleEditCategory(category)}>
+                  Edit
+                </button>
+                <button className={styles["delete-button"]} onClick={() => handleDeleteCategory(category.id)}>
+                  Delete
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className={styles["users-games"]}>
+          <div className={styles["games-section"]}>
+            <h3 className={styles["lower-headings"]}>Games</h3>
+            {sortedGames.map((game) => (
+              <div key={game.id} className={styles["game-item"]}>
+                <span>{game.title}</span>
+                <div className={styles["action-control"]}>
+                  <button className={styles["edit-button"]} onClick={() => handleEditGame(game)}>
+                    Edit
+                  </button>
+                  <button className={styles["delete-button"]} onClick={() => handleDeleteGame(game.id)}>
+                    Delete
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className={styles["users-section"]}>
+            <h3 className={styles["lower-headings"]}>Users</h3>
+            {sortedUsers.map((u) => (
+              <div key={u.id} className={styles["user-item"]}>
+                <span>
+                  {u.name} {u.surname} ({u.email} - {u.role})
+                </span>
+                <div className={styles["action-control"]}>
+                  <button
+                    className={styles["change-role-button"]}
+                    onClick={() => handleChangeUserRole(u.id, u.role === "admin" ? "user" : "admin")}
+                  >
+                    Change Role
+                  </button>
+                  <button className={styles["delete-button"]} onClick={() => handleDeleteUser(u.id)}>
+                    Delete User
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );

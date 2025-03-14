@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Game, Category } from "../types";
+import styles from "./GameForm.module.css";
 
 interface GameFormProps {
   editingGameId: number | null;
@@ -74,61 +75,99 @@ const GameForm: React.FC<GameFormProps> = ({
     });
   };
 
+  const sortedCategories = categories.sort((a, b) =>
+    a.title.localeCompare(b.title)
+  );
+
   return (
-    <form onSubmit={handleSubmit}>
+    <form className={styles["game-form"]} onSubmit={handleSubmit}>
       <h3>{editingGameId ? "Edit Game" : "Add New Game"}</h3>
-      <input
-        placeholder="Game Title"
-        value={gameData.title}
-        onChange={(e) => handleChange("title", e.target.value)}
-        required
-      />
-      <select
-        value={gameData.categoryId !== undefined ? gameData.categoryId : ""}
-        onChange={(e) => handleChange("categoryId", e.target.value)}
-        required
-      >
-        <option value="">Select Category</option>
-        {categories.map((cat) => (
-          <option key={cat.id} value={cat.id}>
-            {cat.title}
-          </option>
-        ))}
-      </select>
-      <textarea
-        placeholder="Description"
-        value={gameData.description}
-        onChange={(e) => handleChange("description", e.target.value)}
-        required
-      />
-      <input
-        placeholder="Developer"
-        value={gameData.developer}
-        onChange={(e) => handleChange("developer", e.target.value)}
-        required
-      />
-      <input
-        placeholder="Price"
-        type="number"
-        value={gameData.price !== undefined ? gameData.price : ""}
-        onChange={(e) => handleChange("price", e.target.value)}
-        required
-      />
-      <input
-        placeholder="Cover URL"
-        value={gameData.cover}
-        onChange={(e) => handleChange("cover", e.target.value)}
-        required
-      />
-      <input
-        placeholder="Release Year"
-        type="number"
-        value={gameData.release !== undefined ? gameData.release : ""}
-        onChange={(e) => handleChange("release", e.target.value)}
-        required
-      />
-      <button type="submit">{editingGameId ? "Update Game" : "Add Game"}</button>
-      {editingGameId && <button type="button" onClick={onCancel}>Cancel</button>}
+      <div className={styles["form-control"]}>
+        <input
+          className={styles["game-input"]}
+          placeholder="Game Title"
+          value={gameData.title}
+          onChange={(e) => handleChange("title", e.target.value)}
+          required
+        />
+      </div>
+      <div className={styles["form-control"]}>
+        <select
+          className={styles["game-select"]}
+          value={gameData.categoryId !== undefined ? gameData.categoryId : ""}
+          onChange={(e) => handleChange("categoryId", e.target.value)}
+          required
+        >
+          <option value="">Select Category</option>
+          {sortedCategories.map((cat) => (
+            <option key={cat.id} value={cat.id}>
+              {cat.title}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div className={styles["form-control"]}>
+        <textarea
+          className={styles["game-textarea"]}
+          placeholder="Description"
+          value={gameData.description}
+          onChange={(e) => handleChange("description", e.target.value)}
+          required
+          rows={5}
+        />
+      </div>
+      <div className={styles["form-control"]}>
+        <input
+          className={styles["game-input"]}
+          placeholder="Developer"
+          value={gameData.developer}
+          onChange={(e) => handleChange("developer", e.target.value)}
+          required
+        />
+      </div>
+      <div className={styles["form-control"]}>
+        <input
+          className={styles["game-input"]}
+          placeholder="Price"
+          type="number"
+          value={gameData.price !== undefined ? gameData.price : ""}
+          onChange={(e) => handleChange("price", e.target.value)}
+          required
+        />
+      </div>
+      <div className={styles["form-control"]}>
+        <input
+          className={styles["game-input"]}
+          placeholder="Cover URL"
+          value={gameData.cover}
+          onChange={(e) => handleChange("cover", e.target.value)}
+          required
+        />
+      </div>
+      <div className={styles["form-control"]}>
+        <input
+          className={styles["game-input"]}
+          placeholder="Release Year"
+          type="number"
+          value={gameData.release !== undefined ? gameData.release : ""}
+          onChange={(e) => handleChange("release", e.target.value)}
+          required
+        />
+      </div>
+      <div className={styles["form-actions"]}>
+        <button className={styles["game-button"]} type="submit">
+          {editingGameId ? "Update Game" : "Add Game"}
+        </button>
+        {editingGameId && (
+          <button
+            className={`${styles["game-button"]} ${styles["cancel-button"]}`}
+            type="button"
+            onClick={onCancel}
+          >
+            Cancel
+          </button>
+        )}
+      </div>
     </form>
   );
 };

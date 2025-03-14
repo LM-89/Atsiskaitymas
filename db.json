@@ -21,34 +21,34 @@
       "release": 2025
     },
     {
-      "id": 3,
       "title": "Kingdom Come: Deliverance II",
       "categoryId": 3,
       "description": "A thrilling story-driven action RPG, with a rich open world, set in 15th century Medieval Europe. Experience the ultimate medieval adventure - through the eyes of young Henry - as you embark on a journey of epic proportions.",
       "developer": "Warhorse Studios",
       "price": 59.99,
       "cover": "https://i.imgur.com/DLukvrG.jpg",
-      "release": 2025
+      "release": 2025,
+      "id": 3
     },
     {
-      "id": 4,
       "title": "Detroit: Become Human",
       "categoryId": 2,
       "description": "Detroit: Become Human puts the destiny of both mankind and androids in your hands, taking you to a near future where machines have become more intelligent than humans. Every choice you make affects the outcome of the game, with one of the most intricately branching narratives ever created.",
       "developer": "Quantic Dream",
       "price": 11.99,
       "cover": "https://i.imgur.com/ZdFxeMf.jpg",
-      "release": 2018
+      "release": 2018,
+      "id": 4
     },
     {
-      "id": 5,
       "title": "Anno 1800",
       "categoryId": 4,
       "description": "Anno 1800™ – Lead the Industrial Revolution! Welcome to the dawn of the Industrial Age. The path you choose will define your world. Are you an innovator or an exploiter? A conqueror or a liberator? How the world remembers your name is up to you.",
       "developer": "Ubisoft Mainz",
       "price": 5.99,
       "cover": "https://i.imgur.com/hbMBtYy.png",
-      "release": 2019
+      "release": 2019,
+      "id": 5
     },
     {
       "id": 6,
@@ -128,10 +128,10 @@
       "surname": "Doe",
       "nickname": "ShadowKnight",
       "email": "john.doe@example.com",
-      "password": "Admin123",
+      "password": "admin",
       "role": "admin",
       "bio": "Site's admin. Feel free to reach out.",
-      "avatar": "https://robohash.org/3a80f34cc109bde4662ea8bf3921e007?set=set1&bgset=&size=400x400"
+      "avatar": "https://robohash.org/5db286086704d6f827eca94510b17d47?set=set3&bgset=&size=400x400"
     },
     {
       "id": 2,
@@ -140,7 +140,7 @@
       "nickname": "PixelQueen",
       "email": "emma.smith@example.com",
       "password": "user",
-      "role": "user",
+      "role": "admin",
       "bio": "Gamer girl, FPS and Action packed games maniac.",
       "avatar": "https://robohash.org/9af0ecefc85361e7cf8251ca65cbc686?set=set3&bgset=&size=400x400"
     },
@@ -163,8 +163,8 @@
       "email": "olivia.wilson@example.com",
       "password": "user",
       "role": "user",
-      "bio": "",
-      "avatar": ""
+      "bio": "As the nickname tells, i'm the master of rpgs.",
+      "avatar": "https://gravatar.com/avatar/4eedf313cb1af47eb6a12284e5cd9c5c?s=200&d=robohash&r=x"
     },
     {
       "id": 5,
@@ -174,19 +174,8 @@
       "email": "ethan.miller@example.com",
       "password": "user",
       "role": "user",
-      "bio": "",
-      "avatar": ""
-    },
-    {
-      "email": "laimonas@example.com",
-      "password": "laimonas",
-      "name": "Laimonas",
-      "surname": "Matelis",
-      "role": "admin",
-      "nickname": "Bon Pari",
-      "id": 6,
-      "avatar": "",
-      "bio": ""
+      "bio": "Nothing of such importance to share.",
+      "avatar": "https://robohash.org/bc762e33c6cd93e1fe975a15b61e9785?set=set3&bgset=&size=400x400"
     }
   ],
   "categories": [
@@ -196,9 +185,9 @@
       "id": 1
     },
     {
-      "id": 2,
       "title": "Action",
-      "description": "Fast-paced games with real-time combat and dynamic gameplay."
+      "description": "Fast-paced games with real-time combat and dynamic gameplay.",
+      "id": 2
     },
     {
       "id": 3,
@@ -206,9 +195,9 @@
       "description": "Role-playing games with character progression and immersive storylines."
     },
     {
-      "id": 4,
       "title": "Simulation",
-      "description": "Games that simulate real-world activities or experiences."
+      "description": "Games that simulate real-world activities or experiences.",
+      "id": 4
     },
     {
       "title": "Racing",

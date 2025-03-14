@@ -1,0 +1,165 @@
+.main-content-container {
+    display: grid;
+    grid-template-columns: 5fr 1fr;
+    gap: 100px;
+    padding: 25px;
+    margin: 25px;
+}
+
+.main-games-container {
+    grid-column: 1/2;  
+}
+
+.main-users-container {
+    grid-column: 2/3;    
+}
+
+.main-games-container,
+.main-users-container {
+    border: 1px solid rgb(87, 158, 216);
+    padding: 50px;
+    background-color: var(--bg-color);
+    box-shadow: 0px 0px 8px 0px rgb(121, 194, 253);
+}
+
+.games-ul-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); 
+    gap: 16px; 
+    padding: 0; 
+    list-style-type: none; 
+}
+
+.games-list-item {
+    background-color: #424242; 
+    color: #fff; 
+    padding: 16px; 
+    border-radius: 8px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: transform 0.3s;
+}
+
+.games-list-item:hover {
+    transform: scale(1.03);
+    background-color: #525252;
+    box-shadow: 1px 1px 8px 1px rgb(121, 194, 253);
+    transition: 0.1s;
+}
+
+.games-list-item:active {
+    scale: 0.95;
+}
+
+.game-cover-container {
+    border-radius: 15px;
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    margin-left: auto;
+    margin-right: auto;
+    max-height: 290px;
+}
+
+.game-cover-img {
+    width: 100%;
+}
+
+.game-description {
+    text-align: left;
+    text-indent: 25px;
+}
+
+.game-title {
+    font-size: 24px;
+    text-shadow: rgb(138, 187, 218) 1px 0 5px;;
+}
+
+/* besisukantis loaderis */
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+.spinner {
+    border: 4px solid #f3f3f3; 
+    border-top: 4px solid #3498db; 
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* userio statuso burbuliukas, ar online ar ne */
+.user-status-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+    
+}
+
+.online {
+    background-color: #a6e2f1;
+    box-shadow: 1px 1px 8px 5px rgb(121, 194, 253);
+}
+
+.offline {
+    background-color: #6e5957;
+    box-shadow: 1px 1px 8px 2px rgb(253, 121, 121)
+}
+
+
+.users-list {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    padding: 0;
+    width: 100%;
+}
+
+.users-list-item {
+    width: 100%;
+    padding: 15px;
+    margin: 15px 15px 15px 15px;
+    background-color: #424242; 
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    min-height: 40px;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.users-list-item:hover {
+    transform: scale(1.03);
+    background-color: #525252;
+    box-shadow: 1px 1px 8px 1px rgb(121, 194, 253);
+    transition: 0.1s;
+}
+
+.users-list-item:active {
+    scale: 0.95;
+}
+
+.category-filter {
+    cursor: pointer;
+}
+
