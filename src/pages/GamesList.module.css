@@ -24,12 +24,12 @@
 
 .games-ul-container {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); 
+    grid-template-columns: repeat(3, 1fr); 
     gap: 100px; 
     padding: 25px; 
     list-style-type: none;
     overflow-y: scroll;
-    min-height: 1280px;
+    max-height: 1280px;
     padding-right: 80px; 
     scrollbar-width: thin;
     scrollbar-color: rgb(81, 141, 190) grey;

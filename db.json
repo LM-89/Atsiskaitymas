@@ -131,6 +131,17 @@
       "release": 2018,
       "iframe": "https://www.youtube.com/embed/LGcECozNXEw",
       "id": 12
+    },
+    {
+      "title": "Forza Horizon 5",
+      "categoryId": 5,
+      "description": "Explore the vibrant open world landscapes of Mexico with limitless, fun driving action in the world’s greatest cars.",
+      "developer": " Playground Games",
+      "price": 29.99,
+      "cover": "https://i.imgur.com/landPPs.jpg",
+      "release": 2021,
+      "iframe": "https://www.youtube.com/embed/Rv7xLt5yNsM",
+      "id": 13
     }
   ],
   "users": [
@@ -188,6 +199,15 @@
       "role": "user",
       "bio": "Nothing of such importance to share.",
       "avatar": "https://robohash.org/bc762e33c6cd93e1fe975a15b61e9785?set=set3&bgset=&size=400x400"
+    },
+    {
+      "email": "laimonas@example.com",
+      "password": "user",
+      "name": "Laimonas",
+      "surname": "Matelis",
+      "role": "user",
+      "nickname": "",
+      "id": 6
     }
   ],
   "categories": [

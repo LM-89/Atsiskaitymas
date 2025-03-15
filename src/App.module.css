@@ -69,6 +69,12 @@ button:hover {
   background-color: #357abd;
 }
 
+body {
+  max-width: 2780px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 
 
 
