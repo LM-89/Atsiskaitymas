@@ -1,0 +1,276 @@
+@use '../../assets/partial_scss/responsive' as resp;
+
+.main-content-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: auto;
+
+    @include resp.md {
+        flex-direction: row;
+        padding: 10px;
+        gap: 5px;
+    }
+    @include resp.lg {
+        gap: 15px;
+    }
+    @include resp.xl {
+        max-width: 2300px;
+    }
+        
+    .main-games-container {
+        background-color: var(--bg-color);
+        margin: 10px auto;
+        padding: 10px;
+        border: 1px solid rgb(87, 158, 216);
+        box-shadow: 0px 0px 8px 0px rgb(121, 194, 253);
+
+        @include resp.md {
+            width: 65%;
+            max-height: 100vh;
+            overflow-y: scroll;
+            scrollbar-width: thin;
+            scrollbar-color: rgb(81, 141, 190) grey;
+            scroll-behavior: smooth;
+        }
+        @include resp.lg {
+            width: 80%;
+        }
+        @include resp.xl {
+            width: 85%;
+        }
+        
+        .games-ul-container {
+            display: grid;
+            grid-template-columns: 1fr; 
+            gap: 30px; 
+            padding: 25px; 
+            margin-top: 15px;
+            list-style-type: none;
+            max-height: 1024px;
+            overflow-y: scroll;
+            scrollbar-width: thin;
+            scrollbar-color: rgb(81, 141, 190) grey;
+            scroll-behavior: smooth;
+
+            @include resp.lg {
+                grid-template-columns: 1fr 1fr;
+            }
+            @include resp.xl {
+                grid-template-columns: 1fr 1fr 1fr 1fr;
+                max-height: 2300px;
+            }
+            @include resp.xxl {
+                grid-template-columns: repeat(5, 1fr);
+            }
+            
+            .games-list-item {
+                &:hover {
+                    scale: 1.01;
+                    background-color: #525252;
+                    box-shadow: 1px 1px 8px 1px rgb(121, 194, 253);
+                    transition: 0.1s;
+                }
+                &:active {
+                    scale: 0.95;
+                }
+                
+                background-color: #424242; 
+                color: #fff; 
+                padding: 16px; 
+                border-radius: 8px; 
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                transition: transform 0.3s;
+                box-shadow: 1px 1px 8px 1px rgb(99, 100, 102);
+                font-size: 20px;
+                min-width: 300px;
+                max-width: 540px;
+                min-height: 550px;
+                margin: auto;
+                
+                @include resp.md {
+                    width: 75%;
+                }
+                @include resp.xl {
+                    min-height: 450px;
+                }
+
+                .game-cover-container {
+                    border-radius: 12px;
+                    margin-bottom: 15px;
+                    display: flex;
+                    justify-content: center;
+                    overflow: hidden;
+                    margin-left: auto;
+                    margin-right: auto;
+                    min-height: 220px;
+                    width: 60%;
+                    box-shadow: 1px 1px 8px 1px rgb(121, 194, 253);
+                
+                    .game-cover-img {
+                        width: 100%;
+                        object-fit: cover;   
+                    }
+                }
+            
+                .game-description {
+                    text-align: left;
+                    text-indent: 25px;
+                }
+                
+                .game-title {
+                    font-size: 24px;
+                    text-shadow: rgb(138, 187, 218) 1px 0 5px;;
+                }
+            }
+        }
+    }
+
+    .main-users-container {
+        background-color: var(--bg-color);
+        padding: 10px;
+        border: 1px solid rgb(87, 158, 216);
+        box-shadow: 0px 0px 8px 0px rgb(121, 194, 253);
+        margin-top: 5px;
+        position: sticky;
+        z-index: 10;
+        bottom: 0px;
+        max-height: 15vh;
+        overflow-y: hidden;
+        overflow: scroll;
+        scrollbar-width: thin;
+        scrollbar-color: rgb(81, 141, 190) grey;
+        scroll-behavior: smooth;
+        min-width: 350px;
+
+        @include resp.md {
+            width: 35%;
+            margin-top: 10px;
+            max-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        @include resp.lg {
+            width: 25%;
+        }
+        @include resp.xl {
+            width: 15%;
+        }
+        
+        .users-list {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            padding: 0;
+            width: 100%;
+        
+            .users-list-item {
+                &:active {
+                    scale: 0.95;
+                }
+                &:hover {
+                    transform: scale(1.03);
+                    background-color: #525252;
+                    box-shadow: 1px 1px 8px 1px rgb(121, 194, 253);
+                    transition: 0.1s;
+                }
+                
+                width: 90%;
+                background-color: #424242; 
+                color: #fff;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                border-radius: 5px;
+                min-height: 30px;
+                margin: 8px auto;
+                padding-left: 15px;
+        
+                .user-avatar {
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                }
+            }
+        }
+    }
+}
+
+
+
+
+
+/* besisukantis loaderis */
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+.spinner {
+    border: 4px solid #f3f3f3; 
+    border-top: 4px solid #3498db; 
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+
+
+/* userio statuso burbuliukas, ar online ar ne */
+.user-status-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+    
+}
+
+.online {
+    background-color: #a6e2f1;
+    box-shadow: 1px 1px 8px 5px rgb(121, 194, 253);
+    background-color: rgb(121, 194, 253);
+    animation: online-glow 5s infinite ease-in-out;
+}
+
+.offline {
+    background-color: #6e5957;
+    box-shadow: 1px 1px 8px 2px rgb(253, 121, 121)
+}
+
+
+@keyframes online-glow {
+    0% {
+        box-shadow: 0 0 5px rgba(121, 194, 253, 0.5);
+    }
+    20% {
+        box-shadow: 0 0 13px rgba(121, 194, 253, 0.7), 0 0 20px rgba(121, 194, 253, 0.5);
+    }
+    40% {
+        box-shadow: 0 0 15px rgba(121, 194, 253, 0.9), 0 0 25px rgba(121, 194, 253, 0.6);
+    }
+    48%, 52% {
+        box-shadow: none;
+    }
+    60% {
+        box-shadow: 0 0 18px rgba(121, 194, 253, 0.9), 0 0 25px rgba(121, 194, 253, 0.6);
+    }
+    80% {
+        box-shadow: 0 0 13px rgba(121, 194, 253, 0.7), 0 0 20px rgba(121, 194, 253, 0.5);
+    }
+    100% {
+        box-shadow: 0 0 5px rgba(121, 194, 253, 0.5);
+    }
+}
+
+

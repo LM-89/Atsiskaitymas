@@ -199,15 +199,6 @@
       "role": "user",
       "bio": "Nothing of such importance to share.",
       "avatar": "https://robohash.org/bc762e33c6cd93e1fe975a15b61e9785?set=set3&bgset=&size=400x400"
-    },
-    {
-      "email": "laimonas@example.com",
-      "password": "user",
-      "name": "Laimonas",
-      "surname": "Matelis",
-      "role": "user",
-      "nickname": "",
-      "id": 6
     }
   ],
   "categories": [

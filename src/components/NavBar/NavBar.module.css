@@ -1,0 +1,90 @@
+.navbar {
+  background-color: var(--bg-color);
+  margin: 0 auto;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgb(87, 158, 216);
+  box-shadow: inset 1px 1px 8px 1px rgb(121, 194, 253), 0px 0px 8px 0px rgb(121, 194, 253);
+  z-index: 20;
+  min-width: 350px;
+  max-width: 2301px;
+}
+.navbar .nav-links-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.navbar .nav-links-container .nav-link-icon:hover {
+  scale: 1.2;
+  fill: rgb(87, 158, 216);
+}
+@media (min-width: 768px) {
+  .navbar .nav-links-container .nav-link-icon {
+    scale: 1.5;
+    margin: 15px;
+  }
+}
+.navbar .greeting-exit-container {
+  display: flex;
+  align-items: center;
+}
+.navbar .greeting-exit-container .greeting {
+  font-size: 12px;
+  margin-right: 10px;
+}
+@media (min-width: 768px) {
+  .navbar .greeting-exit-container .greeting {
+    font-size: 16px;
+  }
+}
+.navbar .greeting-exit-container .greeting .glowing-user-name {
+  font-size: 16px;
+  padding: 10px;
+  animation: glow-effect 5s infinite ease-in-out;
+}
+@media (min-width: 768px) {
+  .navbar .greeting-exit-container .greeting .glowing-user-name {
+    font-size: 20px;
+  }
+}
+.navbar .greeting-exit-container .logout-button {
+  background-color: transparent;
+  margin: 0;
+  padding: 0;
+}
+.navbar .greeting-exit-container .logout-button .nav-link-icon:hover {
+  scale: 1.2;
+  fill: rgb(255, 91, 91);
+}
+@media (min-width: 768px) {
+  .navbar .greeting-exit-container .logout-button .nav-link-icon {
+    scale: 1.5;
+    margin: 15px;
+  }
+}
+
+@keyframes glow-effect {
+  0% {
+    text-shadow: 0 0 5px rgba(121, 194, 253, 0.5);
+  }
+  20% {
+    text-shadow: 0 0 10px rgba(121, 194, 253, 0.7), 0 0 20px rgba(121, 194, 253, 0.5);
+  }
+  40% {
+    text-shadow: 0 0 15px rgba(128, 197, 253, 0.9), 0 0 25px rgba(121, 194, 253, 0.6);
+  }
+  48%, 50%, 52% {
+    text-shadow: none;
+  }
+  60% {
+    text-shadow: 0 0 15px rgba(121, 194, 253, 0.9), 0 0 25px rgba(121, 194, 253, 0.6);
+  }
+  80% {
+    text-shadow: 0 0 10px rgba(121, 194, 253, 0.7), 0 0 20px rgba(121, 194, 253, 0.5);
+  }
+  100% {
+    text-shadow: 0 0 5px rgba(121, 194, 253, 0.5);
+  }
+}/*# sourceMappingURL=NavBar.module.css.map */

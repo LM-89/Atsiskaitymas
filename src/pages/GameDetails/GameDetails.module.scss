@@ -1,0 +1,272 @@
+@use '../../assets/partial_scss/responsive' as resp;
+
+.game-details-container {
+    background-color: var(--bg-color);
+    margin: 10px auto;
+    padding: 10px;
+    border: 1px solid rgb(87, 158, 216);
+    box-shadow: 0px 0px 8px 0px rgb(121, 194, 253);
+    max-width: 800px;
+
+    @include resp.md {
+        padding: 45px;
+        margin: 25px auto;
+    }
+    @include resp.lg {       
+       max-width: 2300px;
+    }
+    
+    .game-details-top {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+
+        @include resp.lg {       
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 35px;
+        }
+
+        .game-cover-container {
+            width: 100%;
+
+            @include resp.lg {       
+                grid-row-start: 1;
+                grid-row-end: 3;
+            }
+            
+            .game-cover {
+                width: 100%;
+                border-radius: 5px;
+                box-shadow: 0px 0px 8px 0px rgb(121, 194, 253);
+            }
+        }
+        
+        .game-details {
+            background-color: #1f1f1f;
+            padding: 25px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 8px 0px rgb(121, 194, 253);
+
+            @include resp.lg {       
+                grid-column-start: 2;
+                grid-column-end: 3;
+                grid-row-start: 1;
+                grid-row-end: 2;
+            }
+            
+            p {
+                padding: 5px 0px;
+            }
+            
+        }
+        
+        .game-trailer-container {
+            .game-iframe {
+                width: 100%;
+                border-radius: 5px;
+                box-shadow: 0px 0px 8px 0px rgb(121, 194, 253);
+                border: none;
+                min-height: 250px;
+
+                @include resp.md {
+                    min-height: 350px;
+                }
+                @include resp.lg {
+                    height: 100%;
+                }
+            }
+        }
+    }
+
+    .reviews-section {
+        display: flex;
+        flex-direction: column;
+        text-align: left;
+        width: 100%;
+        margin: 10px 0px;
+        margin-top: 30px;
+        margin-bottom: 20px;
+        border-top: 1px solid rgb(87, 158, 216);
+        max-height: 300px;
+        overflow-y: hidden;
+        overflow: scroll; 
+        scrollbar-width: thin;
+        scrollbar-color: rgb(81, 141, 190) grey;
+        scroll-behavior: smooth;
+        
+        @include resp.lg {       
+            max-height: 600px;
+        }
+        
+        h2 {
+            font-size: 20px;
+            margin-top: 10px;
+
+            @include resp.lg {       
+                font-size: 26px;
+            }
+        }
+    
+        .review-item {
+            &:hover {
+                scale: 1.005;
+                transition: 0.1s;
+                box-shadow: 1px 1px 8px 1px rgb(121, 194, 253);
+            }
+            
+            width: 95%;
+            margin-left: auto;
+            margin-right: auto;
+            background-color: #1f1f1f;
+            padding: 25px;
+            border-radius: 5px;
+            display: flex;
+            flex-direction: column;
+            row-gap: 10px;
+            margin-top: 10px;
+            
+            p {
+                margin: 5px;
+            }
+            
+            .review-user-info {            
+                &:hover {
+                    box-shadow: 1px 1px 8px 1px rgb(121, 194, 253);
+                }
+    
+                margin-right: 15px;
+                background-color: #383838;
+                padding: 15px;
+                border-radius: 10px;
+                margin: auto;
+                width: 100%;
+    
+                .user-link {
+                    width: 30%;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;    
+                    gap: 10px;
+    
+                    .review-avatar {
+                        &:hover {
+                            scale: 1.1;
+                            box-shadow: 1px 1px 8px 1px rgb(121, 194, 253);
+                        }
+                        
+                        border-radius: 50%;
+                        width: 50px;
+                        border: 1px solid grey;
+                        box-shadow: inset 1px 1px 8px 1px rgb(121, 194, 253);
+                    }
+                }
+            }
+            
+            .review-info {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+                @include resp.lg {       
+                    flex-direction: row;
+                    flex-wrap: wrap;
+                    .review-text {
+                        width: 100%;
+                    }
+                }
+
+            }
+            
+            .review-container {
+                .review-control-range {
+                    display: flex;
+                    align-items: center;
+                }
+    
+                .review-control {
+                    padding: 10px 0px;
+                    width: 100%;
+                    overflow-wrap: break-word;
+                    
+                    .review-textarea {
+                        width: 100%;
+                        margin-top: 10px;
+                        display: flex;
+                        flex-wrap: wrap;
+                    }
+                }           
+            }
+    
+            .review-actions {
+                display: flex;
+                gap: 15px;
+                justify-content: center;
+            }
+        }
+    }
+    
+    .add-review {
+        width: 100%;
+        border-top: 1px solid rgb(87, 158, 216);
+        text-align: center;
+    
+        h3 {
+            font-size: 20px;
+            margin: 10px 0px;
+            text-align: left;
+
+            @include resp.lg {       
+                font-size: 26px;
+            }
+        }
+    
+        .review-rating-container {
+            margin-left: auto;
+            margin-right: auto;
+            background-color: #1f1f1f;
+            padding: 25px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 15px;    
+        
+            .review-textarea {
+                width: 100%;
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

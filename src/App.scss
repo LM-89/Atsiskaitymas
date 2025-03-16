@@ -1,0 +1,130 @@
+@use "./assets/partial_scss/responsive" as resp;
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+:root {
+  --bg-color: #2c2c2c;
+  --bg-secondary-color: #181818;
+  --text-color: #e2e2e2;
+  --input-bg: #5e5e5e;
+  --border-color: #555;
+  --primary-button-bg: #4a90e2;
+  --primary-button-hover: #357abd;
+  --secondary-button-bg: #6a6a6a;
+  --secondary-button-hover: #555;
+}
+
+body {
+  color: var(--text-color);
+  background-color:var(--bg-secondary-color);
+  font-family: Arial, sans-serif;
+  margin: 0 auto;
+  padding: 0;
+}
+
+nav {
+  position: sticky;
+  top: 0px;
+  z-index: 10;
+}
+
+.nav-text {
+  display: none;
+}
+
+input,
+textarea,
+select {
+  padding: 8px;
+  border: 1px solid #555;
+  border-radius: 4px;
+  background-color: #3a3a3a;
+  color: #e0e0e0;
+  transition: border-color 0.3s;
+  margin-bottom: 10px;
+}
+
+select {
+  cursor: pointer;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #ffffff;
+  outline: none;
+  box-shadow: 1px 1px 8px 1px rgb(121, 194, 253);
+}
+
+
+input::placeholder,
+textarea::placeholder,
+select::placeholder {
+  color: #999999;
+}
+
+input:hover::placeholder,
+textarea:hover::placeholder, 
+select:hover::placeholder {
+  color: #cecece;
+}
+
+a {
+  text-decoration: none;
+  color: var(--text-color)
+}
+
+li {
+  list-style: none;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  background-color: #4a90e2;
+  border: none;
+  color: #fff;
+  padding: 12px 25px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #357abd;
+}
+
+.delete-button {
+  background-color: #ac5f5f;
+}
+
+.delete-button:hover {
+  background-color: #f55757;
+  box-shadow: 0px 0px 8px 3px rgb(255, 64, 74);
+  cursor: pointer;
+}
+
+.error {
+  text-align: center;
+  margin-top: 16px; 
+  color: #ff4d4f;
+}
+
+h2 {
+  @include resp.lg {
+    font-size: 24px;
+  }
+}
+
+h3 {
+  @include resp.lg {
+    font-size: 24px;
+  }
+}
+

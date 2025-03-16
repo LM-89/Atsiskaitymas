@@ -1,0 +1,278 @@
+.main-content-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: auto;
+}
+@media (min-width: 768px) {
+  .main-content-container {
+    flex-direction: row;
+    padding: 10px;
+    gap: 5px;
+  }
+}
+@media (min-width: 1279px) {
+  .main-content-container {
+    gap: 15px;
+  }
+}
+@media (min-width: 1920px) {
+  .main-content-container {
+    max-width: 2300px;
+  }
+}
+.main-content-container .main-games-container {
+  background-color: var(--bg-color);
+  margin: 10px auto;
+  padding: 10px;
+  border: 1px solid rgb(87, 158, 216);
+  box-shadow: 0px 0px 8px 0px rgb(121, 194, 253);
+}
+@media (min-width: 768px) {
+  .main-content-container .main-games-container {
+    width: 65%;
+    max-height: 100vh;
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    scrollbar-color: rgb(81, 141, 190) grey;
+    scroll-behavior: smooth;
+  }
+}
+@media (min-width: 1279px) {
+  .main-content-container .main-games-container {
+    width: 80%;
+  }
+}
+@media (min-width: 1920px) {
+  .main-content-container .main-games-container {
+    width: 85%;
+  }
+}
+.main-content-container .main-games-container .games-ul-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 30px;
+  padding: 25px;
+  margin-top: 15px;
+  list-style-type: none;
+  max-height: 1024px;
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  scrollbar-color: rgb(81, 141, 190) grey;
+  scroll-behavior: smooth;
+}
+@media (min-width: 1279px) {
+  .main-content-container .main-games-container .games-ul-container {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (min-width: 1920px) {
+  .main-content-container .main-games-container .games-ul-container {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    max-height: 2300px;
+  }
+}
+@media (min-width: 2300px) {
+  .main-content-container .main-games-container .games-ul-container {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+.main-content-container .main-games-container .games-ul-container .games-list-item {
+  background-color: #424242;
+  color: #fff;
+  padding: 16px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: transform 0.3s;
+  box-shadow: 1px 1px 8px 1px rgb(99, 100, 102);
+  font-size: 20px;
+  min-width: 300px;
+  max-width: 540px;
+  min-height: 550px;
+  margin: auto;
+}
+.main-content-container .main-games-container .games-ul-container .games-list-item:hover {
+  scale: 1.01;
+  background-color: #525252;
+  box-shadow: 1px 1px 8px 1px rgb(121, 194, 253);
+  transition: 0.1s;
+}
+.main-content-container .main-games-container .games-ul-container .games-list-item:active {
+  scale: 0.95;
+}
+@media (min-width: 768px) {
+  .main-content-container .main-games-container .games-ul-container .games-list-item {
+    width: 75%;
+  }
+}
+@media (min-width: 1920px) {
+  .main-content-container .main-games-container .games-ul-container .games-list-item {
+    min-height: 450px;
+  }
+}
+.main-content-container .main-games-container .games-ul-container .games-list-item .game-cover-container {
+  border-radius: 12px;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  margin-left: auto;
+  margin-right: auto;
+  min-height: 220px;
+  width: 60%;
+  box-shadow: 1px 1px 8px 1px rgb(121, 194, 253);
+}
+.main-content-container .main-games-container .games-ul-container .games-list-item .game-cover-container .game-cover-img {
+  width: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.main-content-container .main-games-container .games-ul-container .games-list-item .game-description {
+  text-align: left;
+  text-indent: 25px;
+}
+.main-content-container .main-games-container .games-ul-container .games-list-item .game-title {
+  font-size: 24px;
+  text-shadow: rgb(138, 187, 218) 1px 0 5px;
+}
+.main-content-container .main-users-container {
+  background-color: var(--bg-color);
+  padding: 10px;
+  border: 1px solid rgb(87, 158, 216);
+  box-shadow: 0px 0px 8px 0px rgb(121, 194, 253);
+  margin-top: 5px;
+  position: sticky;
+  z-index: 10;
+  bottom: 0px;
+  max-height: 15vh;
+  overflow-y: hidden;
+  overflow: scroll;
+  scrollbar-width: thin;
+  scrollbar-color: rgb(81, 141, 190) grey;
+  scroll-behavior: smooth;
+  min-width: 350px;
+}
+@media (min-width: 768px) {
+  .main-content-container .main-users-container {
+    width: 35%;
+    margin-top: 10px;
+    max-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+}
+@media (min-width: 1279px) {
+  .main-content-container .main-users-container {
+    width: 25%;
+  }
+}
+@media (min-width: 1920px) {
+  .main-content-container .main-users-container {
+    width: 15%;
+  }
+}
+.main-content-container .main-users-container .users-list {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  padding: 0;
+  width: 100%;
+}
+.main-content-container .main-users-container .users-list .users-list-item {
+  width: 90%;
+  background-color: #424242;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 5px;
+  min-height: 30px;
+  margin: 8px auto;
+  padding-left: 15px;
+}
+.main-content-container .main-users-container .users-list .users-list-item:active {
+  scale: 0.95;
+}
+.main-content-container .main-users-container .users-list .users-list-item:hover {
+  transform: scale(1.03);
+  background-color: #525252;
+  box-shadow: 1px 1px 8px 1px rgb(121, 194, 253);
+  transition: 0.1s;
+}
+.main-content-container .main-users-container .users-list .users-list-item .user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+/* besisukantis loaderis */
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+/* userio statuso burbuliukas, ar online ar ne */
+.user-status-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.online {
+  background-color: #a6e2f1;
+  box-shadow: 1px 1px 8px 5px rgb(121, 194, 253);
+  background-color: rgb(121, 194, 253);
+  animation: online-glow 5s infinite ease-in-out;
+}
+
+.offline {
+  background-color: #6e5957;
+  box-shadow: 1px 1px 8px 2px rgb(253, 121, 121);
+}
+
+@keyframes online-glow {
+  0% {
+    box-shadow: 0 0 5px rgba(121, 194, 253, 0.5);
+  }
+  20% {
+    box-shadow: 0 0 13px rgba(121, 194, 253, 0.7), 0 0 20px rgba(121, 194, 253, 0.5);
+  }
+  40% {
+    box-shadow: 0 0 15px rgba(121, 194, 253, 0.9), 0 0 25px rgba(121, 194, 253, 0.6);
+  }
+  48%, 52% {
+    box-shadow: none;
+  }
+  60% {
+    box-shadow: 0 0 18px rgba(121, 194, 253, 0.9), 0 0 25px rgba(121, 194, 253, 0.6);
+  }
+  80% {
+    box-shadow: 0 0 13px rgba(121, 194, 253, 0.7), 0 0 20px rgba(121, 194, 253, 0.5);
+  }
+  100% {
+    box-shadow: 0 0 5px rgba(121, 194, 253, 0.5);
+  }
+}/*# sourceMappingURL=GamesList.module.css.map */

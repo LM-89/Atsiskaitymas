@@ -1,0 +1,65 @@
+@use '../../assets/partial_scss/responsive' as resp;
+
+.profile-form {
+    background-color: #1f1f1f;
+    color: #e0e0e0;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 10px auto;
+    width: 100%;
+    box-shadow: 0px 0px 8px 0px rgb(121, 194, 253);
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+
+    h3 {
+        text-align: center;
+        margin-top: 15px;
+    }
+
+    .form-group {
+        margin-bottom: 10px;
+        display: flex;
+        flex-direction: column;
+
+        label {
+            padding: 10px 0px;
+        }
+
+        .profile-input,
+        .profile-textarea {
+            &:focus {
+                outline: none;
+                border-color: #888;
+            }
+        
+            padding: 8px;
+            border: 1px solid #555;
+            border-radius: 4px;
+            background-color: #3a3a3a;
+            color: #e0e0e0;
+            transition: border-color 0.3s;
+        }
+
+        .profile-message {
+            text-align: center;
+            margin-top: 16px;
+            color: #6affb8;
+        }
+        
+        .profile-separator {
+            border: 1px solid #555;
+            margin: 32px 0px;
+        } 
+    }
+
+    .profile-button {
+        &:disabled {
+            background-color: #6a6a6a;
+            cursor: not-allowed;
+        }
+        width: 100%;
+        margin: 0;
+        margin-bottom: 15px;
+    }
+}

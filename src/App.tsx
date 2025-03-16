@@ -1,13 +1,13 @@
 import { HashRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import { DataProvider, useData } from "./context/DataContext";
-import LoginPage from "./pages/LoginPage";
-import GamesList from "./pages/GamesList";
-import AdminPanel from "./pages/AdminPanel";
-import UserProfile from "./pages/UserProfile";
-import OtherUserProfile from "./pages/OtherUserProfile";
-import GameDetails from "./pages/GameDetails";
-import Navbar from "./components/NavBar";
-import styles from "./App.module.css";
+import LoginPage from "./pages/LoginPage/LoginPage";
+import GamesList from "./pages/GamesList/GamesList";
+import AdminPanel from "./pages/AdminPanel/AdminPanel";
+import UserProfile from "./pages/UserProfile/UserProfile";
+import OtherUserProfile from "./pages/OtherUserProfile/OtherUserProfile";
+import GameDetails from "./pages/GameDetails/GameDetails";
+import Navbar from "./components/NavBar/NavBar";
+import "./App.scss";
 import { JSX } from "react";
 
 const ProtectedRoute = ({ children, role }: { children: JSX.Element; role?: "admin" | "user" }) => {
@@ -26,7 +26,7 @@ const App = () => {
     <DataProvider>
       <Router>
         <Navbar />
-        <main className={styles["main-content"]}>
+        <main className= "body-container">
           <Routes>
             <Route path="/" element={<LoginPage />} />
             <Route

@@ -1,0 +1,35 @@
+.game-form {
+  background-color: #1f1f1f;
+  color: #e0e0e0;
+  padding: 15px;
+  border-radius: 8px;
+  margin: 10px auto;
+  width: 100%;
+  box-shadow: 0px 0px 8px 0px rgb(121, 194, 253);
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+.game-form h3 {
+  text-align: center;
+  margin: 5px 0px;
+}
+.game-form .form-control {
+  display: flex;
+  flex-direction: column;
+}
+.game-form .form-actions {
+  gap: 8px;
+  display: flex;
+  justify-content: center;
+}
+.game-form .form-actions .game-button {
+  flex: 1;
+  margin: 0;
+}
+.game-form .form-actions .cancel-button {
+  background-color: #6a6a6a;
+}
+.game-form .form-actions .cancel-button:hover {
+  background-color: #555;
+}/*# sourceMappingURL=GameForm.module.css.map */

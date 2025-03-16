@@ -1,0 +1,174 @@
+.admin-panel {
+  background-color: var(--bg-color);
+  box-shadow: 0px 0px 8px 0px rgb(121, 194, 253);
+  border: 1px solid rgb(87, 158, 216);
+  margin: 10px auto;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 800px;
+}
+@media (min-width: 1279px) {
+  .admin-panel {
+    width: 90%;
+    max-width: 1920px;
+  }
+}
+.admin-panel .heading {
+  text-align: center;
+  font-size: 24px;
+  text-shadow: 1px 1px 1px #fff;
+}
+@media (min-width: 1279px) {
+  .admin-panel .heading {
+    font-size: 32px;
+    padding: 20px;
+  }
+}
+.admin-panel .forms-container {
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 5px;
+}
+@media (min-width: 768px) {
+  .admin-panel .forms-container {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+}
+@media (min-width: 1279px) {
+  .admin-panel .forms-container {
+    flex-direction: row;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+}
+@media (min-width: 1920px) {
+  .admin-panel .forms-container {
+    gap: 50px;
+    margin-bottom: 35px;
+  }
+}
+.admin-panel .forms-container .game-form-container,
+.admin-panel .forms-container .category-form-container {
+  margin-bottom: 32px auto;
+  width: 100%;
+}
+@media (min-width: 1279px) {
+  .admin-panel .forms-container .game-form-container,
+  .admin-panel .forms-container .category-form-container {
+    width: 45%;
+  }
+}
+.admin-panel .categories-section {
+  border-top: 1px solid rgb(87, 158, 216);
+}
+.admin-panel .categories-section .category-item {
+  padding: 15px;
+  border-bottom: 1px solid #444;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  color: rgb(167, 167, 167);
+  font-size: 18px;
+}
+.admin-panel .categories-section .category-item:hover {
+  background-color: #292929;
+  color: rgb(221, 221, 221);
+  transition: 0.1s;
+  scale: 1.002;
+}
+@media (min-width: 768px) {
+  .admin-panel .categories-section .category-item {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .admin-panel .categories-section .category-item span {
+    width: 100%;
+  }
+}
+.admin-panel .categories-section .category-item .action-control {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 5px;
+}
+.admin-panel .users-games {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  width: 100%;
+}
+@media (min-width: 1920px) {
+  .admin-panel .users-games {
+    flex-direction: row;
+    justify-content: space-evenly;
+    border-top: 1px solid rgb(87, 158, 216);
+    padding-top: 25px;
+  }
+}
+.admin-panel .users-games .games-section,
+.admin-panel .users-games .users-section {
+  border-top: 1px solid rgb(87, 158, 216);
+}
+@media (min-width: 1920px) {
+  .admin-panel .users-games .games-section,
+  .admin-panel .users-games .users-section {
+    border-top: none;
+  }
+}
+.admin-panel .users-games .games-section .game-item,
+.admin-panel .users-games .games-section .user-item,
+.admin-panel .users-games .users-section .game-item,
+.admin-panel .users-games .users-section .user-item {
+  padding: 15px;
+  border-bottom: 1px solid #444;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  color: rgb(167, 167, 167);
+  font-size: 18px;
+}
+.admin-panel .users-games .games-section .game-item:hover,
+.admin-panel .users-games .games-section .user-item:hover,
+.admin-panel .users-games .users-section .game-item:hover,
+.admin-panel .users-games .users-section .user-item:hover {
+  background-color: #292929;
+  color: rgb(221, 221, 221);
+  transition: 0.1s;
+  scale: 1.002;
+}
+@media (min-width: 768px) {
+  .admin-panel .users-games .games-section .game-item,
+  .admin-panel .users-games .games-section .user-item,
+  .admin-panel .users-games .users-section .game-item,
+  .admin-panel .users-games .users-section .user-item {
+    flex-direction: row;
+  }
+}
+.admin-panel .users-games .games-section .game-item .action-control,
+.admin-panel .users-games .games-section .user-item .action-control,
+.admin-panel .users-games .users-section .game-item .action-control,
+.admin-panel .users-games .users-section .user-item .action-control {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 5px;
+}
+.admin-panel .lower-headings {
+  font-size: 20px;
+  margin: 10px 0px;
+}
+@media (min-width: 1279px) {
+  .admin-panel .lower-headings {
+    font-size: 26px;
+    padding: 25px;
+  }
+}/*# sourceMappingURL=AdminPanel.module.css.map */
