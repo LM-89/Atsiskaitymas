@@ -60,7 +60,6 @@
       "categoryId": 2,
       "description": "Path of Exile 2 is a next generation Action RPG from Grinding Gear Games, featuring co-op for up to six players. Set years after the original Path of Exile, you will return to the dark world of Wraeclast and seek to end the corruption that is spreading.",
       "developer": "Grinding Gear Games",
-      "price": 27.75,
       "cover": "https://i.imgur.com/8tCcE4s.jpg",
       "release": 2024,
       "iframe": "https://www.youtube.com/embed/QpbGfihd0_Q",
@@ -142,6 +141,17 @@
       "release": 2021,
       "iframe": "https://www.youtube.com/embed/Rv7xLt5yNsM",
       "id": 13
+    },
+    {
+      "title": "Title",
+      "categoryId": 2,
+      "description": "Action game",
+      "developer": "asdas",
+      "price": 15,
+      "cover": "asd",
+      "release": 1999,
+      "iframe": "asd",
+      "id": 14
     }
   ],
   "users": [
@@ -188,17 +198,6 @@
       "role": "user",
       "bio": "As the nickname tells, i'm the master of rpgs.",
       "avatar": "https://gravatar.com/avatar/4eedf313cb1af47eb6a12284e5cd9c5c?s=200&d=robohash&r=x"
-    },
-    {
-      "id": 5,
-      "name": "Ethan",
-      "surname": "Miller",
-      "nickname": "SpeedDemon",
-      "email": "ethan.miller@example.com",
-      "password": "user",
-      "role": "user",
-      "bio": "Nothing of such importance to share.",
-      "avatar": "https://robohash.org/bc762e33c6cd93e1fe975a15b61e9785?set=set3&bgset=&size=400x400"
     }
   ],
   "categories": [
@@ -224,7 +223,7 @@
     },
     {
       "title": "Racing",
-      "description": "Racing games involve characters competing in races (typically with vehicles, although games like Sonic R and Mad Dash Racing focus on foot racing). Racing games have multiple subgenres, such as kart racers (which tend to involve go-karts, power-up items and are usually themed around popular media franchises, such as Mario Kart), arcade racers (featuring a fast-paced experience and far more liberal physics, most Need for Speed games serving as an example), and sim racers (which attempt to accurately simulate the operation of real motor vehicles, such as Gran Turismo and Forza Motorsport).",
+      "description": "sasdasd",
       "id": 5
     },
     {
@@ -274,13 +273,6 @@
       "userId": 3,
       "rating": 4.7,
       "comment": "Incredible visuals and deep combat mechanics."
-    },
-    {
-      "id": 5,
-      "gameId": 1,
-      "userId": 5,
-      "rating": 4,
-      "comment": "Solid game, would love more content updates!"
     },
     {
       "gameId": 1,
@@ -340,18 +332,18 @@
       "id": 20
     },
     {
-      "gameId": 9,
-      "userId": 1,
-      "rating": 5,
-      "comment": "One of the best.",
-      "id": 21
-    },
-    {
       "gameId": 2,
       "userId": 1,
       "rating": 5,
       "comment": "Addictive as hell.",
       "id": 22
+    },
+    {
+      "gameId": 3,
+      "userId": 1,
+      "rating": 5,
+      "comment": "AAAA game!",
+      "id": 23
     }
   ]
 }
