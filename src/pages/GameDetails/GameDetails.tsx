@@ -33,7 +33,7 @@ const GameDetails = () => {
   const refreshReviews = async () => {
     try {
       const reviewsData = await getGameReviews(gameId!);
-      dispatch({ type: "SET_REVIEWS", payload: { gameId, reviews: reviewsData } });
+      dispatch({ type: "SET_REVIEWS", payload: { gameId: gameId ?? "", reviews: reviewsData } });
     } catch (err) {
       console.error("Error fetching reviews:", err);
     }

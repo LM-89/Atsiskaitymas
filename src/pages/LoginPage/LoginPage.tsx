@@ -41,6 +41,7 @@ const LoginPage = () => {
         navigate("/games");
       }
     } catch (err) {
+      console.log(err)
       setError("Authentication failed. Please check your credentials.");
       setTimeout(() => setError(""), 3000);
     }
