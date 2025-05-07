@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Game, Category } from "../../types";
+import { Game, Genre } from "../../types";
 import styles from "./GameForm.module.scss";
 
 interface GameFormProps {
-  editingGameId: number | null;
+  editingGameId: string | null; // Changed from number to string to match MongoDB ObjectId
   initialData: Partial<Game>;
-  onSubmit: (gameData: Omit<Game, "id">) => void;
+  onSubmit: (gameData: Omit<Game, "_id">) => void; // Changed "id" to "_id"
   onCancel: () => void;
-  categories: Category[];
+  genres: Genre[];
 }
 
 const GameForm: React.FC<GameFormProps> = ({
@@ -15,51 +15,51 @@ const GameForm: React.FC<GameFormProps> = ({
   initialData,
   onSubmit,
   onCancel,
-  categories,
+  genres,
 }) => {
-  const [gameData, setGameData] = useState<Omit<Game, "id">>({
+  const [gameData, setGameData] = useState<Omit<Game, "_id">>({
     title: "",
-    categoryId: undefined,
+    genreId: "",
     description: "",
     developer: "",
-    price: undefined,
+    price: null,
     cover: "",
-    release: undefined,
-    iframe: "",
+    release: null,
+    video: "",
   });
 
   useEffect(() => {
     if (editingGameId && initialData) {
       setGameData({
         title: initialData.title || "",
-        categoryId: initialData.categoryId,
+        genreId: initialData.genreId || "",
         description: initialData.description || "",
         developer: initialData.developer || "",
-        price: initialData.price,
+        price: initialData.price || null,
         cover: initialData.cover || "",
-        release: initialData.release,
-        iframe: initialData.iframe || "",
+        release: initialData.release || null,
+        video: initialData.video || "",
       });
     } else {
       setGameData({
         title: "",
-        categoryId: undefined,
+        genreId: "",
         description: "",
         developer: "",
-        price: undefined,
+        price: null,
         cover: "",
-        release: undefined,
-        iframe: "",
+        release: null,
+        video: "",
       });
     }
   }, [editingGameId, initialData]);
 
-  const handleChange = (field: keyof Omit<Game, "id">, value: string) => {
+  const handleChange = (field: keyof Omit<Game, "_id">, value: string) => {
     setGameData((prev) => ({
       ...prev,
       [field]:
-        field === "categoryId" || field === "price" || field === "release"
-          ? Number(value)
+        field === "price" || field === "release"
+          ? value === "" ? null : Number(value)
           : value,
     }));
   };
@@ -69,19 +69,17 @@ const GameForm: React.FC<GameFormProps> = ({
     onSubmit(gameData);
     setGameData({
       title: "",
-      categoryId: undefined,
+      genreId: "",
       description: "",
       developer: "",
-      price: undefined,
+      price: null,
       cover: "",
-      release: undefined,
+      release: null,
       iframe: "",
     });
   };
 
-  const sortedCategories = categories.sort((a, b) =>
-    a.title.localeCompare(b.title)
-  );
+  const sortedGenres = genres.sort((a, b) => a.title.localeCompare(b.title));
 
   return (
     <form className={styles["game-form"]} onSubmit={handleSubmit}>
@@ -98,14 +96,14 @@ const GameForm: React.FC<GameFormProps> = ({
       <div className={styles["form-control"]}>
         <select
           className={styles["game-select"]}
-          value={gameData.categoryId !== undefined ? gameData.categoryId : ""}
-          onChange={(event) => handleChange("categoryId", event.target.value)}
+          value={gameData.genreId}
+          onChange={(event) => handleChange("genreId", event.target.value)}
           required
         >
-          <option value="">Select Category</option>
-          {sortedCategories.map((category) => (
-            <option key={category.id} value={category.id}>
-              {category.title}
+          <option value="">Select Genre</option>
+          {sortedGenres.map((genre) => (
+            <option key={genre._id} value={genre._id}>
+              {genre.title}
             </option>
           ))}
         </select>
@@ -134,7 +132,7 @@ const GameForm: React.FC<GameFormProps> = ({
           className={styles["game-input"]}
           placeholder="Price"
           type="number"
-          value={gameData.price !== undefined ? gameData.price : ""}
+          value={gameData.price !== null ? gameData.price : ""}
           onChange={(event) => handleChange("price", event.target.value)}
           required
         />
@@ -151,9 +149,9 @@ const GameForm: React.FC<GameFormProps> = ({
       <div className={styles["form-control"]}>
         <input
           className={styles["game-input"]}
-          placeholder="iFrame URL"
-          value={gameData.iframe}
-          onChange={(event) => handleChange("iframe", event.target.value)}
+          placeholder="video URL"
+          value={gameData.video}
+          onChange={(event) => handleChange("video", event.target.value)}
           required
         />
       </div>
@@ -162,7 +160,7 @@ const GameForm: React.FC<GameFormProps> = ({
           className={styles["game-input"]}
           placeholder="Release Year"
           type="number"
-          value={gameData.release !== undefined ? gameData.release : ""}
+          value={gameData.release !== null ? gameData.release : ""}
           onChange={(event) => handleChange("release", event.target.value)}
           required
         />

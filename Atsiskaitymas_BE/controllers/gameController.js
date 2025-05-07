@@ -1,87 +1,59 @@
-const Game = require('../models/gameModel')
+const Game = require("../models/gameModel");
 
+// Get all games
 const getGames = async (req, res) => {
-    try {
-        const games = await Game.find().populate('genres', 'title').populate('developer', 'name')
+  try {
+    const games = await Game.find();
+    res.json(games);
+  } catch (error) {
+    console.error("Error fetching games:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
 
-        res.send(games)
+// Add a new game
+const addGame = async (req, res) => {
+  try {
+    const newGame = new Game(req.body);
+    const savedGame = await newGame.save();
+    res.status(201).json(savedGame);
+  } catch (error) {
+    console.error("Error adding game:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
 
-    } catch (error) {
-        res.status(500).send(error)
-    }
-}
-
-
-const getGameById = async (req, res) => {
-    try {
-        const { id } = req.params
-        const game = await Game.findById(id).populate('genres', 'title').populate('developer', 'name')
-        if (!game) {
-            return res.status(404).send({ error: 'Game not found' })
-        }
-
-        res.send(game)
-        
-    } catch (error) {
-        res.status(500).send(error)
-    }
-}
-
-
-const createGame = async (req, res) => {
-    try {
-        const game = new Game(req.body)
-        await game.save()
-        res.send(game)
-
-    } catch (error) {
-        res.status(500).send(error)
-    }
-}
-
-
+// Update a game
 const updateGame = async (req, res) => {
-    try {
-        const { id } = req.params
-
-        const updatedGame = await Game.findByIdAndUpdate(
-            id,
-            req.body,
-            { new: true }
-        )
-
-        if (!updatedGame) {
-            return res.status(404).send({ error: 'Game not found' })
-        }
-
-        res.send(updatedGame)
-
-    } catch (error) {
-        res.status(500).send(error)
+  try {
+    const updatedGame = await Game.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!updatedGame) {
+      return res.status(404).json({ message: "Game not found" });
     }
-}
+    res.json(updatedGame);
+  } catch (error) {
+    console.error("Error updating game:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
 
-
+// Delete a game
 const deleteGame = async (req, res) => {
-    try {
-        const { id } = req.params
-        const deletedGame = await Game.findByIdAndDelete(id)
-
-        if (!deletedGame) {
-            return res.status(404).send({ error: 'Game not found.' })
-        }
-
-        res.send({ message: 'Game record was removed', data: deletedGame })
-
-    } catch (error) {
-        res.status(500).send(error)
+  try {
+    const deletedGame = await Game.findByIdAndDelete(req.params.id);
+    if (!deletedGame) {
+      return res.status(404).json({ message: "Game not found" });
     }
-}
+    res.json({ message: "Game deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting game:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
 
 module.exports = {
-    getGames,
-    getGameById,
-    createGame,
-    updateGame,
-    deleteGame,
-}
+  getGames,
+  addGame,
+  updateGame,
+  deleteGame,
+};

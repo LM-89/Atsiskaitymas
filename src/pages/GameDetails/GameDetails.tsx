@@ -3,37 +3,37 @@ import { useEffect, useState, useMemo } from "react";
 import { useData } from "../../context/DataContext";
 import { getGames, getGameReviews, getUsers } from "../../api/api";
 import { useReviewHandlers } from "../../context/useReviewHandlers";
-import { Review, Category, NewReview } from "../../types";
+import { Review, Genre, NewReview } from "../../types";
 import styles from "./GameDetails.module.scss";
-import "../../App.scss"
+import "../../App.scss";
 
 const GameDetails = () => {
   const { gameId } = useParams<{ gameId: string }>();
   const { state, dispatch } = useData();
-  const { games, categories, reviews, users } = state;
+  const { games, genres, reviews, users } = state;
   const { addReviewHandler, updateReviewHandler, deleteReviewHandler } = useReviewHandlers();
 
-  const game = games.find((g) => g.id === Number(gameId)) || null;
+  const game = games.find((g) => g._id === gameId) || null;
 
   const [newReviewData, setNewReviewData] = useState({ rating: 3.0, comment: "" });
-  const [editingReviewId, setEditingReviewId] = useState<number | null>(null);
+  const [editingReviewId, setEditingReviewId] = useState<string | null>(null);
   const [editReviewData, setEditReviewData] = useState({ rating: 3.0, comment: "" });
   const [loading, setLoading] = useState(false);
   const [averageRating, setAverageRating] = useState("Not Rated Yet");
 
-  const gameReviews = useMemo(() => reviews[Number(gameId)] || [], [reviews, gameId]);
+  const gameReviews = useMemo(() => reviews[gameId] || [], [reviews, gameId]);
 
   const enrichedReviews = useMemo(() => {
     return gameReviews.map((review) => {
-      const userData = users.find((u) => u.id === review.userId);
+      const userData = users.find((u) => u._id === review.userId);
       return { ...review, user: userData || review.user };
     });
   }, [gameReviews, users]);
 
   const refreshReviews = async () => {
     try {
-      const reviewsData = await getGameReviews(Number(gameId));
-      dispatch({ type: "SET_REVIEWS", payload: { gameId: Number(gameId), reviews: reviewsData } });
+      const reviewsData = await getGameReviews(gameId!);
+      dispatch({ type: "SET_REVIEWS", payload: { gameId, reviews: reviewsData } });
     } catch (err) {
       console.error("Error fetching reviews:", err);
     }
@@ -53,8 +53,8 @@ const GameDetails = () => {
       }
       setLoading(true);
       try {
-        const reviewsData = await getGameReviews(Number(gameId));
-        dispatch({ type: "SET_REVIEWS", payload: { gameId: Number(gameId), reviews: reviewsData } });
+        const reviewsData = await getGameReviews(gameId!);
+        dispatch({ type: "SET_REVIEWS", payload: { gameId, reviews: reviewsData } });
       } catch (err) {
         console.error("Error fetching reviews", err);
       }
@@ -82,8 +82,8 @@ const GameDetails = () => {
 
   const handleAddReview = async () => {
     const reviewPayload: NewReview = {
-      gameId: Number(gameId),
-      userId: state.auth.user?.id || 0,
+      gameId: gameId!,
+      userId: state.auth.user?._id || "",
       rating: newReviewData.rating,
       comment: newReviewData.comment,
     };
@@ -93,12 +93,12 @@ const GameDetails = () => {
   };
 
   const handleEditClick = (review: Review) => {
-    setEditingReviewId(review.id);
+    setEditingReviewId(review._id);
     setEditReviewData({ rating: review.rating, comment: review.comment });
   };
 
-  const handleSaveEdit = async (reviewId: number) => {
-    await updateReviewHandler(Number(gameId), reviewId, {
+  const handleSaveEdit = async (reviewId: string) => {
+    await updateReviewHandler(gameId!, reviewId, {
       rating: editReviewData.rating,
       comment: editReviewData.comment,
     });
@@ -106,8 +106,8 @@ const GameDetails = () => {
     setEditingReviewId(null);
   };
 
-  const handleDeleteReview = async (reviewId: number) => {
-    await deleteReviewHandler(Number(gameId), reviewId);
+  const handleDeleteReview = async (reviewId: string) => {
+    await deleteReviewHandler(gameId!, reviewId);
     await refreshReviews();
   };
 
@@ -128,8 +128,8 @@ const GameDetails = () => {
         <div className={styles["game-details"]}>
           <h2>{game.title}</h2>
           <p>
-            <strong>Category:</strong>{" "}
-            {categories.find((cat: Category) => cat.id === game.categoryId)?.title || "Unknown"}
+            <strong>Genre:</strong>{" "}
+            {genres.find((genre: Genre) => genre._id === game.genreId)?.title || "Unknown"}
           </p>
           <p>
             <strong>Description:</strong> {game.description}
@@ -144,8 +144,6 @@ const GameDetails = () => {
             <strong>Average Rating:</strong> {averageRating} ⭐
           </p>
         </div>
-
-
         <div className={styles["game-trailer-container"]}>
           <iframe
             src={game.iframe}
@@ -156,29 +154,28 @@ const GameDetails = () => {
         </div>
       </div>
 
-
       <div className={styles["reviews-section"]}>
         <h2>Reviews:</h2>
         {enrichedReviews.length > 0 ? (
           enrichedReviews.map((review) => (
-            <div key={review.id} className={styles["review-item"]}>
+            <div key={review._id} className={styles["review-item"]}>
               <div className={styles["review-user-info"]}>
                 {review.user ? (
-                  <Link to={`/user/${review.user.id}`} className={styles["user-link"]}>
+                  <Link to={`/user/${review.user._id}`} className={styles["user-link"]}>
                     {review.user.avatar && (
                       <img
                         className={styles["review-avatar"]}
                         src={review.user.avatar}
-                        alt={review.user.nickname}
+                        alt={review.user.username}
                       />
                     )}
-                    <strong>{review.user.nickname}</strong>
+                    <strong>{review.user.username}</strong>
                   </Link>
                 ) : (
                   <strong>Anonymous</strong>
                 )}
               </div>
-              {editingReviewId === review.id ? (
+              {editingReviewId === review._id ? (
                 <div className={styles["review-container"]}>
                   <div className={styles["review-control-range"]}>
                     <label>Rating:</label>
@@ -206,7 +203,7 @@ const GameDetails = () => {
                     />
                   </div>
                   <div className={styles["review-actions"]}>
-                    <button className={styles["review-button"]} onClick={() => handleSaveEdit(review.id)}>
+                    <button className={styles["review-button"]} onClick={() => handleSaveEdit(review._id)}>
                       Save
                     </button>
                     <button
@@ -228,13 +225,16 @@ const GameDetails = () => {
                     </p>
                   </div>
                   <div className={styles["review-actions"]}>
-                    {state.auth.user?.id === review.userId && (
+                    {state.auth.user?._id === review.userId && (
                       <button className={styles["review-button"]} onClick={() => handleEditClick(review)}>
                         Edit
                       </button>
                     )}
-                    {(state.auth.user?.id === review.userId || state.auth.user?.role === "admin") && (
-                      <button className={`styles["delete-button"] delete-button`} onClick={() => handleDeleteReview(review.id)}>
+                    {(state.auth.user?._id === review.userId || state.auth.user?.role === "ADMIN") && (
+                      <button
+                        className={`${styles["delete-button"]} delete-button`}
+                        onClick={() => handleDeleteReview(review._id)}
+                      >
                         Delete
                       </button>
                     )}
@@ -275,9 +275,9 @@ const GameDetails = () => {
               rows={3}
             />
           </div>
-            <button className={styles["submit-review-btn"]} onClick={handleAddReview}>
-              Submit Review
-            </button>
+          <button className={styles["submit-review-btn"]} onClick={handleAddReview}>
+            Submit Review
+          </button>
         </div>
       )}
     </div>

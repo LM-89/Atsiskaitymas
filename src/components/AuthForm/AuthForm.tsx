@@ -1,7 +1,6 @@
 import React from "react";
 import styles from "./AuthForm.module.scss";
-import "../../App.scss"
-
+import "../../App.scss";
 
 interface AuthFormProps {
   isLogin: boolean;
@@ -10,6 +9,7 @@ interface AuthFormProps {
     password: string;
     name: string;
     surname: string;
+    username: string;
   };
   error: string;
   onChange: (field: string, value: string) => void;
@@ -53,6 +53,19 @@ const AuthForm: React.FC<AuthFormProps> = ({
                 type="text"
                 value={formData.surname}
                 onChange={(event) => onChange("surname", event.target.value)}
+                required
+                className={styles["input"]}
+              />
+            </div>
+            <div className={styles["form-control"]}>
+              <label htmlFor="username" className={styles["label"]}>
+                Username
+              </label>
+              <input
+                id="username"
+                type="text"
+                value={formData.username}
+                onChange={(event) => onChange("username", event.target.value)}
                 required
                 className={styles["input"]}
               />

@@ -73,7 +73,7 @@ const userSchema = new mongoose.Schema({
 
     role: {
         type: String,
-        enum: Object.values(ROLES),
+        enum: Object.values(ROLES), // Ensure the role is either 'USER' or 'ADMIN'
         default: ROLES.USER,
     },
 

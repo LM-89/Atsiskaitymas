@@ -1,50 +1,45 @@
 import React, { useState } from "react";
-import { loginUser, registerUser } from "../../api/api";
+import { loginUser as apiLoginUser, registerUser } from "../../api/api";
 import { useData } from "../../context/DataContext";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import AuthForm from "../../components/AuthForm/AuthForm";
-import "../../App.scss"
+import "../../App.scss";
 
 const LoginPage = () => {
-  const { state, dispatch } = useData();
-  const { auth } = state;
-  const { user } = auth;
-
+  const { state, loginUser } = useData();
+  const user = state.auth.user;
+  const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
     name: "",
     surname: "",
+    username: "",
   });
   const [error, setError] = useState("");
 
-  if (user) {
-    return <Navigate to="/games" />;
-  }
+  if (user) return <Navigate to="/games" />;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       if (isLogin) {
-        const data = await loginUser(formData.email, formData.password);
-        dispatch({ type: "SET_AUTH", payload: { user: data.user, token: data.token } });
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("user", JSON.stringify(data.user));
+        const data = await apiLoginUser(formData.email, formData.password);
+        await loginUser(data.token);
+        navigate("/games");
       } else {
         const data = await registerUser({
           email: formData.email,
           password: formData.password,
           name: formData.name,
           surname: formData.surname,
-          role: "user",
-          nickname: "",
+          username: formData.username,
+          role: "USER",
         });
-        dispatch({ type: "SET_AUTH", payload: { user: data.user, token: data.token } });
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("user", JSON.stringify(data.user));
+        await loginUser(data.token);
+        navigate("/games");
       }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
       setError("Authentication failed. Please check your credentials.");
       setTimeout(() => setError(""), 3000);
@@ -53,7 +48,7 @@ const LoginPage = () => {
 
   const handleToggleForm = () => {
     setIsLogin(!isLogin);
-    setFormData({ email: "", password: "", name: "", surname: "" });
+    setFormData({ email: "", password: "", name: "", surname: "", username: "" });
   };
 
   const handleChange = (field: string, value: string) => {

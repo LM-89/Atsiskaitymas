@@ -185,11 +185,35 @@ const deleteUser = async (req, res) => {
 }
 
 
+const updateUserRole = async (req, res) => {
+    try {
+        const { id } = req.params; // Get user ID from the request parameters
+        const { role } = req.body; // Get the new role from the request body
+
+        // Validate the role
+        if (!['USER', 'ADMIN'].includes(role)) {
+            return res.status(400).send({ message: 'Invalid role' });
+        }
+
+        // Update the user's role in the database
+        const user = await User.findByIdAndUpdate(id, { role }, { new: true });
+        if (!user) {
+            return res.status(404).send({ message: 'User not found' });
+        }
+
+        res.send({ message: 'User role updated successfully', user });
+    } catch (error) {
+        console.error('Error updating user role:', error);
+        res.status(500).send({ message: 'Internal server error' });
+    }
+};
+
 module.exports = {
     register,
     login,
     getUsers,
     getUserById,
     updateUser,
-    deleteUser
-}
+    deleteUser,
+    updateUserRole, // Add the new function here
+};

@@ -1,46 +1,45 @@
 export interface User {
-  id: number;
+  _id: string; // MongoDB ObjectId as a string
   email: string;
-  role: "admin" | "user";
-  password?: string;
+  role: "ADMIN" | "USER"; // Matches the roles defined in the backend
   name?: string;
   surname?: string;
-  nickname: string;
+  username: string;
   bio?: string;
   avatar?: string;
   status?: "online" | "offline";
 }
 
 export interface Game {
-  id: number;
+  _id: string; // MongoDB ObjectId as a string
   title: string;
-  cover: string;
   description: string;
-  categoryId?: number;
-  developer?: string;
-  price?: number;
-  release?: number;
-  iframe: string;
+  developer: string;
+  release: number;
+  price: number;
+  cover: string;
+  video: string;
+  rating?: number; // Optional, matches the backend model
+  genres: string[]; // Array of MongoDB ObjectIds referencing Genre
 }
 
 export interface Review {
-  id: number;
-  gameId: number;
-  userId: number;
+  _id: string; // MongoDB ObjectId as a string
   rating: number;
-  comment: string;
-  user: User;
+  feedback: string; // Matches the "feedback" field in the backend
+  user: string; // MongoDB ObjectId referencing User
+  game: string; // MongoDB ObjectId referencing Game
 }
 
-export interface Category {
-  id: number;
+export interface Genre {
+  _id: string; // MongoDB ObjectId as a string
   title: string;
   description: string;
 }
 
 export type NewReview = {
-    gameId: number;
-    userId: number;
-    rating: number;
-    comment: string;
+  game: string; // MongoDB ObjectId referencing Game
+  user: string; // MongoDB ObjectId referencing User
+  rating: number;
+  feedback: string; // Matches the "feedback" field in the backend
 };

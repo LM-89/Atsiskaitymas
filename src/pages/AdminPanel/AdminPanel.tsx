@@ -1,63 +1,60 @@
 import { useEffect, useRef, useState, useMemo } from "react";
 import {
   getGames,
-  getCategories,
+  getGenres,
   getUsers,
   addGame,
   updateGame,
   deleteGame,
-  addCategory,
-  updateCategory,
-  deleteCategory,
+  addGenre, 
+  updateGenre,
+  deleteGenre,
   updateUserRole,
   deleteUser,
 } from "../../api/api";
 import { useData } from "../../context/DataContext";
-import { Game, Category } from "../../types";
+import { Game, Genre } from "../../types";
 import GameForm from "../../components/GameForm/GameForm";
-import CategoryForm from "../../components/CategoryForm/CategoryForm";
+import GenreForm from "../../components/GenreForm/GenreForm";
 import styles from "./AdminPanel.module.scss";
-import "../../App.scss"
+import "../../App.scss";
 
 const AdminPanel = () => {
   const { state, dispatch } = useData();
-  const { auth, games, categories, users } = state;
+  const { auth, games, genres, users } = state;
   const { user, token } = auth;
 
   const [editingGameId, setEditingGameId] = useState<number | null>(null);
-  const [editingCategoryId, setEditingCategoryId] = useState<number | null>(null);
+  const [editingGenreId, setEditingGenreId] = useState<number | null>(null);
 
   const gameFormRef = useRef<HTMLDivElement>(null);
-  const categoryFormRef = useRef<HTMLDivElement>(null);
-
- 
+  const genreFormRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const loadData = async () => {
+      if (!token) return;
       try {
         const gamesData = await getGames();
         dispatch({ type: "SET_GAMES", payload: gamesData });
 
-        const categoriesData = await getCategories();
-        dispatch({ type: "SET_CATEGORIES", payload: categoriesData });
-
-        const usersData = await getUsers();
+        const genresData = await getGenres();
+        dispatch({ type: "SET_GENRES", payload: genresData });
+        const usersData = await getUsers(token);
         dispatch({ type: "SET_USERS", payload: usersData });
       } catch (error) {
         console.error("Error loading data:", error);
       }
     };
     loadData();
-  }, [dispatch]);
+  }, [dispatch, token]);
 
- 
-  const handleAddOrUpdateGame = async (gameData: Omit<Game, "id">) => {
+  const handleAddOrUpdateGame = async (gameData: Omit<Game, "_id">) => {
     if (!user || !token) return;
     if (editingGameId) {
       try {
         await updateGame(editingGameId, gameData, token);
         dispatch({
           type: "UPDATE_GAME",
-          payload: { id: editingGameId, ...gameData } as Game,
+          payload: { _id: editingGameId, ...gameData } as Game,
         });
         setEditingGameId(null);
       } catch (error) {
@@ -73,8 +70,7 @@ const AdminPanel = () => {
     }
   };
 
-
-  const handleDeleteGame = async (gameId: number) => {
+  const handleDeleteGame = async (gameId: string) => {
     if (!user || !token) return;
     try {
       await deleteGame(gameId, token);
@@ -84,102 +80,69 @@ const AdminPanel = () => {
     }
   };
 
-
-  const handleEditGame = (game: Game) => {
-    setEditingGameId(game.id);
-    gameFormRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
-
-  const cancelGameEdit = () => {
-    setEditingGameId(null);
-  };
-
- 
-  const handleAddOrUpdateCategory = async (categoryData: Omit<Category, "id">) => {
+  const handleAddOrUpdateGenre = async (genreData: Omit<Genre, "id">) => {
     if (!user || !token) return;
-    if (editingCategoryId) {
+    if (editingGenreId) {
       try {
-        await updateCategory(editingCategoryId, categoryData, token);
+        await updateGenre(editingGenreId, genreData, token); 
         dispatch({
-          type: "UPDATE_CATEGORY",
-          payload: { id: editingCategoryId, ...categoryData },
+          type: "UPDATE_GENRE",
+          payload: { id: editingGenreId, ...genreData } as Genre,
         });
-        setEditingCategoryId(null);
+        setEditingGenreId(null);
       } catch (error) {
-        console.error("Error updating category:", error);
+        console.error("Error updating genre:", error);
       }
     } else {
       try {
-        const addedCategory = await addCategory(categoryData, token);
-        dispatch({ type: "ADD_CATEGORY", payload: addedCategory });
+        const addedGenre = await addGenre(genreData, token); 
+        dispatch({ type: "ADD_GENRE", payload: addedGenre }); 
       } catch (error) {
-        console.error("Error adding category:", error);
+        console.error("Error adding genre:", error);
       }
     }
   };
 
-
-  const handleDeleteCategory = async (categoryId: number) => {
+  const handleDeleteGenre = async (genreId: number) => {
     if (!user || !token) return;
     try {
-      await deleteCategory(categoryId, token);
-      dispatch({ type: "DELETE_CATEGORY", payload: categoryId });
+      await deleteGenre(genreId, token);
+      dispatch({ type: "DELETE_GENRE", payload: genreId });
     } catch (error) {
-      console.error("Error deleting category:", error);
+      console.error("Error deleting genre:", error);
     }
   };
-
-
-  const handleEditCategory = (category: Category) => {
-    setEditingCategoryId(category.id);
-    categoryFormRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
-
-  const cancelCategoryEdit = () => {
-    setEditingCategoryId(null);
-  };
-
 
   const handleChangeUserRole = async (userId: number, newRole: "admin" | "user") => {
     if (!user || !token) return;
     try {
       const updatedUser = await updateUserRole(userId, newRole, token);
-      const updatedUsers = users.map((user) => (user.id === userId ? updatedUser : user));
+      const updatedUsers = users.map((u) => (u.id === userId ? updatedUser : u));
       dispatch({ type: "SET_USERS", payload: updatedUsers });
     } catch (error) {
       console.error("Error updating user role:", error);
     }
   };
 
-
-  const handleDeleteUser = async (userId: number) => {
-    if (!user || !token) return;
-    if (user.id === userId) {
-      alert("You cannot delete your own account.");
-      return;
-    }
+  const handleDeleteUser = async (userId: string) => {
     try {
-      await deleteUser(userId, token);
-      dispatch({ type: "SET_USERS", payload: users.filter((user) => user.id !== userId) });
+      await deleteUser(userId);
+      dispatch({ type: "DELETE_USER", payload: userId });
     } catch (error) {
       console.error("Error deleting user:", error);
     }
   };
 
-  
-  const sortedCategories = useMemo(() => [...categories].sort((a, b) => a.title.localeCompare(b.title)), [categories]);
+  const sortedGenres = useMemo(() => [...genres].sort((a, b) => a.title.localeCompare(b.title)), [genres]);
   const sortedGames = useMemo(() => [...games].sort((a, b) => a.title.localeCompare(b.title)), [games]);
   const sortedUsers = useMemo(() => [...users].sort((a, b) => (a.name || "").localeCompare(b.name || "")), [users]);
 
-
-  if (!user || user.role !== "admin") {
-    return <p>Access denied.</p>;
+  if (!user || user.role !== "ADMIN") {
+    return <p>Access denied. You do not have permission to view this page.</p>;
   }
 
   return (
-    <div className={`${styles["admin-panel"]} content-container`}>      
+    <div className={`${styles["admin-panel"]} content-container`}>
       <h2 className={styles["heading"]}>Admin Panel</h2>
 
       <div className={styles["forms-container"]}>
@@ -193,38 +156,41 @@ const AdminPanel = () => {
                 : {}
             }
             onSubmit={handleAddOrUpdateGame}
-            onCancel={cancelGameEdit}
-            categories={categories}
+            onCancel={() => setEditingGameId(null)}
+            genres={genres} 
           />
         </div>
 
-        <div ref={categoryFormRef} className={styles["category-form-container"]}>
-          <CategoryForm
-            key={editingCategoryId ?? "new"}
-            editingCategoryId={editingCategoryId}
+        <div ref={genreFormRef} className={styles["genre-form-container"]}>
+          <GenreForm
+            key={editingGenreId ?? "new"} 
+            editingGenreId={editingGenreId} 
             initialData={
-              editingCategoryId
-                ? categories.find((category) => category.id === editingCategoryId) || {}
+              editingGenreId
+                ? genres.find((genre) => genre.id === editingGenreId) || {} 
                 : {}
             }
-            onSubmit={handleAddOrUpdateCategory}
-            onCancel={cancelCategoryEdit}
+            onSubmit={handleAddOrUpdateGenre} 
+            onCancel={() => setEditingGenreId(null)} 
           />
         </div>
       </div>
 
-      <div className={styles["categories-section"]}>
-        <h3 className={styles["lower-headings"]}>Categories</h3>
-        {sortedCategories.map((category) => (
-          <div key={category.id} className={styles["category-item"]}>
+      <div className={styles["genres-section"]}> 
+        <h3 className={styles["lower-headings"]}>Genres</h3>
+        {sortedGenres.map((genre) => ( 
+          <div key={genre.id} className={styles["genre-item"]}> 
             <span>
-              {category.title}. {category.description}
+              {genre.title}. {genre.description} 
             </span>
             <div className={styles["action-control"]}>
-              <button className={styles["edit-button"]} onClick={() => handleEditCategory(category)}>
+              <button className={styles["edit-button"]} onClick={() => setEditingGenreId(genre.id)}> 
                 Edit
               </button>
-              <button className={`${styles["delete-btn"]} delete-button`} onClick={() => handleDeleteCategory(category.id)}>
+              <button
+                className={`${styles["delete-btn"]} delete-button`}
+                onClick={() => handleDeleteGenre(genre.id)} 
+              >
                 Delete
               </button>
             </div>
@@ -239,10 +205,13 @@ const AdminPanel = () => {
             <div key={game.id} className={styles["game-item"]}>
               <span>{game.title}</span>
               <div className={styles["action-control"]}>
-                <button className={styles["edit-button"]} onClick={() => handleEditGame(game)}>
+                <button className={styles["edit-button"]} onClick={() => setEditingGameId(game.id)}>
                   Edit
                 </button>
-                <button className={`${styles["delete-btn"]} delete-button`} onClick={() => handleDeleteGame(game.id)}>
+                <button
+                  className={`${styles["delete-btn"]} delete-button`}
+                  onClick={() => handleDeleteGame(game.id)}
+                >
                   Delete
                 </button>
               </div>
@@ -252,26 +221,29 @@ const AdminPanel = () => {
 
         <div className={styles["users-section"]}>
           <h3 className={styles["lower-headings"]}>Users</h3>
-          {sortedUsers.map((user) => (
-            <div key={user.id} className={styles["user-item"]}>
+          {sortedUsers.map((u) => (
+            <div key={u.id} className={styles["user-item"]}>
               <span>
-                {user.name} {user.surname} ({user.email} - {user.role})
+                {u.name} {u.surname} ({u.email} - {u.role})
               </span>
               <div className={styles["action-control"]}>
                 <button
                   className={styles["change-role-button"]}
-                  onClick={() => handleChangeUserRole(user.id, user.role === "admin" ? "user" : "admin")}
+                  onClick={() => handleChangeUserRole(u.id, u.role === "admin" ? "user" : "admin")}
                 >
                   Change Role
                 </button>
-                <button className={`${styles["delete-btn"]} delete-button`} onClick={() => handleDeleteUser(user.id)}>
+                <button
+                  className={`${styles["delete-btn"]} delete-button`}
+                  onClick={() => handleDeleteUser(u.id)}
+                >
                   Delete User
                 </button>
               </div>
             </div>
           ))}
         </div>
-      </div>      
+      </div>
     </div>
   );
 };

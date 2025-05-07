@@ -1,4 +1,4 @@
-import { Game, User, Review, Category } from "../types";
+import { Game, User, Review, Genre } from "../types";
 
 export interface AppState {
   auth: {
@@ -6,9 +6,9 @@ export interface AppState {
     token: string | null;
   };
   games: Game[];
-  categories: Category[];
+  genres: Genre[];
   users: User[];
-  reviews: { [gameId: number]: Review[] };
+  reviews: { [gameId: string]: Review[] }; // Changed gameId to string to match MongoDB ObjectId
   loading: boolean;
 }
 
@@ -18,17 +18,17 @@ export type Action =
   | { type: "SET_GAMES"; payload: Game[] }
   | { type: "ADD_GAME"; payload: Game }
   | { type: "UPDATE_GAME"; payload: Game }
-  | { type: "DELETE_GAME"; payload: number }
-  | { type: "SET_CATEGORIES"; payload: Category[] }
-  | { type: "ADD_CATEGORY"; payload: Category }
-  | { type: "UPDATE_CATEGORY"; payload: Category }
-  | { type: "DELETE_CATEGORY"; payload: number }
+  | { type: "DELETE_GAME"; payload: string } // MongoDB ObjectId as string
+  | { type: "SET_GENRES"; payload: Genre[] }
+  | { type: "ADD_GENRE"; payload: Genre }
+  | { type: "UPDATE_GENRE"; payload: Genre }
+  | { type: "DELETE_GENRE"; payload: string } // MongoDB ObjectId as string
   | { type: "SET_USERS"; payload: User[] }
   | { type: "UPDATE_USER"; payload: { user: User } }
-  | { type: "SET_REVIEWS"; payload: { gameId: number; reviews: Review[] } }
-  | { type: "ADD_REVIEW"; payload: { gameId: number; review: Review } }
-  | { type: "UPDATE_REVIEW"; payload: { gameId: number; review: Review } }
-  | { type: "DELETE_REVIEW"; payload: { gameId: number; reviewId: number } }
+  | { type: "SET_REVIEWS"; payload: { gameId: string; reviews: Review[] } }
+  | { type: "ADD_REVIEW"; payload: { gameId: string; review: Review } }
+  | { type: "UPDATE_REVIEW"; payload: { gameId: string; review: Review } }
+  | { type: "DELETE_REVIEW"; payload: { gameId: string; reviewId: string } }
   | { type: "SET_LOADING"; payload: boolean };
 
 export const initialState: AppState = {
@@ -37,7 +37,7 @@ export const initialState: AppState = {
     token: localStorage.getItem("token") || null,
   },
   games: [],
-  categories: [],
+  genres: [],
   users: [],
   reviews: {},
   loading: false,
@@ -69,35 +69,35 @@ export const appReducer = (state: AppState, action: Action): AppState => {
       return {
         ...state,
         games: state.games.map((game) =>
-          game.id === action.payload.id ? action.payload : game
+          game._id === action.payload._id ? action.payload : game
         ),
       };
     case "DELETE_GAME":
       return {
         ...state,
-        games: state.games.filter((game) => game.id !== action.payload),
+        games: state.games.filter((game) => game._id !== action.payload),
       };
-    case "SET_CATEGORIES":
+    case "SET_GENRES":
       return {
         ...state,
-        categories: action.payload,
+        genres: action.payload,
       };
-    case "ADD_CATEGORY":
+    case "ADD_GENRE":
       return {
         ...state,
-        categories: [...state.categories, action.payload],
+        genres: [...state.genres, action.payload],
       };
-    case "UPDATE_CATEGORY":
+    case "UPDATE_GENRE":
       return {
         ...state,
-        categories: state.categories.map((category) =>
-          category.id === action.payload.id ? action.payload : category
+        genres: state.genres.map((genre) =>
+          genre._id === action.payload._id ? action.payload : genre
         ),
       };
-    case "DELETE_CATEGORY":
+    case "DELETE_GENRE":
       return {
         ...state,
-        categories: state.categories.filter((category) => category.id !== action.payload),
+        genres: state.genres.filter((genre) => genre._id !== action.payload),
       };
     case "SET_USERS":
       return {
@@ -107,7 +107,12 @@ export const appReducer = (state: AppState, action: Action): AppState => {
     case "UPDATE_USER":
       return {
         ...state,
-        auth: { ...state.auth, user: action.payload.user },
+        users: state.users.map((user) =>
+          user._id === action.payload.user._id ? action.payload.user : user
+        ),
+        auth: state.auth.user?._id === action.payload.user._id
+          ? { ...state.auth, user: action.payload.user }
+          : state.auth,
       };
     case "SET_REVIEWS":
       return {
@@ -135,7 +140,9 @@ export const appReducer = (state: AppState, action: Action): AppState => {
         ...state,
         reviews: {
           ...state.reviews,
-          [gameId]: currentReviews.map((r) => (r.id === review.id ? review : r)),
+          [gameId]: currentReviews.map((r) =>
+            r._id === review._id ? review : r
+          ),
         },
       };
     }
@@ -146,7 +153,7 @@ export const appReducer = (state: AppState, action: Action): AppState => {
         ...state,
         reviews: {
           ...state.reviews,
-          [gameId]: currentReviews.filter((review) => review.id !== reviewId),
+          [gameId]: currentReviews.filter((review) => review._id !== reviewId),
         },
       };
     }
