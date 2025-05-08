@@ -1,6 +1,7 @@
 import { Game, User, Review, Genre } from "../types";
 
 export interface AppState {
+  token: string;
   auth: {
     user: User | null;
     token: string | null;
@@ -8,7 +9,7 @@ export interface AppState {
   games: Game[];
   genres: Genre[];
   users: User[];
-  reviews: { [gameId: string]: Review[] }; // Changed gameId to string to match MongoDB ObjectId
+  reviews: { [gameId: string]: Review[] }; 
   loading: boolean;
 }
 
@@ -18,12 +19,13 @@ export type Action =
   | { type: "SET_GAMES"; payload: Game[] }
   | { type: "ADD_GAME"; payload: Game }
   | { type: "UPDATE_GAME"; payload: Game }
-  | { type: "DELETE_GAME"; payload: string } // MongoDB ObjectId as string
+  | { type: "DELETE_GAME"; payload: string } 
   | { type: "SET_GENRES"; payload: Genre[] }
   | { type: "ADD_GENRE"; payload: Genre }
   | { type: "UPDATE_GENRE"; payload: Genre }
-  | { type: "DELETE_GENRE"; payload: string } // MongoDB ObjectId as string
+  | { type: "DELETE_GENRE"; payload: string }
   | { type: "SET_USERS"; payload: User[] }
+  | { type: "DELETE_USER"; payload: string }
   | { type: "UPDATE_USER"; payload: { user: User } }
   | { type: "SET_REVIEWS"; payload: { gameId: string; reviews: Review[] } }
   | { type: "ADD_REVIEW"; payload: { gameId: string; review: Review } }
@@ -41,6 +43,7 @@ export const initialState: AppState = {
   users: [],
   reviews: {},
   loading: false,
+  token: ""
 };
 
 export const appReducer = (state: AppState, action: Action): AppState => {

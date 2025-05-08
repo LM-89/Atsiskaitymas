@@ -51,10 +51,10 @@ const AdminPanel = () => {
     if (!user || !token) return;
     if (editingGameId) {
       try {
-        await updateGame(editingGameId, gameData, token);
+        await updateGame(editingGameId.toString(), gameData, token);
         dispatch({
           type: "UPDATE_GAME",
-          payload: { _id: editingGameId, ...gameData } as Game,
+          payload: { _id: editingGameId.toString(), ...gameData } as Game,
         });
         setEditingGameId(null);
       } catch (error) {
@@ -106,8 +106,8 @@ const AdminPanel = () => {
   const handleDeleteGenre = async (genreId: number) => {
     if (!user || !token) return;
     try {
-      await deleteGenre(genreId, token);
-      dispatch({ type: "DELETE_GENRE", payload: genreId });
+      await deleteGenre(genreId.toString(), token);
+      dispatch({ type: "DELETE_GENRE", payload: genreId.toString() });
     } catch (error) {
       console.error("Error deleting genre:", error);
     }
@@ -116,8 +116,8 @@ const AdminPanel = () => {
   const handleChangeUserRole = async (userId: number, newRole: "admin" | "user") => {
     if (!user || !token) return;
     try {
-      const updatedUser = await updateUserRole(userId, newRole, token);
-      const updatedUsers = users.map((u) => (u.id === userId ? updatedUser : u));
+      const updatedUser = await updateUserRole(userId.toString(), newRole.toUpperCase() as "ADMIN" | "USER", token);
+      const updatedUsers = users.map((u) => (u._id === userId.toString() ? updatedUser : u));
       dispatch({ type: "SET_USERS", payload: updatedUsers });
     } catch (error) {
       console.error("Error updating user role:", error);
@@ -126,7 +126,13 @@ const AdminPanel = () => {
 
   const handleDeleteUser = async (userId: string) => {
     try {
-      await deleteUser(userId);
+      if (userId) {
+        if (userId) {
+          if (userId) {
+            await deleteUser(userId, token);
+          }
+        }
+      }
       dispatch({ type: "DELETE_USER", payload: userId });
     } catch (error) {
       console.error("Error deleting user:", error);
@@ -149,10 +155,10 @@ const AdminPanel = () => {
         <div ref={gameFormRef} className={styles["game-form-container"]}>
           <GameForm
             key={editingGameId ?? "new"}
-            editingGameId={editingGameId}
+            editingGameId={editingGameId ? editingGameId.toString() : null}
             initialData={
               editingGameId
-                ? games.find((game) => game.id === editingGameId) || {}
+                ? games.find((game) => game._id === editingGameId.toString()) || {}
                 : {}
             }
             onSubmit={handleAddOrUpdateGame}
@@ -167,7 +173,7 @@ const AdminPanel = () => {
             editingGenreId={editingGenreId} 
             initialData={
               editingGenreId
-                ? genres.find((genre) => genre.id === editingGenreId) || {} 
+                ? genres.find((genre) => genre._id === editingGenreId) || {} 
                 : {}
             }
             onSubmit={handleAddOrUpdateGenre} 

@@ -15,17 +15,17 @@ const GameDetails = () => {
 
   const game = games.find((g) => g._id === gameId) || null;
 
-  const [newReviewData, setNewReviewData] = useState({ rating: 3.0, comment: "" });
+  const [newReviewData, setNewReviewData] = useState({ rating: 3.0, feedback: "" });
   const [editingReviewId, setEditingReviewId] = useState<string | null>(null);
-  const [editReviewData, setEditReviewData] = useState({ rating: 3.0, comment: "" });
+  const [editReviewData, setEditReviewData] = useState({ rating: 3.0, feedback: "" });
   const [loading, setLoading] = useState(false);
   const [averageRating, setAverageRating] = useState("Not Rated Yet");
 
-  const gameReviews = useMemo(() => reviews[gameId] || [], [reviews, gameId]);
+  const gameReviews = useMemo(() => (gameId ? reviews[gameId] : []) || [], [reviews, gameId]);
 
   const enrichedReviews = useMemo(() => {
     return gameReviews.map((review) => {
-      const userData = users.find((u) => u._id === review.userId);
+      const userData = users.find((u) => u._id === review.user);
       return { ...review, user: userData || review.user };
     });
   }, [gameReviews, users]);
@@ -54,7 +54,7 @@ const GameDetails = () => {
       setLoading(true);
       try {
         const reviewsData = await getGameReviews(gameId!);
-        dispatch({ type: "SET_REVIEWS", payload: { gameId, reviews: reviewsData } });
+        dispatch({ type: "SET_REVIEWS", payload: { gameId: gameId!, reviews: reviewsData } });
       } catch (err) {
         console.error("Error fetching reviews", err);
       }
@@ -65,7 +65,7 @@ const GameDetails = () => {
 
   useEffect(() => {
     if (users.length === 0) {
-      getUsers()
+      getUsers(state.auth.token || "")
         .then((usersData) => dispatch({ type: "SET_USERS", payload: usersData }))
         .catch((err) => console.error("Error fetching users", err));
     }
@@ -73,7 +73,7 @@ const GameDetails = () => {
 
   useEffect(() => {
     if (gameReviews.length > 0) {
-      const total = gameReviews.reduce((sum, review) => sum + review.rating, 0);
+      const total = gameReviews.reduce((sum: number, review: Review) => sum + review.rating, 0);
       setAverageRating((total / gameReviews.length).toFixed(1));
     } else {
       setAverageRating("Not Rated Yet");
@@ -82,25 +82,25 @@ const GameDetails = () => {
 
   const handleAddReview = async () => {
     const reviewPayload: NewReview = {
-      gameId: gameId!,
-      userId: state.auth.user?._id || "",
+      game: gameId!,
+      user: state.auth.user?._id || "",
       rating: newReviewData.rating,
-      comment: newReviewData.comment,
+      feedback: newReviewData.feedback,
     };
     await addReviewHandler(reviewPayload);
     await refreshReviews();
-    setNewReviewData({ rating: 3.0, comment: "" });
+    setNewReviewData({ rating: 3.0, feedback: "" });
   };
 
   const handleEditClick = (review: Review) => {
     setEditingReviewId(review._id);
-    setEditReviewData({ rating: review.rating, comment: review.comment });
+    setEditReviewData({ rating: review.rating, feedback: review.feedback });
   };
 
   const handleSaveEdit = async (reviewId: string) => {
     await updateReviewHandler(gameId!, reviewId, {
       rating: editReviewData.rating,
-      comment: editReviewData.comment,
+      feedback: editReviewData.feedback,
     });
     await refreshReviews();
     setEditingReviewId(null);
@@ -129,7 +129,7 @@ const GameDetails = () => {
           <h2>{game.title}</h2>
           <p>
             <strong>Genre:</strong>{" "}
-            {genres.find((genre: Genre) => genre._id === game.genreId)?.title || "Unknown"}
+            {game.genres.map((genreId) => genres.find((genre: Genre) => genre._id === genreId)?.title).filter(Boolean).join(", ") || "Unknown"}
           </p>
           <p>
             <strong>Description:</strong> {game.description}
@@ -146,7 +146,7 @@ const GameDetails = () => {
         </div>
         <div className={styles["game-trailer-container"]}>
           <iframe
-            src={game.iframe}
+            src={game.video}
             allowFullScreen
             title={game.title}
             className={styles["game-iframe"]}
@@ -162,14 +162,14 @@ const GameDetails = () => {
               <div className={styles["review-user-info"]}>
                 {review.user ? (
                   <Link to={`/user/${review.user._id}`} className={styles["user-link"]}>
-                    {review.user.avatar && (
+                    {typeof review.user === "object" && review.user.avatar && (
                       <img
                         className={styles["review-avatar"]}
-                        src={review.user.avatar}
-                        alt={review.user.username}
+                        src={typeof review.user === "object" && review.user.avatar ? review.user.avatar : ""}
+                        alt={typeof review.user === "object" && review.user.username ? review.user.username : "Anonymous"}
                       />
                     )}
-                    <strong>{review.user.username}</strong>
+                    <strong>{typeof review.user === "object" && "username" in review.user ? review.user.username : "Anonymous"}</strong>
                   </Link>
                 ) : (
                   <strong>Anonymous</strong>
@@ -221,16 +221,16 @@ const GameDetails = () => {
                       <strong>Rating:</strong> {review.rating}
                     </p>
                     <p>
-                      <strong>Comment:</strong> {review.comment}
+                      <strong>Comment:</strong> {review.feedback}
                     </p>
                   </div>
                   <div className={styles["review-actions"]}>
-                    {state.auth.user?._id === review.userId && (
+                    {state.auth.user?._id === review.user && (
                       <button className={styles["review-button"]} onClick={() => handleEditClick(review)}>
                         Edit
                       </button>
                     )}
-                    {(state.auth.user?._id === review.userId || state.auth.user?.role === "ADMIN") && (
+                    {(state.auth.user?._id === review.user || state.auth.user?.role === "ADMIN") && (
                       <button
                         className={`${styles["delete-button"]} delete-button`}
                         onClick={() => handleDeleteReview(review._id)}

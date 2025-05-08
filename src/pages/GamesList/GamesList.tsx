@@ -21,7 +21,7 @@ const GamesList = () => {
         const genresData = await getGenres();
         dispatch({ type: "SET_GENRES", payload: genresData });
 
-        const usersData = await getUsers();
+        const usersData = await getUsers(); 
         dispatch({ type: "SET_USERS", payload: usersData });
       } catch (error) {
         console.error("Error loading data:", error);

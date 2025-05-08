@@ -20,7 +20,7 @@ const OtherUserProfile = () => {
   
   const profileUser = useMemo(() => {
     if (numericUserId === null) return null;
-    return users.find((user) => user.id === numericUserId) || null;
+    return users.find((user) => user._id === String(numericUserId)) || null;
   }, [numericUserId, users]);
 
 
@@ -46,11 +46,11 @@ const OtherUserProfile = () => {
       try {
         const reviewsResponse = await axios.get(`${API_URL}/reviews`);
         const userReviews: Review[] = reviewsResponse.data.filter(
-          (review: Review) => review.userId === numericUserId
+          (review: Review) => review.user === numericUserId
         );
         const reviewsWithGames: ReviewWithGameTitle[] = userReviews.map((review: Review) => ({
           ...review,
-          gameTitle: games.find((game: Game) => game.id === review.gameId)?.title || "Unknown Game",
+          gameTitle: games.find((game: Game) => game._id === review.game)?.title || "Unknown Game",
         }));
         setReviewsForUser(reviewsWithGames);
       } catch (error) {
@@ -109,7 +109,7 @@ const OtherUserProfile = () => {
             <div className={styles["avatar-placeholder"]}>No avatar available</div>
           )}
           <div>
-            <strong>Nickname:</strong> {profileUser.nickname}
+            <strong>Nickname:</strong> {profileUser.username}
           </div>
           <div>
             <strong>Bio:</strong> {profileUser.bio || "No bio available"}
@@ -118,7 +118,7 @@ const OtherUserProfile = () => {
             <strong>Role:</strong> {profileUser.role}
           </div>
 
-          {loggedInUser?.role === "admin" && loggedInUser.id !== profileUser.id && (
+          {loggedInUser?.role === "ADMIN" && loggedInUser._id !== profileUser._id && (
             <div className={styles["role-change"]}>
               <label>Change Role: </label>
               <select
@@ -134,10 +134,10 @@ const OtherUserProfile = () => {
         </div>
 
       <div className={styles["reviews-section"]}>
-        <h3>{profileUser.nickname}'s Reviews: </h3>
+        <h3>{profileUser.username}'s Reviews: </h3>
         {reviewsForUser.length > 0 ? (
           reviewsForUser.map((review) => (
-            <div key={review.id} className={styles["review-item"]}>
+            <div key={review._id} className={styles["review-item"]}>
               <p>
                 <strong>Game:</strong> {review.gameTitle}
               </p>
@@ -145,10 +145,10 @@ const OtherUserProfile = () => {
                 <strong>Rating:</strong> {review.rating}
               </p>
               <p>
-                <strong>Comment:</strong> {review.comment}
+                <strong>Comment:</strong> {review.feedback}
               </p>
               <div className={styles["actions"]}>
-                {loggedInUser?.role === "admin" && (
+                {loggedInUser?.role === "ADMIN" && (
                   <button className={`${styles["delete-btn"]} delete-button`} onClick={() => handleDeleteReview(review.id)}>
                     Delete
                   </button>
