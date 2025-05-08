@@ -80,14 +80,14 @@ const AdminPanel = () => {
     }
   };
 
-  const handleAddOrUpdateGenre = async (genreData: Omit<Genre, "id">) => {
+  const handleAddOrUpdateGenre = async (genreData: Omit<Genre, "_id">) => {
     if (!user || !token) return;
     if (editingGenreId) {
       try {
-        await updateGenre(editingGenreId, genreData, token); 
+        await updateGenre(editingGenreId, genreData, token);
         dispatch({
           type: "UPDATE_GENRE",
-          payload: { id: editingGenreId, ...genreData } as Genre,
+          payload: { _id: editingGenreId, ...genreData } as Genre,
         });
         setEditingGenreId(null);
       } catch (error) {
@@ -95,19 +95,19 @@ const AdminPanel = () => {
       }
     } else {
       try {
-        const addedGenre = await addGenre(genreData, token); 
-        dispatch({ type: "ADD_GENRE", payload: addedGenre }); 
+        const addedGenre = await addGenre(genreData, token);
+        dispatch({ type: "ADD_GENRE", payload: addedGenre });
       } catch (error) {
         console.error("Error adding genre:", error);
       }
     }
   };
 
-  const handleDeleteGenre = async (genreId: number) => {
+  const handleDeleteGenre = async (genreId: string) => {
     if (!user || !token) return;
     try {
-      await deleteGenre(genreId.toString(), token);
-      dispatch({ type: "DELETE_GENRE", payload: genreId.toString() });
+      await deleteGenre(genreId, token);
+      dispatch({ type: "DELETE_GENRE", payload: genreId });
     } catch (error) {
       console.error("Error deleting genre:", error);
     }
@@ -129,7 +129,9 @@ const AdminPanel = () => {
       if (userId) {
         if (userId) {
           if (userId) {
-            await deleteUser(userId, token);
+            if (userId) {
+              await deleteUser(userId, token);
+            }
           }
         }
       }
@@ -155,10 +157,10 @@ const AdminPanel = () => {
         <div ref={gameFormRef} className={styles["game-form-container"]}>
           <GameForm
             key={editingGameId ?? "new"}
-            editingGameId={editingGameId ? editingGameId.toString() : null}
+            editingGameId={editingGameId}
             initialData={
               editingGameId
-                ? games.find((game) => game._id === editingGameId.toString()) || {}
+                ? games.find((game) => game._id === editingGameId) || {}
                 : {}
             }
             onSubmit={handleAddOrUpdateGame}
@@ -185,7 +187,7 @@ const AdminPanel = () => {
       <div className={styles["genres-section"]}> 
         <h3 className={styles["lower-headings"]}>Genres</h3>
         {sortedGenres.map((genre) => ( 
-          <div key={genre.id} className={styles["genre-item"]}> 
+          <div key={genre._id} className={styles["genre-item"]}> 
             <span>
               {genre.title}. {genre.description} 
             </span>
@@ -195,7 +197,7 @@ const AdminPanel = () => {
               </button>
               <button
                 className={`${styles["delete-btn"]} delete-button`}
-                onClick={() => handleDeleteGenre(genre.id)} 
+                onClick={() => handleDeleteGenre(genre._id)} 
               >
                 Delete
               </button>
@@ -208,7 +210,7 @@ const AdminPanel = () => {
         <div className={styles["games-section"]}>
           <h3 className={styles["lower-headings"]}>Games</h3>
           {sortedGames.map((game) => (
-            <div key={game.id} className={styles["game-item"]}>
+            <div key={game._id} className={styles["game-item"]}>
               <span>{game.title}</span>
               <div className={styles["action-control"]}>
                 <button className={styles["edit-button"]} onClick={() => setEditingGameId(game.id)}>
@@ -216,7 +218,7 @@ const AdminPanel = () => {
                 </button>
                 <button
                   className={`${styles["delete-btn"]} delete-button`}
-                  onClick={() => handleDeleteGame(game.id)}
+                  onClick={() => handleDeleteGame(game._id)}
                 >
                   Delete
                 </button>
@@ -228,20 +230,20 @@ const AdminPanel = () => {
         <div className={styles["users-section"]}>
           <h3 className={styles["lower-headings"]}>Users</h3>
           {sortedUsers.map((u) => (
-            <div key={u.id} className={styles["user-item"]}>
+            <div key={u._id} className={styles["user-item"]}>
               <span>
                 {u.name} {u.surname} ({u.email} - {u.role})
               </span>
               <div className={styles["action-control"]}>
                 <button
                   className={styles["change-role-button"]}
-                  onClick={() => handleChangeUserRole(u.id, u.role === "admin" ? "user" : "admin")}
+                  onClick={() => handleChangeUserRole(u._id, u.role === "ADMIN" ? "user" : "admin")}
                 >
                   Change Role
                 </button>
                 <button
                   className={`${styles["delete-btn"]} delete-button`}
-                  onClick={() => handleDeleteUser(u.id)}
+                  onClick={() => handleDeleteUser(u._id)}
                 >
                   Delete User
                 </button>

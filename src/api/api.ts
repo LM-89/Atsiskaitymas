@@ -53,6 +53,13 @@ export const updateUser = async (userId: string, userData: Partial<User>, token:
   return response.data;
 };
 
+export const getUserById = async (userId: string, token: string) => {
+  const response = await api.get(`/users/${userId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data;
+};
+
 export const deleteUser = async (userId: string, token: string) => {
   await api.delete(`/users/${userId}`, {
     headers: { Authorization: `Bearer ${token}` },

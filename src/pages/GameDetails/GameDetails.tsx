@@ -65,7 +65,7 @@ const GameDetails = () => {
 
   useEffect(() => {
     if (users.length === 0) {
-      getUsers(state.auth.token || "")
+      getUsers()
         .then((usersData) => dispatch({ type: "SET_USERS", payload: usersData }))
         .catch((err) => console.error("Error fetching users", err));
     }
@@ -196,9 +196,9 @@ const GameDetails = () => {
                     <label>Comment:</label>
                     <textarea
                       className={styles["review-textarea"]}
-                      value={editReviewData.comment}
+                      value={editReviewData.feedback}
                       onChange={(e) =>
-                        setEditReviewData({ ...editReviewData, comment: e.target.value })
+                        setEditReviewData({ ...editReviewData, feedback: e.target.value })
                       }
                     />
                   </div>
@@ -269,8 +269,8 @@ const GameDetails = () => {
             <span>{newReviewData.rating.toFixed(1)}</span>
             <textarea
               className={styles["review-textarea"]}
-              value={newReviewData.comment}
-              onChange={(e) => setNewReviewData({ ...newReviewData, comment: e.target.value })}
+              value={newReviewData.feedback}
+              onChange={(e) => setNewReviewData({ ...newReviewData, feedback: e.target.value })}
               placeholder="Write your review..."
               rows={3}
             />

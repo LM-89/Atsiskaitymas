@@ -26,6 +26,7 @@ const GameForm: React.FC<GameFormProps> = ({
     cover: "",
     release: null,
     video: "",
+    genres: [],
   });
 
   useEffect(() => {
@@ -39,6 +40,7 @@ const GameForm: React.FC<GameFormProps> = ({
         cover: initialData.cover || "",
         release: initialData.release || null,
         video: initialData.video || "",
+        genres: initialData.genres || [],
       });
     } else {
       setGameData({
@@ -50,6 +52,7 @@ const GameForm: React.FC<GameFormProps> = ({
         cover: "",
         release: null,
         video: "",
+        genres: [],
       });
     }
   }, [editingGameId, initialData]);
@@ -75,7 +78,8 @@ const GameForm: React.FC<GameFormProps> = ({
       price: null,
       cover: "",
       release: null,
-      iframe: "",
+      video: "",
+      genres: [],
     });
   };
 
@@ -96,8 +100,8 @@ const GameForm: React.FC<GameFormProps> = ({
       <div className={styles["form-control"]}>
         <select
           className={styles["game-select"]}
-          value={gameData.genreId}
-          onChange={(event) => handleChange("genreId", event.target.value)}
+          value={gameData.genres[0] || ""}
+          onChange={(event) => setGameData({ ...gameData, genres: [event.target.value] })}
           required
         >
           <option value="">Select Genre</option>

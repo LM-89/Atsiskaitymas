@@ -27,7 +27,7 @@ export interface Review {
   _id: string; 
   rating: number;
   feedback: string;
-  user: string; 
+  user: string | User; 
   game: string; 
 }
 

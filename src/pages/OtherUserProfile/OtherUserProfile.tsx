@@ -11,7 +11,6 @@ type ReviewWithGameTitle = Review & { gameTitle: string };
 
 const OtherUserProfile = () => {
   const { userId } = useParams();
-  const numericUserId = userId ? Number(userId) : null;
   const { state, dispatch } = useData();
   const { auth, users, games } = state;
   const loggedInUser = auth.user;
@@ -19,16 +18,18 @@ const OtherUserProfile = () => {
 
   
   const profileUser = useMemo(() => {
-    if (numericUserId === null) return null;
-    return users.find((user) => user._id === String(numericUserId)) || null;
-  }, [numericUserId, users]);
+    if (!userId) return null;
+    return users.find((user) => user._id === userId) || null;
+  }, [userId, users]);
 
 
   useEffect(() => {
-    if (numericUserId && !profileUser) {
+    if (userId && !profileUser && token) {
       const fetchUser = async () => {
         try {
-          const response = await axios.get(`${API_URL}/users/${numericUserId}`);
+          const response = await axios.get(`${API_URL}/users/${userId}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
           dispatch({ type: "SET_USERS", payload: [...users, response.data] });
         } catch (error) {
           console.error("Error fetching user:", error);
@@ -36,17 +37,17 @@ const OtherUserProfile = () => {
       };
       fetchUser();
     }
-  }, [numericUserId, profileUser, dispatch, users]);
+  }, [userId, profileUser, dispatch, users, token]);
 
   
   const [reviewsForUser, setReviewsForUser] = useState<ReviewWithGameTitle[]>([]);
   useEffect(() => {
-    if (!numericUserId) return;
+    if (!userId) return;
     const fetchReviews = async () => {
       try {
         const reviewsResponse = await axios.get(`${API_URL}/reviews`);
         const userReviews: Review[] = reviewsResponse.data.filter(
-          (review: Review) => review.user === numericUserId
+          (review: Review) => review.user === userId
         );
         const reviewsWithGames: ReviewWithGameTitle[] = userReviews.map((review: Review) => ({
           ...review,
@@ -59,15 +60,15 @@ const OtherUserProfile = () => {
     };
 
     fetchReviews();
-  }, [numericUserId, games]);
+  }, [userId, games]);
 
 
   const handleRoleChange = async (newRole: "user" | "admin") => {
-    if (!loggedInUser || !token || !numericUserId) return;
+    if (!loggedInUser || !token || !userId) return;
     try {
-      await updateUserRole(numericUserId, newRole, token);
+      await updateUserRole(userId, newRole.toUpperCase() as "ADMIN" | "USER", token);
       const updatedUsers = users.map((user) =>
-        user.id === numericUserId ? { ...user, role: newRole } : user
+        user._id === userId ? { ...user, role: newRole.toUpperCase() as "ADMIN" | "USER" } : user
       );
       dispatch({ type: "SET_USERS", payload: updatedUsers });
     } catch (error) {
@@ -76,12 +77,12 @@ const OtherUserProfile = () => {
   };
 
 
-  const handleDeleteReview = async (reviewId: number) => {
+  const handleDeleteReview = async (reviewId: string) => {
     if (loggedInUser && token) {
       try {
         await deleteReview(reviewId, token);
         setReviewsForUser((prevReviews) =>
-          prevReviews.filter((review) => review.id !== reviewId)
+          prevReviews.filter((review) => review._id !== reviewId)
         );
       } catch (error) {
         console.error("Error deleting review:", error);
@@ -149,7 +150,7 @@ const OtherUserProfile = () => {
               </p>
               <div className={styles["actions"]}>
                 {loggedInUser?.role === "ADMIN" && (
-                  <button className={`${styles["delete-btn"]} delete-button`} onClick={() => handleDeleteReview(review.id)}>
+                  <button className={`${styles["delete-btn"]} delete-button`} onClick={() => handleDeleteReview(review._id)}>
                     Delete
                   </button>
                 )}
